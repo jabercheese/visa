@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embassy Visa Management & Tracking System</title>
+    <title>Global Visa Application & Logistics Management System</title>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -12,167 +12,168 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text: #334155;
+            --background: #f8fafc;
+            --surface: #ffffff;
             --border: #e2e8f0;
+            --text: #334155;
+            --text-light: #64748b;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
         body {
-            background-color: var(--bg);
+            background-color: var(--background);
             color: var(--text);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            line-height: 1.5;
+            padding-bottom: 60px;
         }
 
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 1rem 2rem;
+        /* Portal Switcher Bar */
+        .portal-nav {
+            background-color: var(--secondary);
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            color: white;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .logo-area h1 {
-            font-size: 1.5rem;
+        .portal-logo {
             font-weight: 700;
+            font-size: 1.2rem;
             letter-spacing: 0.5px;
+            color: #f1f5f9;
         }
 
-        .logo-area span {
-            font-size: 0.85rem;
-            color: var(--primary-light);
-            display: block;
-        }
-
-        .main-nav {
+        .portal-buttons {
             display: flex;
-            background-color: var(--secondary);
-            padding: 0.5rem 2rem;
-            gap: 1rem;
+            gap: 10px;
         }
 
-        .nav-btn {
-            background: transparent;
+        .portal-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
             border: none;
-            color: #94a3b8;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.95rem;
-            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
             cursor: pointer;
-            border-radius: 4px;
+            font-weight: 500;
             transition: all 0.2s;
         }
 
-        .nav-btn:hover {
+        .portal-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
             color: white;
-            background-color: rgba(255,255,255,0.05);
         }
 
-        .nav-btn.active {
+        .portal-btn.active {
+            background: var(--primary-light);
             color: white;
-            background-color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
+        /* Container & Layout */
         .container {
-            flex: 1;
-            padding: 2rem;
-            max-width: 1400px;
-            width: 100%;
-            margin: 0 auto;
+            max-width: 1300px;
+            margin: 30px auto;
+            padding: 0 20px;
         }
 
-        .app-panel {
+        .portal-page {
             display: none;
         }
 
-        .app-panel.active {
+        .portal-page.active-page {
             display: block;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards and Sections */
         .card {
-            background: var(--card-bg);
-            border-radius: 8px;
+            background: var(--surface);
             border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
         }
 
-        .card-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 1.2rem;
+        h2 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.5rem;
             border-bottom: 2px solid var(--border);
-            padding-bottom: 0.5rem;
+            padding-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
+        h3 {
+            margin-bottom: 15px;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Forms styling */
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 1.2rem;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .form-group {
             display: flex;
             flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        .form-group.full-width {
-            grid-column: 1 / -1;
         }
 
         label {
             font-size: 0.85rem;
             font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
+            margin-bottom: 6px;
+            color: var(--text-light);
         }
 
         input, select, textarea {
-            padding: 0.65rem;
+            padding: 10px;
             border: 1px solid var(--border);
             border-radius: 6px;
             font-size: 0.95rem;
-            color: var(--text);
+            background: #f8fafc;
             outline: none;
-            background-color: #fafafa;
+            transition: border-color 0.2s;
         }
 
         input:focus, select:focus, textarea:focus {
             border-color: var(--primary-light);
-            background-color: #fff;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+            background: #fff;
         }
 
+        /* Buttons */
         .btn {
-            padding: 0.65rem 1.5rem;
+            padding: 10px 20px;
             border: none;
             border-radius: 6px;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            font-weight: 600;
+            font-size: 0.9rem;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            font-size: 0.95rem;
+            gap: 8px;
+            transition: all 0.2s;
         }
 
         .btn-primary { background: var(--primary); color: white; }
@@ -183,60 +184,86 @@
         .btn-warning:hover { background: #d97706; }
         .btn-danger { background: var(--danger); color: white; }
         .btn-danger:hover { background: #dc2626; }
-        .btn-secondary { background: #64748b; color: white; }
-        .btn-secondary:hover { background: #475569; }
+        .btn-secondary { background: var(--text-light); color: white; }
+        .btn-secondary:hover { background: var(--text); }
 
-        .table-container {
-            overflow-x: auto;
-            border-radius: 6px;
-            border: 1px solid var(--border);
+        /* Tabs within a Portal */
+        .tab-menu {
+            display: flex;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
+        .tab-link {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-link.active-tab {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .sub-tab-content {
+            display: none;
+        }
+
+        .sub-tab-content.active-content {
+            display: block;
+        }
+
+        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 12px 15px;
             text-align: left;
-            font-size: 0.95rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
         }
 
         th {
             background-color: #f1f5f9;
-            color: #475569;
-            padding: 0.85rem 1rem;
+            color: var(--secondary);
             font-weight: 600;
-            border-bottom: 1px solid var(--border);
-        }
-
-        td {
-            padding: 0.85rem 1rem;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-        }
-
-        tr:last-child td {
-            border-bottom: none;
         }
 
         tr:hover td {
             background-color: #f8fafc;
         }
 
+        /* Status Badges */
         .badge {
             display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 50px;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
         }
 
-        .badge-processing { background-color: #e0f2fe; color: #0369a1; }
-        .badge-granted { background-color: #d1fae5; color: #065f46; }
-        .badge-rejected { background-color: #fee2e2; color: #991b1b; }
-        .badge-interview { background-color: #fef3c7; color: #92400e; }
+        .badge-applying { background: #e0f2fe; color: #0369a1; }
+        .badge-interview-scheduled { background: #fef3c7; color: #d97706; }
+        .badge-interview-accepted { background: #ccfbf1; color: #0f766e; }
+        .badge-interview-rejected { background: #fee2e2; color: #b91c1c; }
+        .badge-final-accepted { background: #d1fae5; color: #065f46; }
+        .badge-awaiting-payment { background: #fae8ff; color: #86198f; }
+        .badge-granted { background: #10b981; color: white; }
+        .badge-rejected { background: #ef4444; color: white; }
+        .badge-suspended { background: #78350f; color: white; }
 
+        /* Modals / Overlays */
         .modal-overlay {
-            display: none;
             position: fixed;
             top: 0;
             left: 0;
@@ -244,490 +271,756 @@
             height: 100%;
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(4px);
-            z-index: 9999;
+            display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
         }
 
-        .modal-card {
+        .modal-overlay.show-modal {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .modal-box {
             background: white;
-            border-radius: 8px;
-            width: 100%;
-            max-width: 450px;
-            padding: 1.5rem;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            animation: modalFadeIn 0.2s ease-out;
-        }
-
-        @keyframes modalFadeIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-header {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            color: var(--secondary);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .modal-body {
-            font-size: 0.95rem;
-            color: #475569;
-            margin-bottom: 1.5rem;
-            line-height: 1.5;
-        }
-
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-        }
-
-        .track-box {
+            border-radius: 12px;
+            width: 90%;
             max-width: 600px;
-            margin: 2rem auto;
-            text-align: center;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        .status-display {
-            margin-top: 2rem;
-            padding: 2rem;
-            border-radius: 8px;
-            border: 2px dashed var(--border);
-            background: #fafafa;
-        }
-
-        .status-text {
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
             font-size: 1.5rem;
-            font-weight: 700;
-            margin-top: 0.5rem;
+            cursor: pointer;
+            color: var(--text-light);
         }
 
-        .split-layout {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 1.5rem;
+        /* Printable / Receipt Layout */
+        .receipt-card {
+            background: white;
+            border: 3px double var(--secondary);
+            padding: 40px;
+            max-width: 550px;
+            margin: 0 auto;
+            position: relative;
         }
 
-        @media (max-width: 968px) {
-            .split-layout {
-                grid-template-columns: 1fr;
-            }
+        .receipt-header {
+            text-align: center;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .action-cell {
+        .receipt-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-30deg);
+            font-size: 4rem;
+            font-weight: 900;
+            color: rgba(16, 185, 129, 0.15);
+            letter-spacing: 5px;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        /* Notification prompts */
+        .notification-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background: var(--secondary);
+            color: white;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+            z-index: 2000;
+            display: none;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .clickable-row {
+            cursor: pointer;
+        }
+        
+        .flex-between {
             display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-area">
-            <h1>ConsularConnect OS</h1>
-            <span>Embassy Visa & Administrative Matrix</span>
+    <nav class="portal-nav">
+        <div class="portal-logo">EMBASSY LOGISTICS SYSTEM</div>
+        <div class="portal-buttons">
+            <button class="portal-btn active" onclick="switchPortal('customer')">Customer Portal</button>
+            <button class="portal-btn" onclick="switchPortal('employee')">Employee Portal</button>
+            <button class="portal-btn" onclick="switchPortal('interviewer')">Interviewer Portal</button>
+            <button class="portal-btn" onclick="switchPortal('airport')">Airport Portal</button>
+            <button class="portal-btn" onclick="switchPortal('admin')">Admin Setup</button>
         </div>
-        <div style="font-size: 0.9rem; text-align: right;">
-            <strong>System Node:</strong> Hub DXB-AMMAN<br>
-            <span id="clock"></span>
-        </div>
-    </header>
-
-    <nav class="main-nav">
-        <button class="nav-btn active" onclick="switchTab('customer-apply')">Apply for Visa</button>
-        <button class="nav-btn" onclick="switchTab('customer-track')">Track Application</button>
-        <button class="nav-btn" onclick="switchTab('employee-portal')">Employee Portal</button>
-        <button class="nav-btn" onclick="switchTab('admin-portal')">Admin Panel</button>
     </nav>
 
     <div class="container">
 
-        <div id="customer-apply" class="app-panel active">
+        <section id="portal-customer" class="portal-page active-page">
             <div class="card">
-                <div class="card-title">New Visa Application Form</div>
-                <form id="visaForm" onsubmit="handleApplicationSubmit(event)">
+                <h2>Visa Application Form <span style="font-size: 0.9rem; color: var(--text-light)">Layer 1: Initial Application</span></h2>
+                <form id="visaForm" onsubmit="handleApplicationSubmit(event, 'Customer')">
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Full Name (As in Passport)</label>
-                            <input type="text" id="app_name" required placeholder="John Doe">
+                            <label>First Name</label>
+                            <input type="text" id="cust-firstname" required placeholder="John">
                         </div>
                         <div class="form-group">
-                            <label>Passport Number</label>
-                            <input type="text" id="app_passport" required placeholder="N00000000">
+                            <label>Last Name</label>
+                            <input type="text" id="cust-lastname" required placeholder="Doe">
+                        </div>
+                        <div class="form-group">
+                            <label>Passport Number (6 Characters)</label>
+                            <input type="text" id="cust-passport" required maxlength="6" minlength="6" placeholder="A12345" style="text-transform: uppercase;">
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth</label>
+                            <input type="date" id="cust-dob" required>
                         </div>
                         <div class="form-group">
                             <label>Nationality</label>
-                            <input type="text" id="app_nationality" required placeholder="Canadian">
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Requested Visa Type</label>
-                            <select id="app_visa_type" required>
-                                </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Planned Arrival Date</label>
-                            <input type="date" id="app_arrival" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Planned Departure Date</label>
-                            <input type="date" id="app_departure" required>
-                        </div>
-                    </div>
-
-                    <div class="form-grid">
-                        <div class="form-group full-width">
-                            <label>Purpose of Visit / Additional Remarks</label>
-                            <textarea id="app_remarks" rows="3" placeholder="State reasons for travel, hosting configuration, etc..."></textarea>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">File Secure Application</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="customer-track" class="app-panel">
-            <div class="card track-box">
-                <div class="card-title" style="justify-content: center;">Track Your Application</div>
-                <p style="color: #64748b; margin-bottom: 1.5rem;">Enter your Passport Number to query the live consular registry.</p>
-                <div style="display: flex; gap: 0.5rem; justify-content: center;">
-                    <input type="text" id="track_passport" placeholder="Enter Passport Number" style="max-width: 300px; text-transform: uppercase;">
-                    <button class="btn btn-primary" onclick="trackApplication()">Query Status</button>
-                </div>
-
-                <div id="track_result" class="status-display" style="display: none;">
-                    <div style="font-size: 0.9rem; color: #64748b;">Applicant: <strong id="track_res_name" style="color: var(--secondary);"></strong></div>
-                    <div style="font-size: 0.9rem; color: #64748b; margin-top: 0.2rem;">Requested Type: <strong id="track_res_type" style="color: var(--secondary);"></strong></div>
-                    <div class="status-text" id="track_res_status"></div>
-                    <div id="track_res_details" style="margin-top: 1rem; font-size: 0.9rem; padding-top: 1rem; border-top: 1px dashed var(--border);"></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="employee-portal" class="app-panel">
-            <div class="card">
-                <div class="card-title">Consular Application Processing Matrix</div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Passport</th>
-                                <th>Name</th>
-                                <th>Requested Type</th>
-                                <th>Travel Windows</th>
-                                <th>Status Mapping</th>
-                                <th>Workflow Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="employee_table_body">
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="admin-portal" class="app-panel">
-            <div class="split-layout">
-                <div class="card">
-                    <div class="card-title">Manage Visa Types</div>
-                    <form id="visaTypeForm" onsubmit="handleVisaTypeSubmit(event)" style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border);">
-                        <input type="hidden" id="edit_type_idx" value="">
-                        <div class="form-group" style="margin-bottom: 0.8rem;">
-                            <label>Visa Type Name</label>
-                            <input type="text" id="type_name" required placeholder="e.g. Tourist Single Entry">
-                        </div>
-                        <div class="form-group" style="margin-bottom: 0.8rem;">
-                            <label>Validity Window</label>
-                            <input type="text" id="type_validity" required placeholder="e.g. 90 Days from issuance">
-                        </div>
-                        <div class="form-group" style="margin-bottom: 0.8rem;">
-                            <label>Entries System</label>
-                            <select id="type_entries">
-                                <option value="Single">Single Entry</option>
-                                <option value="Multiple">Multiple Entries</option>
+                            <select id="cust-nationality" required>
+                                <option value="">Select Country</option>
                             </select>
                         </div>
-                        <div class="form-group" style="margin-bottom: 1rem;">
-                            <label>Allowed Days Per Entry</label>
-                            <input type="number" id="type_days" required min="1" placeholder="e.g. 30">
-                        </div>
-                        <button type="submit" class="btn btn-success" id="type_submit_btn" style="width: 100%;">Save Visa Type</button>
-                        <button type="button" class="btn btn-secondary" id="type_cancel_btn" style="width: 100%; margin-top: 0.5rem; display: none;" onclick="resetVisaTypeForm()">Cancel Edit</button>
-                    </form>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                </form>
+            </div>
+        </section>
 
-                    <div class="table-container">
-                        <table>
+
+        <section id="portal-employee" class="portal-page">
+            <div class="tab-menu">
+                <button class="tab-link active-tab" onclick="switchTab('employee', 'emp-apply')">Apply on Behalf</button>
+                <button class="tab-link" onclick="switchTab('employee', 'emp-accounts')">Applicant Accounts & Logs</button>
+                <button class="tab-link" onclick="switchTab('employee', 'emp-tracking')">Global Multi-Tracking</button>
+            </div>
+
+            <div id="emp-apply" class="sub-tab-content active-content">
+                <div class="card">
+                    <h2>Employee Access: Submit New Visa Application</h2>
+                    <form id="empVisaForm" onsubmit="handleApplicationSubmit(event, 'Employee')">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" id="emp-firstname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" id="emp-lastname" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Passport Number (6 Characters)</label>
+                                <input type="text" id="emp-passport" required maxlength="6" minlength="6" style="text-transform: uppercase;">
+                            </div>
+                            <div class="form-group">
+                                <label>Date of Birth</label>
+                                <input type="date" id="emp-dob" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Nationality</label>
+                                <select id="emp-nationality" required>
+                                    <option value="">Select Country</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">File Official Application</button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="emp-accounts" class="sub-tab-content">
+                <div class="card">
+                    <h2>Active Master Database Records</h2>
+                    <p style="color: var(--text-light); margin-bottom: 15px; font-size: 0.85rem;">Click on any record row below to display their entire historical case file logs and actions matrix.</p>
+                    <div style="overflow-x: auto;">
+                        <table id="accountsTable">
                             <thead>
                                 <tr>
-                                    <th>Visa Structure Name</th>
-                                    <th>Actions</th>
+                                    <th>Application ID</th>
+                                    <th>Full Name</th>
+                                    <th>Passport No</th>
+                                    <th>Country</th>
+                                    <th>Current Processing Status</th>
+                                    <th>Action Links</th>
                                 </tr>
                             </thead>
-                            <tbody id="admin_types_body">
+                            <tbody>
                                 </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-                    <div class="card">
-                        <div class="card-title">Consular Status Lexicon Mapping</div>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
-                            Map internal states to external custom strings. All trackers route strictly to these 4 editable expressions.
-                        </p>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Internal State: Processing</label>
-                                <input type="text" id="lex_processing">
+                <div id="historicalLogContainer" class="card" style="display:none;">
+                    <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom:10px; margin-bottom:15px;">
+                        <h3 id="historyTitle" style="margin:0;">Historical Case Progress Logs</h3>
+                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size:0.75rem;" onclick="document.getElementById('historicalLogContainer').style.display='none'">Clear Matrix View</button>
+                    </div>
+                    <table id="historyTable">
+                        <thead>
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Assigned Stage</th>
+                                <th>Status Result</th>
+                                <th>Internal Comments / Operations Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="emp-tracking" class="sub-tab-content">
+                <div class="card">
+                    <h2>Advanced Target Tracking Module</h2>
+                    <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                        
+                        <div class="card" style="margin-bottom:0; background: #fdfdfd;">
+                            <h3>Option 1: Tracking Number</h3>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>5-Digit Application ID</label>
+                                <input type="text" id="track-id-val" placeholder="e.g. 54219">
                             </div>
-                            <div class="form-group">
-                                <label>Internal State: Interview Pending</label>
-                                <input type="text" id="lex_interview">
-                            </div>
+                            <button class="btn btn-primary" onclick="executeTrack(1)">Execute Search</button>
                         </div>
-                        <div class="form-grid" style="margin-top: 0.5rem;">
-                            <div class="form-group">
-                                <label>Internal State: Granted</label>
-                                <input type="text" id="lex_granted">
+
+                        <div class="card" style="margin-bottom:0; background: #fdfdfd;">
+                            <h3>Option 2: Personal Profile</h3>
+                            <div class="form-group" style="margin-between: 5px;">
+                                <label>First Name</label>
+                                <input type="text" id="track-fn-val">
                             </div>
-                            <div class="form-group">
-                                <label>Internal State: Rejected</label>
-                                <input type="text" id="lex_rejected">
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <label>Last Name</label>
+                                <input type="text" id="track-ln-val">
                             </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Date of Birth</label>
+                                <input type="date" id="track-dob1-val">
+                            </div>
+                            <button class="btn btn-primary" onclick="executeTrack(2)">Execute Search</button>
                         </div>
-                        <button class="btn btn-primary" onclick="saveLexicon()" style="margin-top: 1rem; width: 100%;">Update Status Lexicon</button>
+
+                        <div class="card" style="margin-bottom:0; background: #fdfdfd;">
+                            <h3>Option 3: Passport Security</h3>
+                            <div class="form-group" style="margin-bottom: 5px;">
+                                <label>Date of Birth</label>
+                                <input type="date" id="track-dob2-val">
+                            </div>
+                            <div class="form-group" style="margin-bottom: 10px;">
+                                <label>Passport Number</label>
+                                <input type="text" id="track-pass-val" maxlength="6" style="text-transform: uppercase;">
+                            </div>
+                            <button class="btn btn-primary" onclick="executeTrack(3)">Execute Search</button>
+                        </div>
                     </div>
 
-                    <div class="card">
-                        <div class="card-title">System Access Credentials</div>
-                        <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1rem;">
-                            Manage authentication overrides for staff roles.
-                        </p>
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>Staff User ID</label>
-                                <input type="text" id="cred_staff_user">
-                            </div>
-                            <div class="form-group">
-                                <label>Staff Password</label>
-                                <input type="password" id="cred_staff_pass">
-                            </div>
-                        </div>
-                        <button class="btn btn-primary" onclick="saveCredentials()" style="margin-top: 0.5rem; width: 100%;">Commit Security Credentials</button>
-                    </div>
-
-                    <div class="card" style="border-color: #fca5a5; background: #fff5f5;">
-                        <div class="card-title" style="color: var(--danger); border-color: #fca5a5;">Administrative Purge Directives</div>
-                        <p style="font-size: 0.85rem; color: #991b1b; margin-bottom: 1.2rem;">
-                            Destructive actions. Operations cannot be undone.
-                        </p>
-                        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                            <button class="btn btn-danger" onclick="triggerReset('applicants')">
-                                🗑️ Purge Applicant Records Only
-                            </button>
-                            <button class="btn btn-danger" onclick="triggerReset('master')" style="background: #991b1b;">
-                                ⚠️ Factory Master Reset (Wipe All Custom Data)
-                            </button>
-                        </div>
+                    <div id="trackingResultArea" style="margin-top:25px; display:none;">
+                        <h3>Query Results</h3>
+                        <table id="trackResultsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Passport</th>
+                                    <th>Status</th>
+                                    <th>Action View</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-    </div>
 
-    <div id="html_alert_modal" class="modal-overlay">
-        <div class="modal-card">
-            <div class="modal-header" id="modal_header_title">System Notification</div>
-            <div class="modal-body" id="modal_body_content">Message text goes here.</div>
-            <div class="modal-footer" id="modal_footer_buttons">
-                <button class="btn btn-secondary" onclick="closeAlertModal()">Acknowledge</button>
+        <section id="portal-interviewer" class="portal-page">
+            <div class="card">
+                <h2>Interviewer Assessment Panel <span style="font-size: 0.9rem; color: var(--text-light)">Layer 2: Operational Evaluation</span></h2>
+                <div style="overflow-x: auto;">
+                    <table id="interviewerTable">
+                        <thead>
+                            <tr>
+                                <th>App ID</th>
+                                <th>Applicant Name</th>
+                                <th>Country</th>
+                                <th>Status</th>
+                                <th>Action Panel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            </tbody>
+                    </table>
+                </div>
             </div>
+        </section>
+
+
+        <section id="portal-airport" class="portal-page">
+            <div class="card">
+                <h2>Border Control Customs & Airport Gate Check</h2>
+                <div class="form-grid" style="grid-template-columns: 1fr auto; align-items: flex-end;">
+                    <div class="form-group">
+                        <label>Scan Passport Number (6 Characters)</label>
+                        <input type="text" id="airport-search-passport" placeholder="Enter passport number..." maxlength="6" style="text-transform: uppercase; font-size: 1.2rem; font-family: monospace;">
+                    </div>
+                    <button class="btn btn-primary" style="height: 46px;" onclick="handleAirportScan()">Query Immigration Database</button>
+                </div>
+
+                <div id="airportResult" style="margin-top: 25px; display: none;">
+                    </div>
+            </div>
+        </section>
+
+
+        <section id="portal-admin" class="portal-page">
+            <div id="admin-login-block" class="card" style="max-width: 400px; margin: 40px auto;">
+                <h2>Administrative Authentication</h2>
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label>Username</label>
+                    <input type="text" id="adm-user" value="admin">
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label>Password</label>
+                    <input type="password" id="adm-pass" value="admin">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="handleAdminLogin()">Authenticate System</button>
+            </div>
+
+            <div id="admin-panel-block" class="card" style="display: none;">
+                <h2>System Parameters Management Panel</h2>
+                <div class="card" style="background: #fafafa;">
+                    <h3>Live System Memory Data Controls</h3>
+                    <p style="margin-bottom: 15px; font-size: 0.9rem;">Reset or populate structural components across dynamic portal workflows instantly.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-warning" onclick="seedSampleData()">Inject Diagnostic Demo Applications</button>
+                        <button class="btn btn-danger" onclick="clearSystemData()">Purge Database Records</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div id="systemModal" class="modal-overlay">
+        <div class="modal-box" id="modalContentBox">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div id="modalInnerHTML"></div>
         </div>
     </div>
+
+    <div id="toast" class="notification-toast"></div>
 
     <script>
-        // --- System Hardcoding Fallback Defaults ---
-        const defaultVisaTypes = [
-            { name: "Tourist Short-Stay", validity: "90 Days from Issuance", entries: "Single", days: 30 },
-            { name: "Business Multi-Pass", validity: "180 Days from Issuance", entries: "Multiple", days: 90 },
-            { name: "Diplomatic Transit", validity: "30 Days from Issuance", entries: "Single", days: 4 }
-        ];
-
-        const defaultLexicon = {
-            processing: "Processing",
-            interview: "interview pending- visit embassy",
-            granted: "Visa Granted- visit embassy",
-            rejected: "Visa Rejected- visit embassy"
-        };
-
-        const defaultCredentials = {
-            user: "consular_admin",
-            pass: "secure2026"
-        };
-
-        // --- Core Application State Pointers ---
-        let visaTypes = [];
-        let lexicon = {};
-        let credentials = {};
+        // System Data Stores
         let applications = [];
 
-        // --- Data Layer State Sync (LocalStorage Engines) ---
-        function loadSystemState() {
-            visaTypes = JSON.parse(localStorage.getItem('cc_visa_types')) || [...defaultVisaTypes];
-            lexicon = JSON.parse(localStorage.getItem('cc_lexicon')) || { ...defaultLexicon };
-            credentials = JSON.parse(localStorage.getItem('cc_credentials')) || { ...defaultCredentials };
-            applications = JSON.parse(localStorage.getItem('cc_applications')) || [];
+        const countryList = [
+            "Jordan", "United Arab Emirates", "Saudi Arabia", "Egypt", "United States", 
+            "United Kingdom", "Canada", "Australia", "Germany", "France", "Japan", "India"
+        ];
 
-            // Populate Admin fields to match current state arrays
-            document.getElementById('lex_processing').value = lexicon.processing;
-            document.getElementById('lex_interview').value = lexicon.interview;
-            document.getElementById('lex_granted').value = lexicon.granted;
-            document.getElementById('lex_rejected').value = lexicon.rejected;
+        // System Initialization
+        document.addEventListener("DOMContentLoaded", () => {
+            populateCountryDropdowns();
+            seedSampleData();
+            renderAllTables();
+        });
 
-            document.getElementById('cred_staff_user').value = credentials.user;
-            document.getElementById('cred_staff_pass').value = credentials.pass;
+        function populateCountryDropdowns() {
+            const targets = ["cust-nationality", "emp-nationality"];
+            targets.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    countryList.sort().forEach(country => {
+                        let opt = document.createElement("option");
+                        opt.value = country;
+                        opt.textContent = country;
+                        opt.className = "renderable-opt";
+                        el.appendChild(opt);
+                    });
+                }
+            });
         }
 
-        function saveSystemState() {
-            localStorage.setItem('cc_visa_types', JSON.stringify(visaTypes));
-            localStorage.setItem('cc_lexicon', JSON.stringify(lexicon));
-            localStorage.setItem('cc_credentials', JSON.stringify(credentials));
-            localStorage.setItem('cc_applications', JSON.stringify(applications));
+        // Global Dynamic Sample Injection
+        function seedSampleData() {
+            applications = [
+                {
+                    id: "48219",
+                    firstName: "Rami",
+                    lastName: "Haddad",
+                    passport: "JO7482",
+                    dob: "1992-04-12",
+                    nationality: "Jordan",
+                    status: "Applying",
+                    history: [
+                        { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: "Application initially filed via Customer Portal." }
+                    ]
+                },
+                {
+                    id: "81342",
+                    firstName: "Sarah",
+                    lastName: "Smith",
+                    passport: "US9912",
+                    dob: "1988-11-23",
+                    nationality: "United States",
+                    status: "Interview Scheduled",
+                    history: [
+                        { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: "Application initially filed via Online Service." },
+                        { time: getTimestamp(), stage: "Layer 1: Employee Review", status: "Passed", note: "Passed core document validation checks. Interview recommended." }
+                    ]
+                },
+                {
+                    id: "29411",
+                    firstName: "Fatima",
+                    lastName: "Al-Mansoori",
+                    passport: "AE4412",
+                    dob: "1995-07-30",
+                    nationality: "United Arab Emirates",
+                    status: "Interview Accepted",
+                    history: [
+                        { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: "Filed internally by Embassy representative." },
+                        { time: getTimestamp(), stage: "Layer 1: Employee Review", status: "Passed", note: "Forwarded directly to verification queue." },
+                        { time: getTimestamp(), stage: "Layer 2: Interview Panel", status: "Accepted", note: "Applicant demonstrated clear eligibility parameters. Notes: Verified travel intent." }
+                    ]
+                }
+            ];
+            showToast("Diagnostic operational records populated.");
+            renderAllTables();
         }
 
-        // --- System Lifecycle Init ---
-        window.onload = function() {
-            updateClock();
-            setInterval(updateClock, 1000);
-            loadSystemState();
-            renderVisaTypeSelect();
-            renderAdminVisaTypesTable();
-            renderEmployeeMatrix();
-        };
-
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleString();
+        function clearSystemData() {
+            applications = [];
+            showToast("Database fully cleared.");
+            renderAllTables();
         }
 
-        // --- Custom Interactive HTML Modals Engine ---
-        function triggerAlert(title, message, isConfirm = false, onConfirmCallback = null) {
-            document.getElementById('modal_header_title').innerText = title;
-            document.getElementById('modal_body_content').innerText = message;
+        // Portal & Tab Switcher Utilities
+        function switchPortal(portalId) {
+            document.querySelectorAll('.portal-page').forEach(p => p.classList.remove('active-page'));
+            document.querySelectorAll('.portal-nav .portal-btn').forEach(b => b.classList.remove('active'));
             
-            const footer = document.getElementById('modal_footer_buttons');
-            footer.innerHTML = '';
+            document.getElementById(`portal-${portalId}`).classList.add('active-page');
+            event.target.classList.add('active');
+            
+            renderAllTables();
+        }
 
-            if (isConfirm) {
-                const cancelBtn = document.createElement('button');
-                cancelBtn.className = "btn btn-secondary";
-                cancelBtn.innerText = "Cancel Operation";
-                cancelBtn.onclick = closeAlertModal;
+        function switchTab(portal, tabId) {
+            const parent = document.getElementById(`portal-${portal}`);
+            parent.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active-tab'));
+            parent.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active-content'));
+            
+            event.target.classList.add('active-tab');
+            document.getElementById(tabId).classList.add('active-content');
+        }
 
-                const confirmBtn = document.createElement('button');
-                confirmBtn.className = "btn btn-danger";
-                confirmBtn.innerText = "Confirm Action";
-                confirmBtn.onclick = function() {
-                    closeAlertModal();
-                    if(onConfirmCallback) onConfirmCallback();
+        // Generate 5 Unique Digits
+        function generateAppId() {
+            let id;
+            do {
+                id = Math.floor(10000 + Math.random() * 90000).toString();
+            } while (applications.some(app => app.id === id));
+            return id;
+        }
+
+        function getTimestamp() {
+            return new Date().toLocaleString();
+        }
+
+        // Notification utility
+        function showToast(msg) {
+            const t = document.getElementById("toast");
+            t.textContent = msg;
+            t.style.display = "block";
+            setTimeout(() => { t.style.display = "none"; }, 4000);
+        }
+
+        // Modal System Controllers
+        function openModal(contentHtml) {
+            const overlay = document.getElementById("systemModal");
+            document.getElementById("modalInnerHTML").innerHTML = contentHtml;
+            overlay.classList.add("show-modal");
+        }
+
+        function closeModal() {
+            document.getElementById("systemModal").classList.remove("show-modal");
+        }
+
+        // Workflow Submissions Handling
+        function handleApplicationSubmit(e, originType) {
+            e.preventDefault();
+            
+            const prefix = originType === 'Customer' ? 'cust' : 'emp';
+            const firstName = document.getElementById(`${prefix}-firstname`).value.trim();
+            const lastName = document.getElementById(`${prefix}-lastname`).value.trim();
+            const passport = document.getElementById(`${prefix}-passport`).value.trim().toUpperCase();
+            const dob = document.getElementById(`${prefix}-dob`).value;
+            const nationality = document.getElementById(`${prefix}-nationality`).value;
+
+            if(passport.length !== 6) {
+                showToast("Error: Passport identifier must be exactly 6 alphanumeric characters.");
+                return;
+            }
+
+            const appId = generateAppId();
+            const newApp = {
+                id: appId,
+                firstName,
+                lastName,
+                passport,
+                dob,
+                nationality,
+                status: "Applying",
+                history: [
+                    { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: `Application registered via ${originType} Portal.` }
+                ]
+            };
+
+            applications.push(newApp);
+            document.getElementById(originType === 'Customer' ? 'visaForm' : 'empVisaForm').reset();
+            
+            openModal(`
+                <div style="text-align: center; padding: 10px;">
+                    <div style="font-size: 3rem; color: var(--success); margin-bottom:15px;">✓</div>
+                    <h3 style="font-size: 1.4rem; color: var(--primary);">Application Lodged Successfully</h3>
+                    <p style="margin: 15px 0; font-size:1rem;">Your unique 5-digit processing tracking reference tracking number is:</p>
+                    <div style="background: #f1f5f9; padding: 15px; font-size: 2rem; font-weight: 800; letter-spacing: 4px; border-radius: 8px; color: var(--secondary); margin-bottom: 20px;">${appId}</div>
+                    <p style="color: var(--text-light); font-size: 0.85rem;">Please record this identifier safely to perform multi-parameter security validation track lookups.</p>
+                    <button class="btn btn-primary" style="margin-top:20px;" onclick="closeModal()">Acknowledge & Clear Window</button>
+                </div>
+            `);
+            
+            renderAllTables();
+        }
+
+        // Rendering Engine for Dynamic Views
+        function renderAllTables() {
+            renderEmployeeAccounts();
+            renderInterviewerTable();
+        }
+
+        function renderEmployeeAccounts() {
+            const tbody = document.querySelector("#accountsTable tbody");
+            tbody.innerHTML = "";
+            
+            if (applications.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-light);">No application profiles exist inside live system memory environment.</td></tr>`;
+                return;
+            }
+
+            applications.forEach(app => {
+                const tr = document.createElement("tr");
+                tr.className = "clickable-row";
+                tr.onclick = (e) => {
+                    if(e.target.tagName !== 'BUTTON') showHistoryLogs(app.id);
                 };
 
-                footer.appendChild(cancelBtn);
-                footer.appendChild(confirmBtn);
-            } else {
-                const ackBtn = document.createElement('button');
-                ackBtn.className = "btn btn-secondary";
-                ackBtn.innerText = "Acknowledge";
-                ackBtn.onclick = closeAlertModal;
-                footer.appendChild(ackBtn);
-            }
-
-            document.getElementById('html_alert_modal').style.display = 'flex';
-        }
-
-        function closeAlertModal() {
-            document.getElementById('html_alert_modal').style.display = 'none';
-        }
-
-        // --- Navigation Controller ---
-        function switchTab(tabId) {
-            document.querySelectorAll('.app-panel').forEach(panel => panel.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            
-            const navButtons = document.querySelectorAll('.nav-btn');
-            if(tabId === 'customer-apply') navButtons[0].classList.add('active');
-            if(tabId === 'customer-track') navButtons[1].classList.add('active');
-            if(tabId === 'employee-portal') navButtons[2].classList.add('active');
-            if(tabId === 'admin-portal') navButtons[3].classList.add('active');
-
-            if(tabId === 'employee-portal') renderEmployeeMatrix();
-            if(tabId === 'customer-apply') renderVisaTypeSelect();
-        }
-
-        // --- Administrative Mutations Workspace ---
-        function saveLexicon() {
-            lexicon.processing = document.getElementById('lex_processing').value.trim();
-            lexicon.interview = document.getElementById('lex_interview').value.trim();
-            lexicon.granted = document.getElementById('lex_granted').value.trim();
-            lexicon.rejected = document.getElementById('lex_rejected').value.trim();
-            
-            saveSystemState();
-            triggerAlert("Lexicon Written", "Status lexicon definitions updated successfully across live trackers.");
-        }
-
-        function saveCredentials() {
-            const user = document.getElementById('cred_staff_user').value.trim();
-            const pass = document.getElementById('cred_staff_pass').value.trim();
-
-            if (!user || !pass) {
-                triggerAlert("Input Error", "User ID and Password strings cannot be empty.");
-                return;
-            }
-
-            credentials.user = user;
-            credentials.pass = pass;
-            
-            saveSystemState();
-            triggerAlert("Credentials Imposed", "Staff authentication configuration keys successfully modified.");
-        }
-
-        function renderVisaTypeSelect() {
-            const select = document.getElementById('app_visa_type');
-            select.innerHTML = '';
-            visaTypes.forEach(t => {
-                const opt = document.createElement('option');
-                opt.value = t.name;
-                opt.innerText = t.name;
-                select.appendChild(opt);
+                tr.innerHTML = `
+                    <td><strong>#${app.id}</strong></td>
+                    <td>${app.firstName} ${app.lastName}</td>
+                    <td style="font-family: monospace; font-weight:600;">${app.passport}</td>
+                    <td>${app.nationality}</td>
+                    <td><span class="badge badge-${app.status.toLowerCase().replace(/ /g, '-')}">${app.status}</span></td>
+                    <td>
+                        ${renderEmployeeActionButtons(app)}
+                    </td>
+                `;
+                tbody.appendChild(tr);
             });
         }
 
-        function renderAdminVisaTypesTable() {
-            const tbody = document.getElementById('admin_types_body');
-            tbody.innerHTML = '';
-            visaTypes.forEach((t, idx) => {
-                const tr = document.createElement('tr');
+        function renderEmployeeActionButtons(app) {
+            if (app.status === "Applying") {
+                return `
+                    <button class="btn btn-warning" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'schedule')">Schedule Interview</button>
+                    <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'reject')">Reject</button>
+                `;
+            } else if (app.status === "Interview Accepted") {
+                return `
+                    <button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'final-accept')">Final Acceptance</button>
+                    <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'final-reject')">Final Rejection</button>
+                `;
+            } else if (app.status === "Awaiting Payment") {
+                return `
+                    <button class="btn btn-primary" style="padding:4px 8px; font-size:0.75rem; background: var(--success);" onclick="promptPaymentModal('${app.id}')">Process $300 Fee</button>
+                `;
+            } else if (app.status === "Visa Granted") {
+                return `
+                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.75rem; background:#475569;" onclick="generateVisaReceipt('${app.id}')">Print Visa Receipt</button>
+                    <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'suspend')">Suspend Visa</button>
+                `;
+            } else if (app.status === "Suspended") {
+                return `
+                    <button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'unsuspend')">Lift Suspension</button>
+                `;
+            }
+            return `<span style="color: var(--text-light); font-size:0.8rem;">No Actions Pending</span>`;
+        }
+
+        function showHistoryLogs(id) {
+            const app = applications.find(a => a.id === id);
+            if(!app) return;
+
+            document.getElementById("historicalLogContainer").style.display = "block";
+            document.getElementById("historyTitle").textContent = `Case File Tracking: ${app.firstName} ${app.lastName} (#${app.id})`;
+            
+            const tbody = document.querySelector("#historyTable tbody");
+            tbody.innerHTML = "";
+            
+            app.history.forEach(h => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="color: var(--text-light); font-size:0.8rem;">${h.time}</td>
+                        <td><strong>${h.stage}</strong></td>
+                        <td>${h.status}</td>
+                        <td style="font-style: italic;">"${h.note}"</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Layer Action Matrix Workflows
+        function processEmployeeAction(id, action) {
+            const app = applications.find(a => a.id === id);
+            if(!app) return;
+
+            if (action === 'schedule') {
+                app.status = "Interview Scheduled";
+                app.history.push({ time: getTimestamp(), stage: "Layer 1: Core Review", status: "Approved", note: "Documents verified. Shifted to Interview Queue." });
+            } else if (action === 'reject') {
+                app.status = "Rejected";
+                app.history.push({ time: getTimestamp(), stage: "Layer 1: Core Review", status: "Rejected", note: "Application failed initial embassy criteria parameters." });
+            } else if (action === 'final-accept') {
+                app.status = "Awaiting Payment";
+                app.history.push({ time: getTimestamp(), stage: "Layer 3: Final Adjudication", status: "Approved", note: "Final validation criteria met. Processing shifted to treasury collection." });
+            } else if (action === 'final-reject') {
+                app.status = "Rejected";
+                app.history.push({ time: getTimestamp(), stage: "Layer 3: Final Adjudication", status: "Rejected", note: "Embassy senior management overview rejected the operational record." });
+            } else if (action === 'suspend') {
+                app.status = "Suspended";
+                app.history.push({ time: getTimestamp(), stage: "Post-Issuance Control", status: "Enforced", note: "Security warning protocol triggered: Visa has been suspended." });
+            } else if (action === 'unsuspend') {
+                app.status = "Visa Granted";
+                app.history.push({ time: getTimestamp(), stage: "Post-Issuance Control", status: "Restored", note: "Security clearance validated. Suspension revoked." });
+            }
+
+            showToast(`Record #${id} updated successfully.`);
+            renderAllTables();
+            showHistoryLogs(id);
+        }
+
+        // Payment Processing Module
+        function promptPaymentModal(id) {
+            const app = applications.find(a => a.id === id);
+            openModal(`
+                <h3>Treasury Cashier Desk Collection</h3>
+                <hr style="margin: 10px 0; border: 0; border-top: 1px solid var(--border);">
+                <p style="margin: 10px 0;">Applicant Profile: <strong>${app.firstName} ${app.lastName} (#${app.id})</strong></p>
+                <div style="background: #fffbeb; border-left: 4px solid var(--warning); padding: 12px; margin: 15px 0; font-size: 0.9rem;">
+                    <strong>Required Consular Fee:</strong> $300.00 USD (Non-refundable issuance premium)
+                </div>
+                <p style="font-size:0.9rem; margin-bottom: 20px;">Please confirm physical currency tender or secure digital payment settlement acceptance confirmation.</p>
+                <div style="display:flex; gap:10px; justify-content: flex-end;">
+                    <button class="btn btn-secondary" onclick="closeModal()">Cancel Payment Processing</button>
+                    <button class="btn btn-success" onclick="confirmPaymentReceived('${id}')">Confirm Receipt of Funds</button>
+                </div>
+            `);
+        }
+
+        function confirmPaymentReceived(id) {
+            const app = applications.find(a => a.id === id);
+            if(!app) return;
+
+            app.status = "Visa Granted";
+            app.history.push({ time: getTimestamp(), stage: "Financial Settlement", status: "Paid", note: "$300 USD cash/wire collection confirmed by system clerk." });
+            closeModal();
+            renderAllTables();
+            generateVisaReceipt(id);
+        }
+
+        // Generate Final Dynamic Visa Receipt
+        function generateVisaReceipt(id) {
+            const app = applications.find(a => a.id === id);
+            openModal(`
+                <div class="receipt-card">
+                    <div class="receipt-watermark">VISA GRANTED</div>
+                    <div class="receipt-header">
+                        <h2 style="border:0; margin:0; padding:0; display:block; text-align:center;">OFFICIAL IMMIGRATION RECEIPT</h2>
+                        <p style="font-size:0.8rem; color:var(--text-light); text-transform:uppercase; margin-top:5px;">Department of Consular Services</p>
+                    </div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size: 0.9rem;">
+                        <div><label>Application Reference</label><div style="font-weight:700;">#${app.id}</div></div>
+                        <div><label>Passport Serial Number</label><div style="font-weight:700; font-family:monospace;">${app.passport}</div></div>
+                        <div><label>Full Legal Name</label><div style="font-weight:600;">${app.firstName} ${app.lastName}</div></div>
+                        <div><label>Date of Birth</label><div>${app.dob}</div></div>
+                        <div><label>Declared Country</label><div>${app.nationality}</div></div>
+                        <div><label>Clearance Status</label><div style="color:var(--success); font-weight:700;">VALID / GRANTED</div></div>
+                    </div>
+                    <div style="margin-top:25px; padding-top:15px; border-top: 1px dashed var(--border); font-size:0.8rem; color:var(--text-light); text-align:center;">
+                        Premium Settlement: $300.00 USD Paid. <br>
+                        <em>Confidential internal review logs and process metrics are suppressed here.</em>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-top:20px;">
+                    <button class="btn btn-primary" onclick="window.print()">Trigger Output Device Print</button>
+                </div>
+            `);
+        }
+
+        // Interviewer Matrix Rendering
+        function renderInterviewerTable() {
+            const tbody = document.querySelector("#interviewerTable tbody");
+            tbody.innerHTML = "";
+
+            const targetApps = applications.filter(a => a.status === "Interview Scheduled");
+
+            if (targetApps.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-light);">No active applicants require operational processing interview assignment.</td></tr>`;
+                return;
+            }
+
+            targetApps.forEach(app => {
+                const tr = document.createElement("tr");
                 tr.innerHTML = `
+                    <td><strong>#${app.id}</strong></td>
+                    <td>${app.firstName} ${app.lastName}</td>
+                    <td>${app.nationality}</td>
+                    <td><span class="badge badge-interview-scheduled">${app.status}</span></td>
                     <td>
-                        <strong>${t.name}</strong><br>
-                        <small style="color:#64748b;">Validity: ${t.validity} | ${t.entries} Entry | Max ${t.days} Days</small>
-                    </td>
-                    <td>
-                        <div style="display:flex; gap:0.25rem;">
-                            <button class="btn btn-warning" style="padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="loadVisaTypeForEdit(${idx})">Edit</button>
-                            <button class="btn btn-danger" style="padding:0.3rem 0.6rem; font-size:0.8rem;" onclick="deleteVisaType(${idx})">Delete</button>
+                        <div style="display:flex; gap:5px;">
+                            <input type="text" id="interv-notes-${app.id}" placeholder="Enter execution notes..." style="padding: 4px 8px; font-size:0.8rem;">
+                            <button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="handleInterviewerDecision('${app.id}', 'accept')">Accept</button>
+                            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="handleInterviewerDecision('${app.id}', 'reject')">Reject</button>
                         </div>
                     </td>
                 `;
@@ -735,265 +1028,145 @@
             });
         }
 
-        function handleVisaTypeSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('type_name').value.trim();
-            const validity = document.getElementById('type_validity').value.trim();
-            const entries = document.getElementById('type_entries').value;
-            const days = parseInt(document.getElementById('type_days').value);
-            const editIdx = document.getElementById('edit_type_idx').value;
+        function handleInterviewerDecision(id, decision) {
+            const app = applications.find(a => a.id === id);
+            const notesInput = document.getElementById(`interv-notes-${id}`);
+            const notes = notesInput ? notesInput.value.trim() : "";
 
-            if(editIdx === "") {
-                visaTypes.push({ name, validity, entries, days });
-                triggerAlert("Visa Option Logged", `New profile target "${name}" compiled successfully.`);
+            if (!notes) {
+                showToast("Error: Operational guidelines require review assessment notes before decision entry.");
+                return;
+            }
+
+            if (decision === 'accept') {
+                app.status = "Interview Accepted";
+                app.history.push({ time: getTimestamp(), stage: "Layer 2: Interview Panel", status: "Accepted", note: notes });
             } else {
-                visaTypes[parseInt(editIdx)] = { name, validity, entries, days };
-                triggerAlert("Visa Option Updated", `Modifications targeted to "${name}" committed.`);
+                app.status = "Rejected";
+                app.history.push({ time: getTimestamp(), stage: "Layer 2: Interview Panel", status: "Rejected", note: notes });
             }
-            
-            saveSystemState();
-            resetVisaTypeForm();
-            renderAdminVisaTypesTable();
-            renderVisaTypeSelect();
+
+            showToast(`Interviewer evaluation committed for record #${id}.`);
+            renderAllTables();
         }
 
-        function loadVisaTypeForEdit(idx) {
-            const t = visaTypes[idx];
-            document.getElementById('edit_type_idx').value = idx;
-            document.getElementById('type_name').value = t.name;
-            document.getElementById('type_validity').value = t.validity;
-            document.getElementById('type_entries').value = t.entries;
-            document.getElementById('type_days').value = t.days;
-            
-            document.getElementById('type_submit_btn').innerText = "Update Visa Type";
-            document.getElementById('type_cancel_btn').style.display = "block";
-        }
+        // Global Multi-Tracking Search Algorithms
+        function executeTrack(optionType) {
+            let matches = [];
+            const resTableBody = document.querySelector("#trackResultsTable tbody");
+            resTableBody.innerHTML = "";
+            document.getElementById("trackingResultArea").style.display = "block";
 
-        function deleteVisaType(idx) {
-            const targetName = visaTypes[idx].name;
-            triggerAlert("Confirm Deletion", `Are you sure you want to permanently delete the visa type "${targetName}"?`, true, function() {
-                visaTypes.splice(idx, 1);
-                saveSystemState();
-                renderAdminVisaTypesTable();
-                renderVisaTypeSelect();
-                resetVisaTypeForm();
+            if (optionType === 1) {
+                const idVal = document.getElementById("track-id-val").value.trim();
+                matches = applications.filter(a => a.id === idVal);
+            } else if (optionType === 2) {
+                const fn = document.getElementById("track-fn-val").value.trim().toLowerCase();
+                const ln = document.getElementById("track-ln-val").value.trim().toLowerCase();
+                const dob = document.getElementById("track-dob1-val").value;
+                matches = applications.filter(a => a.firstName.toLowerCase() === fn && a.lastName.toLowerCase() === ln && a.dob === dob);
+            } else if (optionType === 3) {
+                const dob = document.getElementById("track-dob2-val").value;
+                const pass = document.getElementById("track-pass-val").value.trim().toUpperCase();
+                matches = applications.filter(a => a.dob === dob && a.passport === pass);
+            }
+
+            if (matches.length === 0) {
+                resTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--danger);">No records match specified target matrix parameters.</td></tr>`;
+                return;
+            }
+
+            matches.forEach(app => {
+                resTableBody.innerHTML += `
+                    <tr>
+                        <td>#${app.id}</td>
+                        <td>${app.firstName} ${app.lastName}</td>
+                        <td>${app.passport}</td>
+                        <td><span class="badge badge-${app.status.toLowerCase().replace(/ /g, '-')}">${app.status}</span></td>
+                        <td><button class="btn btn-primary" style="padding:2px 6px; font-size:0.75rem;" onclick="showHistoryLogs('${app.id}')">View Activity Matrix</button></td>
+                    </tr>
+                `;
             });
         }
 
-        function resetVisaTypeForm() {
-            document.getElementById('edit_type_idx').value = "";
-            document.getElementById('visaTypeForm').reset();
-            document.getElementById('type_submit_btn').innerText = "Save Visa Type";
-            document.getElementById('type_cancel_btn').style.display = "none";
-        }
+        // Airport Border Protection Radar Interface Scan
+        function handleAirportScan() {
+            const passVal = document.getElementById("airport-search-passport").value.trim().toUpperCase();
+            const container = document.getElementById("airportResult");
+            container.style.display = "block";
+            container.innerHTML = "";
 
-        // --- Purge Routines Engine ---
-        function triggerReset(mode) {
-            if (mode === 'applicants') {
-                triggerAlert(
-                    "Purge Active Pipeline?", 
-                    "Warning: This operation will clear out all active customer application profiles and live processing rows. Configurations remain safe.", 
-                    true, 
-                    function() {
-                        applications = [];
-                        saveSystemState();
-                        renderEmployeeMatrix();
-                        triggerAlert("Purge Complete", "Applicant live pipeline arrays cleanly truncated.");
-                    }
-                );
-            } else if (mode === 'master') {
-                triggerAlert(
-                    "⚠️ Authorize Total System Factory Reset?", 
-                    "CRITICAL WARNING: This completely flushes localStorage. All visa profiles, custom settings, user logins, credentials adjustments, and applicant indices are permanently destroyed. System defaults will reinstall.", 
-                    true, 
-                    function() {
-                        localStorage.removeItem('cc_visa_types');
-                        localStorage.removeItem('cc_lexicon');
-                        localStorage.removeItem('cc_credentials');
-                        localStorage.removeItem('cc_applications');
-                        
-                        loadSystemState();
-                        renderVisaTypeSelect();
-                        renderAdminVisaTypesTable();
-                        renderEmployeeMatrix();
-                        resetVisaTypeForm();
-                        
-                        triggerAlert("System Restored", "State engine reverted cleanly to factory runtime presets.");
-                    }
-                );
-            }
-        }
-
-        // --- Customer Submissions Engine ---
-        function handleApplicationSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('app_name').value.trim();
-            const passport = document.getElementById('app_passport').value.trim().toUpperCase();
-            const nationality = document.getElementById('app_nationality').value.trim();
-            const visaType = document.getElementById('app_visa_type').value;
-            const arrival = document.getElementById('app_arrival').value;
-            const departure = document.getElementById('app_departure').value;
-            const remarks = document.getElementById('app_remarks').value.trim();
-
-            if (new Date(arrival) > new Date(departure)) {
-                triggerAlert("Validation Matrix Refusal", "Scheduled arrival cannot chronologically succeed travel departure validation rules.");
+            if (!passVal) {
+                container.innerHTML = `<div class="card" style="border-left: 4px solid var(--danger); background:#fef2f2; color:var(--danger)">Please swipe or type a valid passport identifier string.</div>`;
                 return;
             }
 
-            applications.push({
-                passport, name, nationality, visaType, arrival, departure, remarks,
-                status: "Processing",
-                issuedVisaDetails: null
-            });
+            const match = applications.find(a => a.passport === passVal);
 
-            saveSystemState();
-            triggerAlert("Application Received", `Passport entry ${passport} successfully assigned to processing queues.`);
-            document.getElementById('visaForm').reset();
-        }
-
-        function trackApplication() {
-            const passport = document.getElementById('track_passport').value.trim().toUpperCase();
-            const resBox = document.getElementById('track_result');
-            
-            if(!passport) {
-                triggerAlert("Query Failure", "Please specify a passport tracking variable code.");
-                return;
-            }
-
-            const app = applications.find(a => a.passport === passport);
-            if(!app) {
-                resBox.style.display = 'none';
-                triggerAlert("No Records Found", "Passport identity parameters unmatched in database index lists.");
-                return;
-            }
-
-            document.getElementById('track_res_name').innerText = app.name;
-            document.getElementById('track_res_type').innerText = app.visaType;
-            
-            let displayStatus = "";
-            let badgeClass = "";
-            if (app.status === "Processing") { displayStatus = lexicon.processing; badgeClass = "badge-processing"; }
-            if (app.status === "Interview") { displayStatus = lexicon.interview; badgeClass = "badge-interview"; }
-            if (app.status === "Granted") { displayStatus = lexicon.granted; badgeClass = "badge-granted"; }
-            if (app.status === "Rejected") { displayStatus = lexicon.rejected; badgeClass = "badge-rejected"; }
-
-            const statusTextEl = document.getElementById('track_res_status');
-            statusTextEl.innerText = displayStatus;
-            statusTextEl.className = "status-text badge " + badgeClass;
-
-            const detailsEl = document.getElementById('track_res_details');
-            if(app.status === "Granted" && app.issuedVisaDetails) {
-                const v = app.issuedVisaDetails;
-                detailsEl.innerHTML = `
-                    <div style="text-align:left; background:#f0fdf4; padding:0.8rem; border-radius:6px; border:1px solid #bbf7d0;">
-                        <strong style="color:#166534;">✓ Official Electronic Visa Slip:</strong><br>
-                        <strong>Visa Type:</strong> ${v.name}<br>
-                        <strong>Validity Parameter:</strong> ${v.validity}<br>
-                        <strong>Entry Parameter:</strong> ${v.entries} Entry System<br>
-                        <strong>Max Permitted Stay:</strong> ${v.days} Days per window.
+            if (!match) {
+                container.innerHTML = `
+                    <div class="card" style="border-left: 4px solid var(--danger); background: #fef2f2; padding: 20px;">
+                        <h3 style="color: var(--danger); margin:0 0 5px 0;">❌ FLAG WARNING: NO RECORD DETECTED</h3>
+                        <p style="font-size: 0.9rem;">The document number <strong>${passVal}</strong> holds no valid credentials or application logs inside this system network.</p>
                     </div>
                 `;
-            } else if (app.status === "Rejected") {
-                detailsEl.innerHTML = `<span style="color:var(--danger); font-weight:600;">Consular notice structural block applied. Review conditions.</span>`;
+                return;
+            }
+
+            let statusColor = "var(--text-light)";
+            let statusText = match.status;
+            let subAlert = "Deny Boarding/Entry Immediately.";
+
+            if (match.status === "Visa Granted") {
+                statusColor = "var(--success)";
+                subAlert = "Clearance Confirmed. Allow Transit Tracking Entry.";
+            } else if (match.status === "Suspended") {
+                statusColor = "var(--danger)";
+                subAlert = "CRITICAL ALERT: IMMIGRATION VISA CURRENTLY SUSPENDED. HOLD FOR INTERROGATION.";
             } else {
-                detailsEl.innerHTML = `<span style="color:#64748b;">Consular core review processing remains under assessment. Documentation checks active.</span>`;
+                statusColor = "var(--warning)";
+                subAlert = `Hold Transit. Processing stage is currently incomplete. Current State: [${match.status}]`;
             }
 
-            resBox.style.display = 'block';
+            // Extract interviewer processing notes dynamically
+            let internalNotesHTML = "";
+            const interviewEvents = match.history.filter(h => h.stage.includes("Interview"));
+            if(interviewEvents.length > 0) {
+                internalNotesHTML = `<div style="margin-top:12px; background:#f1f5f9; padding:10px; border-radius:4px; font-size:0.85rem;">
+                    <strong>Historical Verification Desk Notes:</strong><br>
+                    ${interviewEvents.map(e => `"${e.note}" (Result: ${e.status})`).join('<br>')}
+                </div>`;
+            }
+
+            container.innerHTML = `
+                <div class="card" style="border-left: 6px solid ${statusColor}; background: #fafafa;">
+                    <h3 style="color: ${statusColor}; margin-bottom: 10px;">Security Profile Scan: ${match.firstName} ${match.lastName}</h3>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:0.9rem;">
+                        <div><strong>Passport Number:</strong> ${match.passport}</div>
+                        <div><strong>Nationality:</strong> ${match.nationality}</div>
+                        <div><strong>Date of Birth:</strong> ${match.dob}</div>
+                        <div><strong>Status:</strong> <span class="badge badge-${match.status.toLowerCase().replace(/ /g, '-')}">${match.status}</span></div>
+                    </div>
+                    ${internalNotesHTML}
+                    <div style="margin-top:15px; font-weight:700; font-size:1rem; color:${statusColor};">
+                        Action Command: ${subAlert}
+                    </div>
+                </div>
+            `;
         }
 
-        // --- Staff Evaluation Engine Workspace ---
-        function renderEmployeeMatrix() {
-            const tbody = document.getElementById('employee_table_body');
-            tbody.innerHTML = '';
+        // Administrative Access Layer Authentication
+        function handleAdminLogin() {
+            const user = document.getElementById("adm-user").value;
+            const pass = document.getElementById("adm-pass").value;
 
-            if (applications.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8; font-style:italic; padding: 2rem;">No entries inside active tracking registries.</td></tr>`;
-                return;
+            if (user === 'admin' && pass === 'admin') {
+                document.getElementById("admin-login-block").style.display = "none";
+                document.getElementById("admin-panel-block").style.display = "block";
+                showToast("Admin access privileges authorized successfully.");
+            } else {
+                showToast("Access Denied: Invalid configuration credentials.");
             }
-
-            applications.forEach((app, idx) => {
-                const tr = document.createElement('tr');
-                
-                let mappedLexStr = "";
-                if(app.status === "Processing") mappedLexStr = lexicon.processing;
-                if(app.status === "Interview") mappedLexStr = lexicon.interview;
-                if(app.status === "Granted") mappedLexStr = lexicon.granted;
-                if(app.status === "Rejected") mappedLexStr = lexicon.rejected;
-
-                let typeOptions = "";
-                visaTypes.forEach(vt => {
-                    const selectedStr = (vt.name === app.visaType) ? "selected" : "";
-                    typeOptions += `<option value="${vt.name}" ${selectedStr}>${vt.name}</option>`;
-                });
-
-                let actionInterface = "";
-                
-                if (app.status === "Processing") {
-                    actionInterface = `
-                        <button class="btn btn-warning" style="padding:0.4rem 0.8rem; font-size:0.85rem;" onclick="updateStatus(${idx}, 'Interview')">Trigger Interview Layer</button>
-                    `;
-                } else if (app.status === "Interview") {
-                    actionInterface = `
-                        <div style="display:flex; flex-direction:column; gap:0.4rem; background:#f1f5f9; padding:0.6rem; border-radius:6px;">
-                            <label style="font-size:0.75rem;">Select Issuance Type Target:</label>
-                            <select id="emp_grant_type_${idx}" style="padding:0.3rem; font-size:0.85rem;">
-                                ${typeOptions}
-                            </select>
-                            <div style="display:flex; gap:0.2rem; margin-top:0.2rem;">
-                                <button class="btn btn-success" style="padding:0.3rem 0.6rem; font-size:0.8rem; flex:1;" onclick="grantVisaWorkflow(${idx})">Grant Selected</button>
-                                <button class="btn btn-danger" style="padding:0.3rem 0.6rem; font-size:0.8rem; flex:1;" onclick="updateStatus(${idx}, 'Rejected')">Reject Case</button>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    actionInterface = `<span style="color:#64748b; font-size:0.85rem; font-style:italic;">File Audited & Locked</span>`;
-                }
-
-                tr.innerHTML = `
-                    <td><strong>${app.passport}</strong></td>
-                    <td>${app.name}<br><small style="color:#64748b;">${app.nationality}</small></td>
-                    <td><span style="font-size:0.85rem; background:#f1f5f9; padding:0.2rem 0.4rem; border-radius:4px;">${app.visaType}</span></td>
-                    <td>
-                        <span style="font-size:0.8rem; color:#475569;">Arr: ${app.arrival}</span><br>
-                        <span style="font-size:0.8rem; color:#475569;">Dep: ${app.departure}</span>
-                    </td>
-                    <td>
-                        <strong style="font-size:0.85rem; color:var(--secondary);">${app.status}</strong><br>
-                        <small style="color:#64748b; font-size:0.75rem; display:block; max-width:150px; text-transform:capitalize;">"${mappedLexStr}"</small>
-                    </td>
-                    <td class="action-cell">${actionInterface}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function updateStatus(idx, targetStatus) {
-            applications[idx].status = targetStatus;
-            if(targetStatus === "Rejected") {
-                applications[idx].issuedVisaDetails = null;
-            }
-            saveSystemState();
-            triggerAlert("System State Transferred", `Application profile registry indexed as ${targetStatus}`);
-            renderEmployeeMatrix();
-        }
-
-        function grantVisaWorkflow(idx) {
-            const chosenTypeName = document.getElementById(`emp_grant_type_${idx}`).value;
-            const chosenTypeConfig = visaTypes.find(t => t.name === chosenTypeName);
-
-            if(!chosenTypeConfig) {
-                triggerAlert("Core Error", "Invalid structural selection tracking parameters targeted.");
-                return;
-            }
-
-            applications[idx].status = "Granted";
-            applications[idx].visaType = chosenTypeName; 
-            applications[idx].issuedVisaDetails = { ...chosenTypeConfig };
-
-            saveSystemState();
-            triggerAlert("Visa Authorization Processed", `Permissions committed to record using structure: ${chosenTypeName}`);
-            renderEmployeeMatrix();
         }
     </script>
 </body>

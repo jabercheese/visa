@@ -3,1170 +3,1310 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Visa Application & Logistics Management System</title>
+    <title>Global Visa Application & Management System</title>
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --primary-light: #3b82f6;
-            --secondary: #0f172a;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --background: #f8fafc;
-            --surface: #ffffff;
-            --border: #e2e8f0;
-            --text: #334155;
-            --text-light: #64748b;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        }
-
-        body {
-            background-color: var(--background);
-            color: var(--text);
-            line-height: 1.5;
-            padding-bottom: 60px;
-        }
-
-        /* Portal Switcher Bar */
-        .portal-nav {
-            background-color: var(--secondary);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .portal-logo {
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: 0.5px;
-            color: #f1f5f9;
-        }
-
-        .portal-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .portal-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-
-        .portal-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .portal-btn.active {
-            background: var(--primary-light);
-            color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        /* Container & Layout */
-        .container {
-            max-width: 1300px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .portal-page {
-            display: none;
-        }
-
-        .portal-page.active-page {
-            display: block;
-            animation: fadeIn 0.3s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards and Sections */
-        .card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        h2 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        h3 {
-            margin-bottom: 15px;
-            color: var(--secondary);
-            font-size: 1.1rem;
-        }
-
-        /* Forms styling */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-light);
-        }
-
-        input, select, textarea {
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-size: 0.95rem;
-            background: #f8fafc;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary-light);
-            background: #fff;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
-        }
-
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #172554; }
-        .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #059669; }
-        .btn-warning { background: var(--warning); color: white; }
-        .btn-warning:hover { background: #d97706; }
-        .btn-danger { background: var(--danger); color: white; }
-        .btn-danger:hover { background: #dc2626; }
-        .btn-secondary { background: var(--text-light); color: white; }
-        .btn-secondary:hover { background: var(--text); }
-
-        /* Tabs within a Portal */
-        .tab-menu {
-            display: flex;
-            gap: 10px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-
-        .tab-link {
-            padding: 10px 20px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text-light);
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-link.active-tab {
-            color: var(--primary);
-            border-bottom-color: var(--primary);
-        }
-
-        .sub-tab-content {
-            display: none;
-        }
-
-        .sub-tab-content.active-content {
-            display: block;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.9rem;
-        }
-
-        th {
-            background-color: #f1f5f9;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        tr:hover td {
-            background-color: #f8fafc;
-        }
-
-        /* Status Badges */
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .badge-applying { background: #e0f2fe; color: #0369a1; }
-        .badge-interview-scheduled { background: #fef3c7; color: #d97706; }
-        .badge-interview-accepted { background: #ccfbf1; color: #0f766e; }
-        .badge-interview-rejected { background: #fee2e2; color: #b91c1c; }
-        .badge-final-accepted { background: #d1fae5; color: #065f46; }
-        .badge-awaiting-payment { background: #fae8ff; color: #86198f; }
-        .badge-granted { background: #10b981; color: white; }
-        .badge-rejected { background: #ef4444; color: white; }
-        .badge-suspended { background: #78350f; color: white; }
-
-        /* Modals / Overlays */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .modal-overlay.show-modal {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .modal-box {
-            background: white;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 600px;
-            padding: 30px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light);
-        }
-
-        /* Printable / Receipt Layout */
-        .receipt-card {
-            background: white;
-            border: 3px double var(--secondary);
-            padding: 40px;
-            max-width: 550px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .receipt-header {
-            text-align: center;
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
-        }
-
-        .receipt-watermark {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-30deg);
-            font-size: 4rem;
-            font-weight: 900;
-            color: rgba(16, 185, 129, 0.15);
-            letter-spacing: 5px;
-            pointer-events: none;
-            white-space: nowrap;
-        }
-
-        /* Notification prompts */
-        .notification-toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 15px 25px;
-            border-radius: 8px;
-            background: var(--secondary);
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            z-index: 2000;
-            display: none;
-            animation: slideUp 0.3s ease;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .clickable-row {
-            cursor: pointer;
-        }
+        /* --- GLOBAL & FONTS --- */
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
         
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+        /* --- UTILITIES --- */
+        .hidden { display: none !important; }
+        .clear { clear: both; }
+        
+        /* --- HTML MODAL POPUPS --- */
+        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:9999; }
+        .popup-box { background: white; padding: 25px; border-radius: 6px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 450px; width: 90%; text-align: center; }
+        .popup-box h3 { margin-top: 0; color: #2c3e50; }
+        .popup-box p { margin: 15px 0; font-size: 14px; color: #555; }
+        .popup-box .btn-row { display: flex; justify-content: center; gap: 10px; margin-top: 20px; }
+
+        /* --- PORTAL 1: CUSTOMER (MODERN STYLE) --- */
+        .customer-container { max-width: 700px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .customer-container h2 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 0; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #34495e; font-size: 14px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        .btn-submit { background-color: #3498db; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; font-weight: bold; }
+        .btn-submit:hover { background-color: #2980b9; }
+        .alert-info { background-color: #e8f4fd; border-left: 4px solid #3498db; padding: 10px; margin-bottom: 15px; color: #2c3e50; font-size: 14px; }
+        .footer-staff { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 1px solid #eee; }
+        .btn-staff-trigger { background: #95a5a6; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        
+        /* --- PORTALS 2+: STAFF (WINDOWS XP THEME) --- */
+        .xp-body { background: #5A7EDC; padding: 20px; font-family: "Tahoma", sans-serif; min-height: 100vh; }
+        .xp-window { background: #ece9d8; border: 3px solid #0054E3; border-top-width: 0; border-radius: 4px 4px 0 0; box-shadow: 2px 2px 10px rgba(0,0,0,0.3); max-width: 1000px; margin: 20px auto; overflow: hidden; }
+        .xp-titlebar { background: linear-gradient(to bottom, #0058e6 0%, #0076f6 12%, #016ef0 40%, #1159d2 88%, #0049be 100%); color: white; padding: 6px 10px; font-weight: bold; font-size: 14px; display: flex; justify-content: space-between; align-items: center; border-radius: 5px 5px 0 0; border-top: 1px solid #0080ff; }
+        .xp-title-buttons { display: flex; gap: 2px; }
+        .xp-btn-close { background: linear-gradient(to bottom, #e76446 0%, #e0431f 100%); color: white; border: 1px solid #ba2b0c; font-weight: bold; font-size: 11px; padding: 0 6px; border-radius: 3px; cursor: pointer; height: 18px; }
+        .xp-nav-bar { background: #efebde; border-bottom: 1px solid #999; padding: 5px 10px; display: flex; gap: 10px; font-size: 12px; }
+        .xp-content { padding: 15px; background: #fff; margin: 10px; border: 1px solid #716f64; min-height: 400px; font-size: 13px; }
+        
+        /* XP Forms & Buttons */
+        .xp-btn { background: linear-gradient(to bottom, #fff 0%, #eee 30%, #ddd 70%, #ccc 100%); border: 1px solid #707070; color: #000; padding: 4px 12px; cursor: pointer; border-radius: 3px; font-size: 12px; box-shadow: inset 1px 1px 0 #fff; }
+        .xp-btn:hover { background: linear-gradient(to bottom, #fafafa 0%, #f0f0f0 30%, #e0e0e0 70%, #d5d5d5 100%); border-color: #0a246a; }
+        .xp-btn-green { background: linear-gradient(to bottom, #60c160 0%, #4cb04c 100%); color: white; border: 1px solid #287a28; }
+        .xp-btn-red { background: linear-gradient(to bottom, #e76446 0%, #e0431f 100%); color: white; border: 1px solid #ba2b0c; }
+        .xp-input, .xp-select { border: 1px solid #7f9db9; padding: 3px; font-size: 12px; background: white; }
+        
+        /* XP Tabs */
+        .xp-tabs { display: flex; list-style: none; padding: 0; margin: 10px 10px 0 10px; gap: 2px; }
+        .xp-tab { background: #e0ded0; border: 1px solid #999; border-bottom: none; padding: 6px 12px; cursor: pointer; font-size: 12px; border-radius: 4px 4px 0 0; font-weight: bold; }
+        .xp-tab.active { background: #fff; border-bottom: 1px solid #fff; margin-bottom: -1px; z-index: 2; color: #0054E3; }
+        
+        /* Tables */
+        .xp-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+        .xp-table th { background: #e4e2d5; border: 1px solid #999; padding: 5px; text-align: left; }
+        .xp-table td { border: 1px solid #ccc; padding: 5px; }
+        .xp-table tr.selected { background-color: #ffffe1; }
+        
+        /* Panels */
+        .xp-panel { border: 1px solid #b0b0b0; background: #fcfcfc; padding: 10px; margin-bottom: 15px; border-radius: 3px; }
+        .xp-panel-title { font-weight: bold; color: #0049be; margin-top: 0; margin-bottom: 8px; font-size: 13px; border-bottom: 1px dashed #b0b0b0; padding-bottom: 3px; }
+        
+        /* --- CERTIFICATE / PRINT OUT VIEW --- */
+        .certificate-container { max-width: 700px; margin: 40px auto; background: #fff; border: 10px double #2c3e50; padding: 40px; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+        .cert-header { text-align: center; border-bottom: 3px double #2c3e50; padding-bottom: 20px; }
+        .cert-stamp { border: 4px solid #27ae60; color: #27ae60; font-size: 28px; font-weight: bold; text-transform: uppercase; padding: 10px 20px; display: inline-block; transform: rotate(-5deg); position: absolute; top: 40px; right: 40px; border-radius: 5px; letter-spacing: 2px; }
+        .cert-stamp.suspended { border-color: #c0392b; color: #c0392b; }
+        .cert-body { margin-top: 30px; font-size: 16px; line-height: 1.6; }
+        .cert-row { display: flex; margin-bottom: 12px; border-bottom: 1px dashed #ddd; padding-bottom: 5px; }
+        .cert-label { font-weight: bold; width: 200px; color: #34495e; }
+        .cert-value { flex: 1; }
     </style>
 </head>
 <body>
 
-    <nav class="portal-nav">
-        <div class="portal-logo">EMBASSY LOGISTICS SYSTEM</div>
-        <div class="portal-buttons">
-            <button class="portal-btn active" onclick="switchPortal('customer')">Customer Portal</button>
-            <button class="portal-btn" onclick="switchPortal('employee')">Employee Portal</button>
-            <button class="portal-btn" onclick="switchPortal('interviewer')">Interviewer Portal</button>
-            <button class="portal-btn" onclick="switchPortal('airport')">Airport Portal</button>
-            <button class="portal-btn" onclick="switchPortal('admin')">Admin Setup</button>
+    <!-- ========================================== -->
+    <!-- CUSTOM CUSTOM HTML POPUP MODALS           -->
+    <!-- ========================================== -->
+    <div id="custom-alert-modal" class="modal-overlay hidden">
+        <div class="popup-box">
+            <h3 id="alert-title">Notification</h3>
+            <p id="alert-msg"></p>
+            <div class="btn-row">
+                <button class="xp-btn xp-btn-green" style="padding:6px 20px;" onclick="closeAlertModal()">OK</button>
+            </div>
         </div>
-    </nav>
+    </div>
 
-    <div class="container">
-
-        <section id="portal-customer" class="portal-page active-page">
-            <div class="card">
-                <h2>Visa Application Form <span style="font-size: 0.9rem; color: var(--text-light)">Layer 1: Initial Application</span></h2>
-                <form id="visaForm" onsubmit="handleApplicationSubmit(event, 'Customer')">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>First Name</label>
-                            <input type="text" id="cust-firstname" required placeholder="John">
-                        </div>
-                        <div class="form-group">
-                            <label>Last Name</label>
-                            <input type="text" id="cust-lastname" required placeholder="Doe">
-                        </div>
-                        <div class="form-group">
-                            <label>Passport Number (6 Characters)</label>
-                            <input type="text" id="cust-passport" required maxlength="6" minlength="6" placeholder="A12345" style="text-transform: uppercase;">
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth</label>
-                            <input type="date" id="cust-dob" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Nationality</label>
-                            <select id="cust-nationality" required>
-                                <option value="">Select Country</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit Application</button>
-                </form>
+    <div id="custom-confirm-modal" class="modal-overlay hidden">
+        <div class="popup-box">
+            <h3 id="confirm-title">Confirmation Required</h3>
+            <p id="confirm-msg"></p>
+            <div class="btn-row">
+                <button class="xp-btn xp-btn-red" id="confirm-cancel-btn">Cancel</button>
+                <button class="xp-btn xp-btn-green" id="confirm-ok-btn">Confirm</button>
             </div>
-        </section>
+        </div>
+    </div>
 
 
-        <section id="portal-employee" class="portal-page">
-            <div class="tab-menu">
-                <button class="tab-link active-tab" onclick="switchTab('employee', 'emp-apply')">Apply on Behalf</button>
-                <button class="tab-link" onclick="switchTab('employee', 'emp-accounts')">Applicant Accounts & Logs</button>
-                <button class="tab-link" onclick="switchTab('employee', 'emp-tracking')">Global Multi-Tracking</button>
+    <!-- ========================================== -->
+    <!-- PORTAL 1: CUSTOMER PORTAL                 -->
+    <!-- ========================================== -->
+    <div id="portal-customer" class="customer-container">
+        <h2>Global Online Visa Application</h2>
+        
+        <!-- Live Tracking Tool Component -->
+        <div class="xp-panel" style="background: #f8f9fa; border: 1px solid #ced4da;">
+            <div class="xp-panel-title" style="color:#2c3e50;">Track Your Existing Visa Status</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
+                <div style="flex:1; min-width:150px;">
+                    <label style="font-size:12px; font-weight:bold;">Application Reference Number:</label>
+                    <input type="text" id="cust-track-id" placeholder="e.g., 12345" style="width:100%; padding:6px; font-size:13px; border:1px solid #ccc; border-radius:4px;">
+                </div>
+                <button class="xp-btn xp-btn-green" style="height:33px; font-weight:bold;" onclick="customerTrackStatus()">Check Status</button>
             </div>
-
-            <div id="emp-apply" class="sub-tab-content active-content">
-                <div class="card">
-                    <h2>Employee Access: Submit New Visa Application</h2>
-                    <form id="empVisaForm" onsubmit="handleApplicationSubmit(event, 'Employee')">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label>First Name</label>
-                                <input type="text" id="emp-firstname" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Last Name</label>
-                                <input type="text" id="emp-lastname" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Passport Number (6 Characters)</label>
-                                <input type="text" id="emp-passport" required maxlength="6" minlength="6" style="text-transform: uppercase;">
-                            </div>
-                            <div class="form-group">
-                                <label>Date of Birth</label>
-                                <input type="date" id="emp-dob" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Nationality</label>
-                                <select id="emp-nationality" required>
-                                    <option value="">Select Country</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-success">File Official Application</button>
-                    </form>
+            <div id="cust-track-output" style="margin-top:10px; font-weight:bold; font-size:14px;"></div>
+        </div>
+        
+        <div id="cust-exempt-msg" class="alert-info hidden">
+            <strong>Notice:</strong> Citizens of this country are exempt from requiring a visa. Application is not necessary.
+        </div>
+        <div id="cust-extra-msg" class="alert-info hidden"></div>
+        
+        <form id="visaForm" onsubmit="submitApplication(event)">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                    <label>First Name:</label>
+                    <input type="text" id="cust-firstname" required>
+                </div>
+                <div class="form-group">
+                    <label>Last Name:</label>
+                    <input type="text" id="cust-lastname" required>
+                </div>
+            </div>
+            
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                    <label>Date of Birth:</label>
+                    <input type="date" id="cust-dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Nationality:</label>
+                    <select id="cust-nationality" onchange="checkCountryRules(this.value)" required>
+                        <option value="">-- Select Country --</option>
+                    </select>
                 </div>
             </div>
 
-            <div id="emp-accounts" class="sub-tab-content">
-                <div class="card">
-                    <h2>Active Master Database Records</h2>
-                    <p style="color: var(--text-light); margin-bottom: 15px; font-size: 0.85rem;">Click on any record row below to display their entire historical case file logs and actions matrix.</p>
-                    <div style="overflow-x: auto;">
-                        <table id="accountsTable">
-                            <thead>
-                                <tr>
-                                    <th>Application ID</th>
-                                    <th>Full Name</th>
-                                    <th>Passport No</th>
-                                    <th>Country</th>
-                                    <th>Current Processing Status</th>
-                                    <th>Action Links</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                </tbody>
-                        </table>
-                    </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                    <label>Passport Number (6 Characters):</label>
+                    <input type="text" id="cust-passport" maxlength="6" minlength="6" placeholder="A1234B" required style="text-transform: uppercase;">
                 </div>
-
-                <div id="historicalLogContainer" class="card" style="display:none;">
-                    <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom:10px; margin-bottom:15px;">
-                        <h3 id="historyTitle" style="margin:0;">Historical Case Progress Logs</h3>
-                        <button class="btn btn-secondary" style="padding: 4px 8px; font-size:0.75rem;" onclick="document.getElementById('historicalLogContainer').style.display='none'">Clear Matrix View</button>
-                    </div>
-                    <table id="historyTable">
-                        <thead>
-                            <tr>
-                                <th>Timestamp</th>
-                                <th>Assigned Stage</th>
-                                <th>Status Result</th>
-                                <th>Internal Comments / Operations Notes</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+                <div class="form-group">
+                    <label>Requested Visa Type:</label>
+                    <select id="cust-visatype" required>
+                        <!-- Injected via DB Dynamic Array -->
+                    </select>
                 </div>
             </div>
 
-            <div id="emp-tracking" class="sub-tab-content">
-                <div class="card">
-                    <h2>Advanced Target Tracking Module</h2>
-                    <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
+                <div class="form-group">
+                    <label>Planned Arrival Date:</label>
+                    <input type="date" id="cust-arrival" required>
+                </div>
+                <div class="form-group">
+                    <label>Planned Departure Date:</label>
+                    <input type="date" id="cust-departure" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Notes / Additional Comments:</label>
+                <textarea id="cust-notes" rows="3" placeholder="Enter any extra details..."></textarea>
+            </div>
+            <button type="submit" id="cust-submit-btn" class="btn-submit">Submit Visa Application</button>
+        </form>
+        
+        <div class="footer-staff">
+            <button class="btn-staff-trigger" onclick="switchPortal('staff-login-select')">Staff Login / Administration Portal</button>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- STAFF PORTAL GATEWAY SELECTION            -->
+    <!-- ========================================== -->
+    <div id="portal-staff-login-select" class="xp-body hidden">
+        <div class="xp-window" style="max-width: 450px;">
+            <div class="xp-titlebar">
+                <span>Windows XP Professional - Visa Management Login</span>
+                <div class="xp-title-buttons"><button class="xp-btn-close" onclick="switchPortal('customer')">X</button></div>
+            </div>
+            <div class="xp-content" style="min-height: auto;">
+                <p style="font-weight: bold; margin-top:0;">Please select your workstation portal:</p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="xp-btn" style="padding:10px; font-weight:bold; text-align:left;" onclick="showLoginModal('employee')">📂 1. Embassy Employee Portal</button>
+                    <button class="xp-btn" style="padding:10px; font-weight:bold; text-align:left;" onclick="showLoginModal('interviewer')">🗣️ 2. Embassy Interviewer Portal</button>
+                    <button class="xp-btn" style="padding:10px; font-weight:bold; text-align:left;" onclick="showLoginModal('airport')">✈️ 3. Border Control / Airport Portal</button>
+                    <button class="xp-btn" style="padding:10px; font-weight:bold; text-align:left;" onclick="showLoginModal('admin')">🛠️ 4. System Administrator</button>
+                </div>
+                <hr style="margin: 15px 0;">
+                <button class="xp-btn xp-btn-red" style="float: right;" onclick="switchPortal('customer')">Return to Customer System</button>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STAFF LOGIN CHALLENGE DIALOG -->
+    <div id="xp-login-dialog" class="xp-body hidden">
+        <div class="xp-window" style="max-width: 350px;">
+            <div class="xp-titlebar"><span id="login-title">Log On to Windows</span></div>
+            <div class="xp-content" style="min-height:auto;">
+                <div class="form-group">
+                    <label style="font-size:12px;">User name:</label>
+                    <input type="text" id="login-user" class="xp-input" style="width:100%;">
+                </div>
+                <div class="form-group">
+                    <label style="font-size:12px;">Password:</label>
+                    <input type="password" id="login-pass" class="xp-input" style="width:100%;">
+                </div>
+                <div style="text-align: right; margin-top: 15px; display:flex; justify-content:space-between;">
+                    <button class="xp-btn xp-btn-red" onclick="switchPortal('staff-login-select')">Cancel</button>
+                    <button class="xp-btn xp-btn-green" onclick="executeLogin()">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PORTAL 2: EMBASSY EMPLOYEE PORTAL         -->
+    <!-- ========================================== -->
+    <div id="portal-employee" class="xp-body hidden">
+        <div class="xp-window">
+            <div class="xp-titlebar">
+                <span>Embassy Employee Management Desk</span>
+                <div class="xp-title-buttons"><button class="xp-btn-close" onclick="logOut()">X</button></div>
+            </div>
+            <div class="xp-nav-bar">
+                <span style="font-weight: bold; color: #0054E3;">Employee Mode</span> | <a href="#" onclick="logOut()">Log Off</a>
+            </div>
+            
+            <ul class="xp-tabs">
+                <li class="xp-tab active" id="tab-emp-list-btn" onclick="switchEmpTab('list')">Applicants List</li>
+                <li class="xp-tab" id="tab-emp-track-btn" onclick="switchEmpTab('track')">Tracking System</li>
+            </ul>
+
+            <div class="xp-content">
+                <!-- Sub Tab 1: Applicants List -->
+                <div id="emp-tab-list">
+                    <div style="display: flex; gap: 20px;">
+                        <!-- Master List -->
+                        <div style="flex: 1; border-right: 1px solid #ccc; padding-right: 15px;">
+                            <div class="xp-panel-title">Active Database Search</div>
+                            <input type="text" id="emp-search" class="xp-input" placeholder="Search by name, passport, ID..." onkeyup="renderEmployeeTable()" style="width:100%; margin-bottom: 10px;">
+                            <table class="xp-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Full Name</th>
+                                        <th>Passport</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employee-table-body"></tbody>
+                            </table>
+                        </div>
                         
-                        <div class="card" style="margin-bottom:0; background: #fdfdfd;">
-                            <h3>Option 1: Tracking Number</h3>
-                            <div class="form-group" style="margin-bottom: 10px;">
-                                <label>5-Digit Application ID</label>
-                                <input type="text" id="track-id-val" placeholder="e.g. 54219">
-                            </div>
-                            <button class="btn btn-primary" onclick="executeTrack(1)">Execute Search</button>
-                        </div>
-
-                        <div class="card" style="margin-bottom:0; background: #fdfdfd;">
-                            <h3>Option 2: Personal Profile</h3>
-                            <div class="form-group" style="margin-between: 5px;">
-                                <label>First Name</label>
-                                <input type="text" id="track-fn-val">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 5px;">
-                                <label>Last Name</label>
-                                <input type="text" id="track-ln-val">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 10px;">
-                                <label>Date of Birth</label>
-                                <input type="date" id="track-dob1-val">
-                            </div>
-                            <button class="btn btn-primary" onclick="executeTrack(2)">Execute Search</button>
-                        </div>
-
-                        <div class="card" style="margin-bottom:0; background: #fdfdfd;">
-                            <h3>Option 3: Passport Security</h3>
-                            <div class="form-group" style="margin-bottom: 5px;">
-                                <label>Date of Birth</label>
-                                <input type="date" id="track-dob2-val">
-                            </div>
-                            <div class="form-group" style="margin-bottom: 10px;">
-                                <label>Passport Number</label>
-                                <input type="text" id="track-pass-val" maxlength="6" style="text-transform: uppercase;">
-                            </div>
-                            <button class="btn btn-primary" onclick="executeTrack(3)">Execute Search</button>
+                        <!-- Details Panel & Log -->
+                        <div style="flex: 1.3;" id="emp-details-pane">
+                            <div class="xp-panel-title">Applicant Processing File</div>
+                            <p style="color:#666;">Select an applicant from the database file to load active logs, full history, and execute workflow updates.</p>
                         </div>
                     </div>
+                </div>
 
-                    <div id="trackingResultArea" style="margin-top:25px; display:none;">
-                        <h3>Query Results</h3>
-                        <table id="trackResultsTable">
+                <!-- Sub Tab 2: Tracking System -->
+                <div id="emp-tab-track" class="hidden">
+                    <div class="xp-panel-title">Multi-Parametric Tracking Engine</div>
+                    <div style="background:#eee; padding:10px; margin-bottom:15px; border-radius:3px; display:flex; flex-direction:column; gap:10px;">
+                        <div>
+                            <label style="font-weight:bold; width:180px; display:inline-block;">1. Tracking ID:</label>
+                            <input type="text" id="track-id" class="xp-input" placeholder="e.g. 54321">
+                            <button class="xp-btn" onclick="trackVisa(1)">Locate Application</button>
+                        </div>
+                        <div>
+                            <label style="font-weight:bold; width:180px; display:inline-block;">2. Name + DOB:</label>
+                            <input type="text" id="track-fn" class="xp-input" placeholder="First" style="width:80px;">
+                            <input type="text" id="track-ln" class="xp-input" placeholder="Last" style="width:80px;">
+                            <input type="date" id="track-dob" class="xp-input">
+                            <button class="xp-btn" onclick="trackVisa(2)">Locate Application</button>
+                        </div>
+                        <div>
+                            <label style="font-weight:bold; width:180px; display:inline-block;">3. DOB + Passport:</label>
+                            <input type="date" id="track-dob2" class="xp-input">
+                            <input type="text" id="track-pass" class="xp-input" placeholder="Passport No" style="width:100px;">
+                            <button class="xp-btn" onclick="trackVisa(3)">Locate Application</button>
+                        </div>
+                    </div>
+                    <div id="tracking-results-pane"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PORTAL 3: INTERVIEWER PORTAL              -->
+    <!-- ========================================== -->
+    <div id="portal-interviewer" class="xp-body hidden">
+        <div class="xp-window">
+            <div class="xp-titlebar">
+                <span>Embassy Panel Interview Assessment Portal</span>
+                <div class="xp-title-buttons"><button class="xp-btn-close" onclick="logOut()">X</button></div>
+            </div>
+            <div class="xp-nav-bar"><span style="font-weight: bold; color: #0054E3;">Interviewer Mode</span> | <a href="#" onclick="logOut()">Log Off</a></div>
+            <div class="xp-content">
+                <div class="xp-panel-title">Pending Interviews Assigned Queue</div>
+                <div style="display:flex; gap:20px;">
+                    <div style="flex:1; border-right: 1px solid #ccc; padding-right:15px;">
+                        <table class="xp-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Full Name</th>
-                                    <th>Passport</th>
-                                    <th>Status</th>
-                                    <th>Action View</th>
+                                    <th>Applicant</th>
+                                    <th>Nationality</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody></tbody>
+                            <tbody id="interviewer-table-body"></tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="portal-interviewer" class="portal-page">
-            <div class="card">
-                <h2>Interviewer Assessment Panel <span style="font-size: 0.9rem; color: var(--text-light)">Layer 2: Operational Evaluation</span></h2>
-                <div style="overflow-x: auto;">
-                    <table id="interviewerTable">
-                        <thead>
-                            <tr>
-                                <th>App ID</th>
-                                <th>Applicant Name</th>
-                                <th>Country</th>
-                                <th>Status</th>
-                                <th>Action Panel</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            </tbody>
-                    </table>
-                </div>
-            </div>
-        </section>
-
-
-        <section id="portal-airport" class="portal-page">
-            <div class="card">
-                <h2>Border Control Customs & Airport Gate Check</h2>
-                <div class="form-grid" style="grid-template-columns: 1fr auto; align-items: flex-end;">
-                    <div class="form-group">
-                        <label>Scan Passport Number (6 Characters)</label>
-                        <input type="text" id="airport-search-passport" placeholder="Enter passport number..." maxlength="6" style="text-transform: uppercase; font-size: 1.2rem; font-family: monospace;">
-                    </div>
-                    <button class="btn btn-primary" style="height: 46px;" onclick="handleAirportScan()">Query Immigration Database</button>
-                </div>
-
-                <div id="airportResult" style="margin-top: 25px; display: none;">
-                    </div>
-            </div>
-        </section>
-
-
-        <section id="portal-admin" class="portal-page">
-            <div id="admin-login-block" class="card" style="max-width: 400px; margin: 40px auto;">
-                <h2>Administrative Authentication</h2>
-                <div class="form-group" style="margin-bottom: 12px;">
-                    <label>Username</label>
-                    <input type="text" id="adm-user" value="admin">
-                </div>
-                <div class="form-group" style="margin-bottom: 20px;">
-                    <label>Password</label>
-                    <input type="password" id="adm-pass" value="admin">
-                </div>
-                <button class="btn btn-primary" style="width: 100%;" onclick="handleAdminLogin()">Authenticate System</button>
-            </div>
-
-            <div id="admin-panel-block" class="card" style="display: none;">
-                <h2>System Parameters Management Panel</h2>
-                <div class="card" style="background: #fafafa;">
-                    <h3>Live System Memory Data Controls</h3>
-                    <p style="margin-bottom: 15px; font-size: 0.9rem;">Reset or populate structural components across dynamic portal workflows instantly.</p>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-warning" onclick="seedSampleData()">Inject Diagnostic Demo Applications</button>
-                        <button class="btn btn-danger" onclick="clearSystemData()">Purge Database Records</button>
+                    <div style="flex:1;" id="interviewer-action-pane">
+                        <p style="color:#666;">Select a queued case file to input evaluation details and lock in assessment logs.</p>
                     </div>
                 </div>
             </div>
-        </section>
-
-    </div>
-
-    <div id="systemModal" class="modal-overlay">
-        <div class="modal-box" id="modalContentBox">
-            <button class="close-modal" onclick="closeModal()">&times;</button>
-            <div id="modalInnerHTML"></div>
         </div>
     </div>
 
-    <div id="toast" class="notification-toast"></div>
 
+    <!-- ========================================== -->
+    <!-- PORTAL 4: AIRPORT / BORDER CONTROL         -->
+    <!-- ========================================== -->
+    <div id="portal-airport" class="xp-body hidden">
+        <div class="xp-window" style="max-width: 600px;">
+            <div class="xp-titlebar">
+                <span>Border Control Entry Terminal v3.11</span>
+                <div class="xp-title-buttons"><button class="xp-btn-close" onclick="logOut()">X</button></div>
+            </div>
+            <div class="xp-nav-bar"><span style="font-weight: bold; color: #0054E3;">Airport Terminal</span> | <a href="#" onclick="logOut()">Log Off</a></div>
+            <div class="xp-content">
+                <div class="xp-panel-title">Passport Scanner Integration Interface</div>
+                <div style="margin-bottom:15px;">
+                    <label style="font-weight:bold;">Enter Passport Number:</label>
+                    <input type="text" id="airport-search-passport" class="xp-input" style="width:150px; text-transform: uppercase;" maxlength="6">
+                    <button class="xp-btn xp-btn-green" onclick="airportLookup()">Scan & Verify Passport</button>
+                </div>
+                <div id="airport-results" style="border-top:1px dashed #ccc; padding-top:15px; margin-top:15px;"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PORTAL 5: ADMINISTRATIVE CONTROLS        -->
+    <!-- ========================================== -->
+    <div id="portal-admin" class="xp-body hidden">
+        <div class="xp-window">
+            <div class="xp-titlebar">
+                <span>System Administration Environment</span>
+                <div class="xp-title-buttons"><button class="xp-btn-close" onclick="logOut()">X</button></div>
+            </div>
+            <div class="xp-nav-bar"><span style="font-weight: bold; color: #0054E3;">Administrator Mode</span> | <a href="#" onclick="logOut()">Log Off</a></div>
+            
+            <ul class="xp-tabs">
+                <li class="xp-tab active" id="tab-adm-global-btn" onclick="switchAdminTab('global')">Global Variable Setup</li>
+                <li class="xp-tab" id="tab-adm-nat-btn" onclick="switchAdminTab('nat')">Tab 1: Extra Approval List</li>
+                <li class="xp-tab" id="tab-adm-ex-btn" onclick="switchAdminTab('ex')">Tab 2: Exemptions List</li>
+                <li class="xp-tab" id="tab-adm-types-btn" onclick="switchAdminTab('types')">Tab 3: Visa Types Setup</li>
+                <li class="xp-tab" id="tab-adm-statuses-btn" onclick="switchAdminTab('statuses')">Tab 4: Customer Status Tracking Words</li>
+            </ul>
+
+            <div class="xp-content">
+                <!-- Main Tab: Basic controls & Resets -->
+                <div id="adm-tab-global">
+                    <div style="display:flex; gap:20px;">
+                        <div class="xp-panel" style="flex:1;">
+                            <div class="xp-panel-title">Financial Policy</div>
+                            <label>Standard Visa Issuance Fee (USD):</label><br>
+                            <input type="number" id="adm-fee-input" class="xp-input" style="width:100px; margin-top:5px;">
+                            <button class="xp-btn" onclick="saveVisaFee()" style="margin-top:5px;">Update Fee</button>
+                        </div>
+                        
+                        <div class="xp-panel" style="flex:1; background:#fff0f0; border-color:#cc0000;">
+                            <div class="xp-panel-title" style="color:#cc0000;">System Structural Resets</div>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                                <button class="xp-btn xp-btn-red" style="font-weight:bold;" onclick="triggerApplicantsReset()">🗑️ Reset Applicants Only</button>
+                                <button class="xp-btn xp-btn-red" style="font-weight:bold; background:red; color:white;" onclick="triggerMasterReset()">🔥 Complete System Master Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="xp-panel">
+                        <div class="xp-panel-title">System Portals Security Management (Deletable/Editable)</div>
+                        <table class="xp-table">
+                            <thead>
+                                <tr><th>Portal Target Key</th><th>Configured Username</th><th>Configured Password</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody id="admin-credentials-table"></tbody>
+                        </table>
+                        <div style="margin-top:10px; background:#e4e2d5; padding:8px;">
+                            <b>Add Custom Credentials Pair:</b><br>
+                            <input type="text" id="adm-new-cred-key" class="xp-input" placeholder="e.g. supervisor" style="width:110px;">
+                            <input type="text" id="adm-new-cred-u" class="xp-input" placeholder="User" style="width:110px;">
+                            <input type="text" id="adm-new-cred-p" class="xp-input" placeholder="Pass" style="width:110px;">
+                            <button class="xp-btn xp-btn-green" onclick="addNewCredential()">Add Login Row</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 1: Extra Approval -->
+                <div id="adm-tab-nat" class="hidden">
+                    <div class="xp-panel-title">Enhanced Surveillance Definitions</div>
+                    <div class="xp-panel">
+                        <label style="font-weight:bold;">Custom Notification Banner Text:</label>
+                        <textarea id="adm-extra-msg-text" class="xp-input" style="width:100%; margin-top:5px;" rows="2"></textarea>
+                        <button class="xp-btn" onclick="saveExtraMsg()" style="margin-top:5px;">Save System Banner Message</button>
+                    </div>
+                    <div style="display:flex; gap:20px;">
+                        <div style="flex:1;">
+                            <label style="font-weight:bold;">Flag Country for Deep Review:</label>
+                            <select id="adm-add-extra-sel" class="xp-select" style="width:100%; margin:5px 0;"></select>
+                            <button class="xp-btn xp-btn-green" onclick="addExtraApprovalCountry()">Add to Active Screening List</button>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-weight:bold;">Currently Monitored States:</label>
+                            <ul id="adm-extra-list" style="margin-top:5px; padding-left:20px;"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 2: Exemptions -->
+                <div id="adm-tab-ex" class="hidden">
+                    <div class="xp-panel-title">Visa Waiver / Exemption Rule Declarations</div>
+                    <div style="display:flex; gap:20px;">
+                        <div style="flex:1;">
+                            <label style="font-weight:bold;">Exempt Country:</label>
+                            <select id="adm-add-exempt-sel" class="xp-select" style="width:100%; margin:5px 0;"></select>
+                            <button class="xp-btn xp-btn-green" onclick="addExemptCountry()">Register Waiver Status</button>
+                        </div>
+                        <div style="flex:1;">
+                            <label style="font-weight:bold;">Currently Exempt States:</label>
+                            <ul id="adm-exempt-list" style="margin-top:5px; padding-left:20px;"></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Visa Types Configuration Engine -->
+                <div id="adm-tab-types" class="hidden">
+                    <div class="xp-panel-title">Visa Scheme Classification Properties Matrix</div>
+                    <div class="xp-panel" style="background:#eee;">
+                        <strong>Create/Edit Visa Type Parameter Mapping:</strong><br>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
+                            <div>Name: <input type="text" id="vt-name" class="xp-input" style="width:100%;" placeholder="Tourist (T1)"></div>
+                            <div>Validity Period: <input type="text" id="vt-val" class="xp-input" style="width:100%;" placeholder="90 Days / 1 Year"></div>
+                            <div>Entries Profile: 
+                                <select id="vt-entries" class="xp-select" style="width:100%;">
+                                    <option value="Single Entry">Single Entry</option>
+                                    <option value="Multiple Entries">Multiple Entries</option>
+                                </select>
+                            </div>
+                            <div>Days Allowed Per Entry: <input type="number" id="vt-days" class="xp-input" style="width:100%;" placeholder="30"></div>
+                        </div>
+                        <button class="xp-btn xp-btn-green" style="margin-top:10px;" onclick="saveVisaType()">Save Visa Type Matrix Spec</button>
+                    </div>
+                    <table class="xp-table">
+                        <thead>
+                            <tr><th>Name Code Displayed</th><th>Overall Validity</th><th>Entry Type Mapping</th><th>Allowed Days</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="admin-visatypes-table"></tbody>
+                    </table>
+                </div>
+
+                <!-- Tab 4: Customer Status Tracking Custom Wording Matrix -->
+                <div id="adm-tab-statuses" class="hidden">
+                    <div class="xp-panel-title">Editable Status Translation Matrix for Customers</div>
+                    <p style="margin-top:0;">Map the internal core technical flags directly to simplified structural display text for public user views:</p>
+                    <div class="xp-panel" style="max-width:550px; display:flex; flex-direction:column; gap:8px;">
+                        <div>
+                            <label style="display:inline-block; width:180px; font-weight:bold;">1. Processing Word:</label>
+                            <input type="text" id="sw-processing" class="xp-input" style="width:300px;">
+                        </div>
+                        <div>
+                            <label style="display:inline-block; width:180px; font-weight:bold;">2. Visa Granted Word:</label>
+                            <input type="text" id="sw-granted" class="xp-input" style="width:300px;">
+                        </div>
+                        <div>
+                            <label style="display:inline-block; width:180px; font-weight:bold;">3. Visa Rejected Word:</label>
+                            <input type="text" id="sw-rejected" class="xp-input" style="width:300px;">
+                        </div>
+                        <div>
+                            <label style="display:inline-block; width:180px; font-weight:bold;">4. Interview Pending Word:</label>
+                            <input type="text" id="sw-interview" class="xp-input" style="width:300px;">
+                        </div>
+                        <button class="xp-btn xp-btn-green" style="margin-top:5px; align-self:flex-start;" onclick="saveStatusWords()">Lock Display Wording Configurations</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- PORTAL 6: PASSPORT / VISA PRINT OUT VIEW   -->
+    <!-- ========================================== -->
+    <div id="portal-printout" class="hidden" style="background:#fff; min-height:100vh; padding:20px;">
+        <button class="xp-btn" onclick="switchPortal('employee')" style="margin-bottom:20px;">← Return to Staff Control</button>
+        <div class="certificate-container" id="printable-certificate">
+            <!-- Dynamic Content Injected Here -->
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- JAVASCRIPT SYSTEM ENGINE LOGIC            -->
+    <!-- ========================================== -->
     <script>
-        // System Data Stores
-        let applications = [];
+        // --- COLD RECOVERY ENGINE SEED CONSTANTS ---
+        const ALL_COUNTRIES = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
 
-        const countryList = [
-            "Jordan", "United Arab Emirates", "Saudi Arabia", "Egypt", "United States", 
-            "United Kingdom", "Canada", "Australia", "Germany", "France", "Japan", "India"
-        ];
+        const STRUCTURAL_DEFAULT_STATE = {
+            visaFees: 300,
+            extraMessage: "Visa processing time could take longer than usual for this nationality.",
+            extraApprovalCountries: ["North Korea", "Iran", "Syria"],
+            exemptCountries: ["Singapore", "San Marino"],
+            credentials: {
+                admin: { user: "admin", pass: "admin" },
+                employee: { user: "emp", pass: "emp" },
+                interviewer: { user: "int", pass: "int" },
+                airport: { user: "air", pass: "air" }
+            },
+            visaTypes: [
+                { name: "Tourist Class T-1", validity: "90 Days from Entry", entries: "Single Entry", allowedDays: "30" },
+                { name: "Business Multi-Entry B-2", validity: "1 Year", entries: "Multiple Entries", allowedDays: "90" }
+            ],
+            statusWords: {
+                processing: "Proccessing",
+                granted: "Visa Granted- visit embassy",
+                rejected: "Visa Rejected- visit embassy",
+                interview: "interview pending- visit embassy"
+            },
+            applications: [
+                {
+                    id: "49201",
+                    firstName: "Alice",
+                    lastName: "Smith",
+                    dob: "1990-05-12",
+                    nationality: "Canada",
+                    passport: "AA1234",
+                    visaTypeRequested: "Tourist Class T-1",
+                    visaTypeIssued: "Tourist Class T-1",
+                    plannedArrival: "2026-07-01",
+                    plannedDeparture: "2026-07-25",
+                    notes: "Attending technical convention",
+                    status: "Pending Interview",
+                    history: ["Applied via online portal system.", "Forwarded by Employee to schedule Interview."],
+                    feesPaid: false,
+                    isSuspended: false
+                }
+            ]
+        };
 
-        // System Initialization
-        document.addEventListener("DOMContentLoaded", () => {
+        // GLOBAL CONFIG REFERENCE HOOK
+        let DB = {};
+
+        // --- CORE IN-WINDOW HTML POPUP INTERFACE FUNCTIONS ---
+        function triggerAlertModal(title, message) {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-msg').innerText = message;
+            document.getElementById('custom-alert-modal').classList.remove('hidden');
+        }
+        function closeAlertModal() {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+        }
+
+        function triggerConfirmModal(title, message, onConfirmCallback) {
+            document.getElementById('confirm-title').innerText = title;
+            document.getElementById('confirm-msg').innerText = message;
+            
+            const cancelBtn = document.getElementById('confirm-cancel-btn');
+            const okBtn = document.getElementById('confirm-ok-btn');
+            
+            const cleanup = () => {
+                document.getElementById('custom-confirm-modal').classList.add('hidden');
+                // clear listeners
+                let nb = okBtn.cloneNode(true); okBtn.parentNode.replaceChild(nb, okBtn);
+                let cb = cancelBtn.cloneNode(true); cancelBtn.parentNode.replaceChild(cb, cancelBtn);
+            };
+            
+            document.getElementById('confirm-cancel-btn').addEventListener('click', () => { cleanup(); });
+            document.getElementById('confirm-ok-btn').addEventListener('click', () => { onConfirmCallback(); cleanup(); });
+            document.getElementById('custom-confirm-modal').classList.remove('hidden');
+        }
+
+        // LOCAL STORAGE LIFECYCLE MANAGEMENT ENGINE
+        function initializePersistentMemory() {
+            let memoryRaw = localStorage.getItem('GLOBAL_VISA_SYSTEM_STORAGE');
+            if (!memoryRaw) {
+                DB = JSON.parse(JSON.stringify(STRUCTURAL_DEFAULT_STATE));
+                commitMemory();
+            } else {
+                DB = JSON.parse(memoryRaw);
+            }
+        }
+
+        function commitMemory() {
+            localStorage.setItem('GLOBAL_VISA_SYSTEM_STORAGE', JSON.stringify(DB));
+        }
+
+        // --- SYSTEM ENGINE INITIALIZATION BOOTSTRAP ---
+        window.onload = function() {
+            initializePersistentMemory();
             populateCountryDropdowns();
-            seedSampleData();
-            renderAllTables();
-        });
+            renderCustomerVisaTypesMenu();
+            refreshAdminInterface();
+            renderEmployeeTable();
+            renderInterviewerTable();
+        };
 
         function populateCountryDropdowns() {
-            const targets = ["cust-nationality", "emp-nationality"];
-            targets.forEach(id => {
+            const dropIds = ['cust-nationality', 'adm-add-extra-sel', 'adm-add-exempt-sel'];
+            dropIds.forEach(id => {
                 const el = document.getElementById(id);
-                if (el) {
-                    countryList.sort().forEach(country => {
-                        let opt = document.createElement("option");
-                        opt.value = country;
-                        opt.textContent = country;
-                        opt.className = "renderable-opt";
-                        el.appendChild(opt);
-                    });
-                }
+                el.innerHTML = id === 'cust-nationality' ? '<option value="">-- Select Country --</option>' : '';
+                ALL_COUNTRIES.forEach(c => {
+                    let opt = document.createElement('option');
+                    opt.value = c; opt.innerText = c;
+                    el.appendChild(opt);
+                });
             });
         }
 
-        // Global Dynamic Sample Injection
-        function seedSampleData() {
-            applications = [
-                {
-                    id: "48219",
-                    firstName: "Rami",
-                    lastName: "Haddad",
-                    passport: "JO7482",
-                    dob: "1992-04-12",
-                    nationality: "Jordan",
-                    status: "Applying",
-                    history: [
-                        { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: "Application initially filed via Customer Portal." }
-                    ]
-                },
-                {
-                    id: "81342",
-                    firstName: "Sarah",
-                    lastName: "Smith",
-                    passport: "US9912",
-                    dob: "1988-11-23",
-                    nationality: "United States",
-                    status: "Interview Scheduled",
-                    history: [
-                        { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: "Application initially filed via Online Service." },
-                        { time: getTimestamp(), stage: "Layer 1: Employee Review", status: "Passed", note: "Passed core document validation checks. Interview recommended." }
-                    ]
-                },
-                {
-                    id: "29411",
-                    firstName: "Fatima",
-                    lastName: "Al-Mansoori",
-                    passport: "AE4412",
-                    dob: "1995-07-30",
-                    nationality: "United Arab Emirates",
-                    status: "Interview Accepted",
-                    history: [
-                        { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: "Filed internally by Embassy representative." },
-                        { time: getTimestamp(), stage: "Layer 1: Employee Review", status: "Passed", note: "Forwarded directly to verification queue." },
-                        { time: getTimestamp(), stage: "Layer 2: Interview Panel", status: "Accepted", note: "Applicant demonstrated clear eligibility parameters. Notes: Verified travel intent." }
-                    ]
-                }
-            ];
-            showToast("Diagnostic operational records populated.");
-            renderAllTables();
+        function renderCustomerVisaTypesMenu() {
+            const menu = document.getElementById('cust-visatype');
+            menu.innerHTML = '';
+            DB.visaTypes.forEach(v => {
+                let opt = document.createElement('option');
+                opt.value = v.name;
+                opt.innerText = v.name;
+                menu.appendChild(opt);
+            });
         }
 
-        function clearSystemData() {
-            applications = [];
-            showToast("Database fully cleared.");
-            renderAllTables();
-        }
-
-        // Portal & Tab Switcher Utilities
+        // --- ROUTING ENGINE VIA WINDOW STATE DOM CONFIG ---
         function switchPortal(portalId) {
-            document.querySelectorAll('.portal-page').forEach(p => p.classList.remove('active-page'));
-            document.querySelectorAll('.portal-nav .portal-btn').forEach(b => b.classList.remove('active'));
+            ['portal-customer', 'portal-staff-login-select', 'xp-login-dialog', 'portal-employee', 'portal-interviewer', 'portal-airport', 'portal-admin', 'portal-printout'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById('portal-' + portalId).classList.remove('hidden');
+        }
+
+        function showLoginModal(targetPortal) {
+            DB.currentActivePortalLoginTarget = targetPortal;
+            document.getElementById('login-user').value = '';
+            document.getElementById('login-pass').value = '';
+            document.getElementById('login-title').innerText = `Log On to System: ${targetPortal.toUpperCase()}`;
+            switchPortal('xp-login-dialog');
+        }
+
+        function executeLogin() {
+            const u = document.getElementById('login-user').value;
+            const p = document.getElementById('login-pass').value;
+            const target = DB.currentActivePortalLoginTarget;
             
-            document.getElementById(`portal-${portalId}`).classList.add('active-page');
-            event.target.classList.add('active');
-            
-            renderAllTables();
+            if(DB.credentials[target] && DB.credentials[target].user === u && DB.credentials[target].pass === p) {
+                switchPortal(target);
+            } else {
+                triggerAlertModal("Security Reject", "CRITICAL SECURITY INCIDENT: System validation mismatch.");
+            }
         }
 
-        function switchTab(portal, tabId) {
-            const parent = document.getElementById(`portal-${portal}`);
-            parent.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active-tab'));
-            parent.querySelectorAll('.sub-tab-content').forEach(c => c.classList.remove('active-content'));
-            
-            event.target.classList.add('active-tab');
-            document.getElementById(tabId).classList.add('active-content');
+        function logOut() {
+            switchPortal('staff-login-select');
         }
 
-        // Generate 5 Unique Digits
-        function generateAppId() {
-            let id;
-            do {
-                id = Math.floor(10000 + Math.random() * 90000).toString();
-            } while (applications.some(app => app.id === id));
-            return id;
-        }
+        // --- CUSTOMER TRACKING UTILITY ---
+        function customerTrackStatus() {
+            const trackId = document.getElementById('cust-track-id').value.trim();
+            const out = document.getElementById('cust-track-output');
+            if(!trackId) return;
 
-        function getTimestamp() {
-            return new Date().toLocaleString();
-        }
-
-        // Notification utility
-        function showToast(msg) {
-            const t = document.getElementById("toast");
-            t.textContent = msg;
-            t.style.display = "block";
-            setTimeout(() => { t.style.display = "none"; }, 4000);
-        }
-
-        // Modal System Controllers
-        function openModal(contentHtml) {
-            const overlay = document.getElementById("systemModal");
-            document.getElementById("modalInnerHTML").innerHTML = contentHtml;
-            overlay.classList.add("show-modal");
-        }
-
-        function closeModal() {
-            document.getElementById("systemModal").classList.remove("show-modal");
-        }
-
-        // Workflow Submissions Handling
-        function handleApplicationSubmit(e, originType) {
-            e.preventDefault();
-            
-            const prefix = originType === 'Customer' ? 'cust' : 'emp';
-            const firstName = document.getElementById(`${prefix}-firstname`).value.trim();
-            const lastName = document.getElementById(`${prefix}-lastname`).value.trim();
-            const passport = document.getElementById(`${prefix}-passport`).value.trim().toUpperCase();
-            const dob = document.getElementById(`${prefix}-dob`).value;
-            const nationality = document.getElementById(`${prefix}-nationality`).value;
-
-            if(passport.length !== 6) {
-                showToast("Error: Passport identifier must be exactly 6 alphanumeric characters.");
+            const app = DB.applications.find(a => a.id === trackId);
+            if(!app) {
+                out.style.color = "red";
+                out.innerText = "No application located with this ID number.";
                 return;
             }
 
-            const appId = generateAppId();
+            out.style.color = "#0054E3";
+            // Map core processing states dynamically into customer custom-managed wording variables
+            if (app.status === 'Pending Review') {
+                out.innerText = `Status: ${DB.statusWords.processing}`;
+            } else if (app.status === 'Pending Interview') {
+                out.innerText = `Status: ${DB.statusWords.interview}`;
+            } else if (app.status === 'Interview Accepted' || app.status === 'Visa Granted') {
+                out.innerText = `Status: ${DB.statusWords.granted}`;
+            } else if (app.status === 'Rejected' || app.status === 'Visa Suspended') {
+                out.innerText = `Status: ${DB.statusWords.rejected}`;
+            } else {
+                out.innerText = `Status: ${app.status}`;
+            }
+        }
+
+        // --- PORTAL 1: CUSTOMER FORM LOGIC MAPPINGS ---
+        function checkCountryRules(country) {
+            const extraMsgBox = document.getElementById('cust-extra-msg');
+            const exemptMsgBox = document.getElementById('cust-exempt-msg');
+            const submitBtn = document.getElementById('cust-submit-btn');
+            const formInputs = document.querySelectorAll('#visaForm input, #visaForm select, #visaForm textarea');
+
+            extraMsgBox.classList.add('hidden');
+            exemptMsgBox.classList.add('hidden');
+            submitBtn.disabled = false;
+            formInputs.forEach(i => i.removeAttribute('disabled'));
+
+            if(!country) return;
+
+            if(DB.exemptCountries.includes(country)) {
+                exemptMsgBox.classList.remove('hidden');
+                submitBtn.disabled = true;
+                formInputs.forEach(i => { if(i.id !== 'cust-nationality') i.setAttribute('disabled', 'true'); });
+            } else if(DB.extraApprovalCountries.includes(country)) {
+                extraMsgBox.innerText = DB.extraMessage;
+                extraMsgBox.classList.remove('hidden');
+            }
+        }
+
+        function generateUniqueId() {
+            let num;
+            do {
+                num = Math.floor(10000 + Math.random() * 90000).toString();
+            } while(DB.applications.some(a => a.id === num));
+            return num;
+        }
+
+        function submitApplication(e) {
+            e.preventDefault();
+            const country = document.getElementById('cust-nationality').value;
+            if(DB.exemptCountries.includes(country)) return;
+
+            const newId = generateUniqueId();
             const newApp = {
-                id: appId,
-                firstName,
-                lastName,
-                passport,
-                dob,
-                nationality,
-                status: "Applying",
-                history: [
-                    { time: getTimestamp(), stage: "Layer 1: Submission", status: "Success", note: `Application registered via ${originType} Portal.` }
-                ]
+                id: newId,
+                firstName: document.getElementById('cust-firstname').value,
+                lastName: document.getElementById('cust-lastname').value,
+                dob: document.getElementById('cust-dob').value,
+                nationality: country,
+                passport: document.getElementById('cust-passport').value.toUpperCase(),
+                visaTypeRequested: document.getElementById('cust-visatype').value,
+                visaTypeIssued: document.getElementById('cust-visatype').value,
+                plannedArrival: document.getElementById('cust-arrival').value,
+                plannedDeparture: document.getElementById('cust-departure').value,
+                notes: document.getElementById('cust-notes').value,
+                status: "Pending Review",
+                history: ["Application submitted successfully by applicant."],
+                feesPaid: false,
+                isSuspended: false
             };
 
-            applications.push(newApp);
-            document.getElementById(originType === 'Customer' ? 'visaForm' : 'empVisaForm').reset();
+            DB.applications.push(newApp);
+            commitMemory();
             
-            openModal(`
-                <div style="text-align: center; padding: 10px;">
-                    <div style="font-size: 3rem; color: var(--success); margin-bottom:15px;">✓</div>
-                    <h3 style="font-size: 1.4rem; color: var(--primary);">Application Lodged Successfully</h3>
-                    <p style="margin: 15px 0; font-size:1rem;">Your unique 5-digit processing tracking reference tracking number is:</p>
-                    <div style="background: #f1f5f9; padding: 15px; font-size: 2rem; font-weight: 800; letter-spacing: 4px; border-radius: 8px; color: var(--secondary); margin-bottom: 20px;">${appId}</div>
-                    <p style="color: var(--text-light); font-size: 0.85rem;">Please record this identifier safely to perform multi-parameter security validation track lookups.</p>
-                    <button class="btn btn-primary" style="margin-top:20px;" onclick="closeModal()">Acknowledge & Clear Window</button>
-                </div>
-            `);
-            
-            renderAllTables();
+            triggerAlertModal("Submission Success", `Application processing complete.\n\nYour Unique Tracking ID is: ${newId}`);
+            document.getElementById('visaForm').reset();
+            checkCountryRules('');
+            renderEmployeeTable();
         }
 
-        // Rendering Engine for Dynamic Views
-        function renderAllTables() {
-            renderEmployeeAccounts();
+        // --- PORTAL 2: EMBASSY EMPLOYEE LOGIC ENGINE ---
+        function switchEmpTab(tab) {
+            document.getElementById('emp-tab-list').classList.toggle('hidden', tab !== 'list');
+            document.getElementById('emp-tab-track').classList.toggle('hidden', tab !== 'track');
+            document.getElementById('tab-emp-list-btn').classList.toggle('active', tab === 'list');
+            document.getElementById('tab-emp-track-btn').classList.toggle('active', tab === 'track');
+        }
+
+        function renderEmployeeTable() {
+            const query = document.getElementById('emp-search').value.toLowerCase();
+            const tbody = document.getElementById('employee-table-body');
+            tbody.innerHTML = '';
+
+            DB.applications.forEach(a => {
+                const matchString = `${a.id} ${a.firstName} ${a.lastName} ${a.passport} ${a.status}`.toLowerCase();
+                if(matchString.includes(query)) {
+                    let tr = document.createElement('tr');
+                    tr.id = `emp-row-${a.id}`;
+                    tr.onclick = () => {
+                        document.querySelectorAll('#employee-table-body tr').forEach(r => r.classList.remove('selected'));
+                        tr.classList.add('selected');
+                        selectEmployeeApplicant(a.id);
+                    };
+                    tr.innerHTML = `<td><b>${a.id}</b></td><td>${a.firstName} ${a.lastName}</td><td>${a.passport}</td><td><i>${a.status}</i></td>`;
+                    tbody.appendChild(tr);
+                }
+            });
+        }
+
+        function selectEmployeeApplicant(id) {
+            const app = DB.applications.find(a => a.id === id);
+            const pane = document.getElementById('emp-details-pane');
+            if(!app) return;
+
+            let logHtml = app.history.map(h => `<li>• ${h}</li>`).join('');
+            
+            let visaSelectionDropdownHtml = `<select id="emp-change-visatype" class="xp-select">`;
+            DB.visaTypes.forEach(vt => {
+                let selectedAttr = (vt.name === app.visaTypeIssued) ? 'selected' : '';
+                visaSelectionDropdownHtml += `<option value="${vt.name}" ${selectedAttr}>${vt.name}</option>`;
+            });
+            visaSelectionDropdownHtml += `</select>`;
+
+            let actionsHtml = '';
+            if(app.status === 'Pending Review') {
+                actionsHtml = `
+                    <button class="xp-btn xp-btn-red" onclick="updateAppStatus('${app.id}', 'Rejected', 'Application rejected during initial analysis phase.')">Reject Application</button>
+                    <button class="xp-btn xp-btn-green" onclick="updateAppStatus('${app.id}', 'Pending Interview', 'Forwarded system profile to panel interviewer interface.')">Schedule Interview</button>
+                `;
+            } else if(app.status === 'Interview Accepted') {
+                actionsHtml = `
+                    <div style="background:#e4e2d5; padding:8px; border:1px solid #999; margin-bottom:10px; width:100%;">
+                        <label><b>Review/Modify Issuance Class Mapping:</b></label><br>
+                        ${visaSelectionDropdownHtml}
+                    </div>
+                    <button class="xp-btn xp-btn-red" onclick="updateAppStatus('${app.id}', 'Rejected', 'Final clearance rejected by senior staff post-interview.')">Final Reject</button>
+                    <button class="xp-btn xp-btn-green" onclick="executeEmployeeGrantSequence('${app.id}')">Confirm Visa Scheme Allocation & Grant</button>
+                `;
+            } else if(app.status === 'Visa Granted') {
+                actionsHtml = `
+                    <button class="xp-btn" onclick="generateVisaPrintout('${app.id}')">🖨️ Print Granted Visa Document</button>
+                    <button class="xp-btn xp-btn-red" onclick="toggleSuspension('${app.id}', true)">⚠️ Revoke/Suspend Visa</button>
+                `;
+            } else if(app.status === 'Visa Suspended') {
+                actionsHtml = `
+                    <button class="xp-btn xp-btn-green" onclick="toggleSuspension('${app.id}', false)">Lift Visa Suspension</button>
+                `;
+            } else {
+                actionsHtml = `<span style="color:#777; font-style:italic;">No contextual workflow actions remaining for this structural state.</span>`;
+            }
+
+            pane.innerHTML = `
+                <div class="xp-panel">
+                    <div class="xp-panel-title">Active File Data: #${app.id}</div>
+                    <table style="width:100%; font-size:12px;" cellpadding="3">
+                        <tr><td><b>Name:</b></td><td>${app.firstName} ${app.lastName}</td></tr>
+                        <tr><td><b>DOB:</b></td><td>${app.dob}</td></tr>
+                        <tr><td><b>Nationality:</b></td><td>${app.nationality}</td></tr>
+                        <tr><td><b>Passport:</b></td><td>${app.passport}</td></tr>
+                        <tr><td><b>Requested Visa Type:</b></td><td>${app.visaTypeRequested}</td></tr>
+                        <tr><td><b>Allocated Visa Type:</b></td><td><mark><b>${app.visaTypeIssued || app.visaTypeRequested}</b></mark></td></tr>
+                        <tr><td><b>Planned Horizon:</b></td><td>Arrival: ${app.plannedArrival} | Departure: ${app.plannedDeparture}</td></tr>
+                        <tr><td><b>User Notes:</b></td><td>${app.notes || 'N/A'}</td></tr>
+                        <tr><td><b>System Status:</b></td><td><b style="color:#0054E3;">${app.status}</b></td></tr>
+                        <tr><td><b>Financial Bal:</b></td><td>${app.feesPaid ? 'Paid ($' + DB.visaFees + ')' : 'Unpaid'}</td></tr>
+                    </table>
+                </div>
+                <div class="xp-panel">
+                    <div class="xp-panel-title">Action Center</div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">${actionsHtml}</div>
+                </div>
+                <div class="xp-panel">
+                    <div class="xp-panel-title">System Audit Log History</div>
+                    <ul style="padding-left:15px; margin:0; font-size:11px; max-height:100px; overflow-y:auto;">${logHtml}</ul>
+                </div>
+            `;
+        }
+
+        function updateAppStatus(id, newStatus, historyNote) {
+            const app = DB.applications.find(a => a.id === id);
+            if(!app) return;
+            app.status = newStatus;
+            app.history.push(historyNote);
+            commitMemory();
+            renderEmployeeTable();
             renderInterviewerTable();
+            selectEmployeeApplicant(id);
         }
 
-        function renderEmployeeAccounts() {
-            const tbody = document.querySelector("#accountsTable tbody");
-            tbody.innerHTML = "";
-            
-            if (applications.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-light);">No application profiles exist inside live system memory environment.</td></tr>`;
-                return;
-            }
-
-            applications.forEach(app => {
-                const tr = document.createElement("tr");
-                tr.className = "clickable-row";
-                tr.onclick = (e) => {
-                    if(e.target.tagName !== 'BUTTON') showHistoryLogs(app.id);
-                };
-
-                tr.innerHTML = `
-                    <td><strong>#${app.id}</strong></td>
-                    <td>${app.firstName} ${app.lastName}</td>
-                    <td style="font-family: monospace; font-weight:600;">${app.passport}</td>
-                    <td>${app.nationality}</td>
-                    <td><span class="badge badge-${app.status.toLowerCase().replace(/ /g, '-')}">${app.status}</span></td>
-                    <td>
-                        ${renderEmployeeActionButtons(app)}
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function renderEmployeeActionButtons(app) {
-            if (app.status === "Applying") {
-                return `
-                    <button class="btn btn-warning" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'schedule')">Schedule Interview</button>
-                    <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'reject')">Reject</button>
-                `;
-            } else if (app.status === "Interview Accepted") {
-                return `
-                    <button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'final-accept')">Final Acceptance</button>
-                    <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'final-reject')">Final Rejection</button>
-                `;
-            } else if (app.status === "Awaiting Payment") {
-                return `
-                    <button class="btn btn-primary" style="padding:4px 8px; font-size:0.75rem; background: var(--success);" onclick="promptPaymentModal('${app.id}')">Process $300 Fee</button>
-                `;
-            } else if (app.status === "Visa Granted") {
-                return `
-                    <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.75rem; background:#475569;" onclick="generateVisaReceipt('${app.id}')">Print Visa Receipt</button>
-                    <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'suspend')">Suspend Visa</button>
-                `;
-            } else if (app.status === "Suspended") {
-                return `
-                    <button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="processEmployeeAction('${app.id}', 'unsuspend')">Lift Suspension</button>
-                `;
-            }
-            return `<span style="color: var(--text-light); font-size:0.8rem;">No Actions Pending</span>`;
-        }
-
-        function showHistoryLogs(id) {
-            const app = applications.find(a => a.id === id);
+        function executeEmployeeGrantSequence(id) {
+            const app = DB.applications.find(a => a.id === id);
             if(!app) return;
-
-            document.getElementById("historicalLogContainer").style.display = "block";
-            document.getElementById("historyTitle").textContent = `Case File Tracking: ${app.firstName} ${app.lastName} (#${app.id})`;
             
-            const tbody = document.querySelector("#historyTable tbody");
-            tbody.innerHTML = "";
-            
-            app.history.forEach(h => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td style="color: var(--text-light); font-size:0.8rem;">${h.time}</td>
-                        <td><strong>${h.stage}</strong></td>
-                        <td>${h.status}</td>
-                        <td style="font-style: italic;">"${h.note}"</td>
-                    </tr>
-                `;
-            });
-        }
+            const selectedClass = document.getElementById('emp-change-visatype').value;
+            app.visaTypeIssued = selectedClass;
 
-        // Layer Action Matrix Workflows
-        function processEmployeeAction(id, action) {
-            const app = applications.find(a => a.id === id);
-            if(!app) return;
-
-            if (action === 'schedule') {
-                app.status = "Interview Scheduled";
-                app.history.push({ time: getTimestamp(), stage: "Layer 1: Core Review", status: "Approved", note: "Documents verified. Shifted to Interview Queue." });
-            } else if (action === 'reject') {
-                app.status = "Rejected";
-                app.history.push({ time: getTimestamp(), stage: "Layer 1: Core Review", status: "Rejected", note: "Application failed initial embassy criteria parameters." });
-            } else if (action === 'final-accept') {
-                app.status = "Awaiting Payment";
-                app.history.push({ time: getTimestamp(), stage: "Layer 3: Final Adjudication", status: "Approved", note: "Final validation criteria met. Processing shifted to treasury collection." });
-            } else if (action === 'final-reject') {
-                app.status = "Rejected";
-                app.history.push({ time: getTimestamp(), stage: "Layer 3: Final Adjudication", status: "Rejected", note: "Embassy senior management overview rejected the operational record." });
-            } else if (action === 'suspend') {
-                app.status = "Suspended";
-                app.history.push({ time: getTimestamp(), stage: "Post-Issuance Control", status: "Enforced", note: "Security warning protocol triggered: Visa has been suspended." });
-            } else if (action === 'unsuspend') {
+            triggerConfirmModal("Collect Visa Issuance Fee", `Confirm receipt of standard cash/wire transaction handling fee of $${DB.visaFees} USD?`, () => {
+                app.feesPaid = true;
                 app.status = "Visa Granted";
-                app.history.push({ time: getTimestamp(), stage: "Post-Issuance Control", status: "Restored", note: "Security clearance validated. Suspension revoked." });
+                app.history.push(`Visa type final choice matched to: ${selectedClass}. Fee parsing completed. State parameter set to GRANTED.`);
+                commitMemory();
+                renderEmployeeTable();
+                selectEmployeeApplicant(id);
+                generateVisaPrintout(id);
+            });
+        }
+
+        function toggleSuspension(id, suspendState) {
+            const app = DB.applications.find(a => a.id === id);
+            if(!app) return;
+            app.status = suspendState ? "Visa Suspended" : "Visa Granted";
+            app.history.push(suspendState ? "Visa status forced to SUSPENDED by executive command." : "Visa suspension rescinded.");
+            commitMemory();
+            renderEmployeeTable();
+            selectEmployeeApplicant(id);
+        }
+
+        function trackVisa(strategy) {
+            let res = null;
+            if(strategy === 1) {
+                const id = document.getElementById('track-id').value.trim();
+                res = DB.applications.find(a => a.id === id);
+            } else if(strategy === 2) {
+                const fn = document.getElementById('track-fn').value.trim().toLowerCase();
+                const ln = document.getElementById('track-ln').value.trim().toLowerCase();
+                const dob = document.getElementById('track-dob').value;
+                res = DB.applications.find(a => a.firstName.toLowerCase() === fn && a.lastName.toLowerCase() === ln && a.dob === dob);
+            } else if(strategy === 3) {
+                const dob = document.getElementById('track-dob2').value;
+                const pass = document.getElementById('track-pass').value.trim().toUpperCase();
+                res = DB.applications.find(a => a.dob === dob && a.passport === pass);
             }
 
-            showToast(`Record #${id} updated successfully.`);
-            renderAllTables();
-            showHistoryLogs(id);
-        }
-
-        // Payment Processing Module
-        function promptPaymentModal(id) {
-            const app = applications.find(a => a.id === id);
-            openModal(`
-                <h3>Treasury Cashier Desk Collection</h3>
-                <hr style="margin: 10px 0; border: 0; border-top: 1px solid var(--border);">
-                <p style="margin: 10px 0;">Applicant Profile: <strong>${app.firstName} ${app.lastName} (#${app.id})</strong></p>
-                <div style="background: #fffbeb; border-left: 4px solid var(--warning); padding: 12px; margin: 15px 0; font-size: 0.9rem;">
-                    <strong>Required Consular Fee:</strong> $300.00 USD (Non-refundable issuance premium)
-                </div>
-                <p style="font-size:0.9rem; margin-bottom: 20px;">Please confirm physical currency tender or secure digital payment settlement acceptance confirmation.</p>
-                <div style="display:flex; gap:10px; justify-content: flex-end;">
-                    <button class="btn btn-secondary" onclick="closeModal()">Cancel Payment Processing</button>
-                    <button class="btn btn-success" onclick="confirmPaymentReceived('${id}')">Confirm Receipt of Funds</button>
-                </div>
-            `);
-        }
-
-        function confirmPaymentReceived(id) {
-            const app = applications.find(a => a.id === id);
-            if(!app) return;
-
-            app.status = "Visa Granted";
-            app.history.push({ time: getTimestamp(), stage: "Financial Settlement", status: "Paid", note: "$300 USD cash/wire collection confirmed by system clerk." });
-            closeModal();
-            renderAllTables();
-            generateVisaReceipt(id);
-        }
-
-        // Generate Final Dynamic Visa Receipt
-        function generateVisaReceipt(id) {
-            const app = applications.find(a => a.id === id);
-            openModal(`
-                <div class="receipt-card">
-                    <div class="receipt-watermark">VISA GRANTED</div>
-                    <div class="receipt-header">
-                        <h2 style="border:0; margin:0; padding:0; display:block; text-align:center;">OFFICIAL IMMIGRATION RECEIPT</h2>
-                        <p style="font-size:0.8rem; color:var(--text-light); text-transform:uppercase; margin-top:5px;">Department of Consular Services</p>
+            const out = document.getElementById('tracking-results-pane');
+            if(res) {
+                out.innerHTML = `
+                    <div class="xp-panel" style="background:#ffffe1; border-color:#e6db55;">
+                        <b>Tracking Target Located Successfully</b><br>
+                        File Reference ID: #${res.id}<br>
+                        Applicant Name: ${res.firstName} ${res.lastName}<br>
+                        Current Internal System State: <span style="color:blue; font-weight:bold;">${res.status}</span>
                     </div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; font-size: 0.9rem;">
-                        <div><label>Application Reference</label><div style="font-weight:700;">#${app.id}</div></div>
-                        <div><label>Passport Serial Number</label><div style="font-weight:700; font-family:monospace;">${app.passport}</div></div>
-                        <div><label>Full Legal Name</label><div style="font-weight:600;">${app.firstName} ${app.lastName}</div></div>
-                        <div><label>Date of Birth</label><div>${app.dob}</div></div>
-                        <div><label>Declared Country</label><div>${app.nationality}</div></div>
-                        <div><label>Clearance Status</label><div style="color:var(--success); font-weight:700;">VALID / GRANTED</div></div>
-                    </div>
-                    <div style="margin-top:25px; padding-top:15px; border-top: 1px dashed var(--border); font-size:0.8rem; color:var(--text-light); text-align:center;">
-                        Premium Settlement: $300.00 USD Paid. <br>
-                        <em>Confidential internal review logs and process metrics are suppressed here.</em>
-                    </div>
-                </div>
-                <div style="text-align:center; margin-top:20px;">
-                    <button class="btn btn-primary" onclick="window.print()">Trigger Output Device Print</button>
-                </div>
-            `);
+                `;
+            } else {
+                out.innerHTML = `<div class="xp-panel" style="color:red;">QUERY MISMATCH: No applicant matching standard parameters.</div>`;
+            }
         }
 
-        // Interviewer Matrix Rendering
+        // --- PORTAL 3: INTERVIEWER ENGINE ---
         function renderInterviewerTable() {
-            const tbody = document.querySelector("#interviewerTable tbody");
-            tbody.innerHTML = "";
-
-            const targetApps = applications.filter(a => a.status === "Interview Scheduled");
-
-            if (targetApps.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-light);">No active applicants require operational processing interview assignment.</td></tr>`;
+            const tbody = document.getElementById('interviewer-table-body');
+            tbody.innerHTML = '';
+            
+            const pendingInt = DB.applications.filter(a => a.status === 'Pending Interview');
+            if(pendingInt.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="color:#777; text-align:center;">No processing files queued in pipeline.</td></tr>`;
                 return;
             }
 
-            targetApps.forEach(app => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td><strong>#${app.id}</strong></td>
-                    <td>${app.firstName} ${app.lastName}</td>
-                    <td>${app.nationality}</td>
-                    <td><span class="badge badge-interview-scheduled">${app.status}</span></td>
-                    <td>
-                        <div style="display:flex; gap:5px;">
-                            <input type="text" id="interv-notes-${app.id}" placeholder="Enter execution notes..." style="padding: 4px 8px; font-size:0.8rem;">
-                            <button class="btn btn-success" style="padding:4px 8px; font-size:0.75rem;" onclick="handleInterviewerDecision('${app.id}', 'accept')">Accept</button>
-                            <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="handleInterviewerDecision('${app.id}', 'reject')">Reject</button>
-                        </div>
-                    </td>
-                `;
+            pendingInt.forEach(a => {
+                let tr = document.createElement('tr');
+                tr.onclick = () => selectInterviewerApplicant(a.id);
+                tr.innerHTML = `<td>${a.id}</td><td>${a.firstName} ${a.lastName}</td><td>${a.nationality}</td><td><button class="xp-btn">Assess</button></td>`;
                 tbody.appendChild(tr);
             });
         }
 
-        function handleInterviewerDecision(id, decision) {
-            const app = applications.find(a => a.id === id);
-            const notesInput = document.getElementById(`interv-notes-${id}`);
-            const notes = notesInput ? notesInput.value.trim() : "";
+        function selectInterviewerApplicant(id) {
+            const app = DB.applications.find(a => a.id === id);
+            const pane = document.getElementById('interviewer-action-pane');
+            if(!app) return;
 
-            if (!notes) {
-                showToast("Error: Operational guidelines require review assessment notes before decision entry.");
-                return;
-            }
-
-            if (decision === 'accept') {
-                app.status = "Interview Accepted";
-                app.history.push({ time: getTimestamp(), stage: "Layer 2: Interview Panel", status: "Accepted", note: notes });
-            } else {
-                app.status = "Rejected";
-                app.history.push({ time: getTimestamp(), stage: "Layer 2: Interview Panel", status: "Rejected", note: notes });
-            }
-
-            showToast(`Interviewer evaluation committed for record #${id}.`);
-            renderAllTables();
-        }
-
-        // Global Multi-Tracking Search Algorithms
-        function executeTrack(optionType) {
-            let matches = [];
-            const resTableBody = document.querySelector("#trackResultsTable tbody");
-            resTableBody.innerHTML = "";
-            document.getElementById("trackingResultArea").style.display = "block";
-
-            if (optionType === 1) {
-                const idVal = document.getElementById("track-id-val").value.trim();
-                matches = applications.filter(a => a.id === idVal);
-            } else if (optionType === 2) {
-                const fn = document.getElementById("track-fn-val").value.trim().toLowerCase();
-                const ln = document.getElementById("track-ln-val").value.trim().toLowerCase();
-                const dob = document.getElementById("track-dob1-val").value;
-                matches = applications.filter(a => a.firstName.toLowerCase() === fn && a.lastName.toLowerCase() === ln && a.dob === dob);
-            } else if (optionType === 3) {
-                const dob = document.getElementById("track-dob2-val").value;
-                const pass = document.getElementById("track-pass-val").value.trim().toUpperCase();
-                matches = applications.filter(a => a.dob === dob && a.passport === pass);
-            }
-
-            if (matches.length === 0) {
-                resTableBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--danger);">No records match specified target matrix parameters.</td></tr>`;
-                return;
-            }
-
-            matches.forEach(app => {
-                resTableBody.innerHTML += `
-                    <tr>
-                        <td>#${app.id}</td>
-                        <td>${app.firstName} ${app.lastName}</td>
-                        <td>${app.passport}</td>
-                        <td><span class="badge badge-${app.status.toLowerCase().replace(/ /g, '-')}">${app.status}</span></td>
-                        <td><button class="btn btn-primary" style="padding:2px 6px; font-size:0.75rem;" onclick="showHistoryLogs('${app.id}')">View Activity Matrix</button></td>
-                    </tr>
-                `;
-            });
-        }
-
-        // Airport Border Protection Radar Interface Scan
-        function handleAirportScan() {
-            const passVal = document.getElementById("airport-search-passport").value.trim().toUpperCase();
-            const container = document.getElementById("airportResult");
-            container.style.display = "block";
-            container.innerHTML = "";
-
-            if (!passVal) {
-                container.innerHTML = `<div class="card" style="border-left: 4px solid var(--danger); background:#fef2f2; color:var(--danger)">Please swipe or type a valid passport identifier string.</div>`;
-                return;
-            }
-
-            const match = applications.find(a => a.passport === passVal);
-
-            if (!match) {
-                container.innerHTML = `
-                    <div class="card" style="border-left: 4px solid var(--danger); background: #fef2f2; padding: 20px;">
-                        <h3 style="color: var(--danger); margin:0 0 5px 0;">❌ FLAG WARNING: NO RECORD DETECTED</h3>
-                        <p style="font-size: 0.9rem;">The document number <strong>${passVal}</strong> holds no valid credentials or application logs inside this system network.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let statusColor = "var(--text-light)";
-            let statusText = match.status;
-            let subAlert = "Deny Boarding/Entry Immediately.";
-
-            if (match.status === "Visa Granted") {
-                statusColor = "var(--success)";
-                subAlert = "Clearance Confirmed. Allow Transit Tracking Entry.";
-            } else if (match.status === "Suspended") {
-                statusColor = "var(--danger)";
-                subAlert = "CRITICAL ALERT: IMMIGRATION VISA CURRENTLY SUSPENDED. HOLD FOR INTERROGATION.";
-            } else {
-                statusColor = "var(--warning)";
-                subAlert = `Hold Transit. Processing stage is currently incomplete. Current State: [${match.status}]`;
-            }
-
-            // Extract interviewer processing notes dynamically
-            let internalNotesHTML = "";
-            const interviewEvents = match.history.filter(h => h.stage.includes("Interview"));
-            if(interviewEvents.length > 0) {
-                internalNotesHTML = `<div style="margin-top:12px; background:#f1f5f9; padding:10px; border-radius:4px; font-size:0.85rem;">
-                    <strong>Historical Verification Desk Notes:</strong><br>
-                    ${interviewEvents.map(e => `"${e.note}" (Result: ${e.status})`).join('<br>')}
-                </div>`;
-            }
-
-            container.innerHTML = `
-                <div class="card" style="border-left: 6px solid ${statusColor}; background: #fafafa;">
-                    <h3 style="color: ${statusColor}; margin-bottom: 10px;">Security Profile Scan: ${match.firstName} ${match.lastName}</h3>
-                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:0.9rem;">
-                        <div><strong>Passport Number:</strong> ${match.passport}</div>
-                        <div><strong>Nationality:</strong> ${match.nationality}</div>
-                        <div><strong>Date of Birth:</strong> ${match.dob}</div>
-                        <div><strong>Status:</strong> <span class="badge badge-${match.status.toLowerCase().replace(/ /g, '-')}">${match.status}</span></div>
-                    </div>
-                    ${internalNotesHTML}
-                    <div style="margin-top:15px; font-weight:700; font-size:1rem; color:${statusColor};">
-                        Action Command: ${subAlert}
+            pane.innerHTML = `
+                <div class="xp-panel">
+                    <div class="xp-panel-title">Assessment Dossier: ${app.firstName} ${app.lastName}</div>
+                    <p><b>Passport Reference:</b> ${app.passport} | <b>Nationality:</b> ${app.nationality}</p>
+                    <p><b>Requested Visa Classification Type:</b> ${app.visaTypeRequested}</p>
+                    <label><b>Panel Decision Assessment Notes:</b></label><br>
+                    <textarea id="int-notes" class="xp-input" style="width:100%; margin-top:5px;" rows="3" placeholder="Input analytical metrics..."></textarea>
+                    
+                    <div style="margin-top:15px; display:flex; gap:10px;">
+                        <button class="xp-btn xp-btn-red" onclick="submitInterviewAssessment('${app.id}', false)">Deny Entry Clear (Reject)</button>
+                        <button class="xp-btn xp-btn-green" onclick="submitInterviewAssessment('${app.id}', true)">Pass Assessment (Accept)</button>
                     </div>
                 </div>
             `;
         }
 
-        // Administrative Access Layer Authentication
-        function handleAdminLogin() {
-            const user = document.getElementById("adm-user").value;
-            const pass = document.getElementById("adm-pass").value;
+        function submitInterviewAssessment(id, passed) {
+            const app = DB.applications.find(a => a.id === id);
+            if(!app) return;
+            const notes = document.getElementById('int-notes').value;
 
-            if (user === 'admin' && pass === 'admin') {
-                document.getElementById("admin-login-block").style.display = "none";
-                document.getElementById("admin-panel-block").style.display = "block";
-                showToast("Admin access privileges authorized successfully.");
-            } else {
-                showToast("Access Denied: Invalid configuration credentials.");
+            app.status = passed ? "Interview Accepted" : "Rejected";
+            app.history.push(`Interview concluded. Status outcome resolution: ${app.status}. Evaluation text: "${notes}"`);
+            commitMemory();
+            
+            document.getElementById('interviewer-action-pane').innerHTML = `<p style="color:green; font-weight:bold;">Assessment logged successfully.</p>`;
+            renderInterviewerTable();
+            renderEmployeeTable();
+        }
+
+        // --- PORTAL 4: AIRPORT SECURITY ENTRY ---
+        function airportLookup() {
+            const pNo = document.getElementById('airport-search-passport').value.trim().toUpperCase();
+            const out = document.getElementById('airport-results');
+            if(!pNo) return;
+
+            const matches = DB.applications.filter(a => a.passport === pNo);
+            if(matches.length === 0) {
+                out.innerHTML = `<div style="background:#fce4d6; padding:10px; border:1px solid #c00; color:#c00; font-weight:bold;">🚨 BORDER SECURITY CRITICAL: Passport mismatch.</div>`;
+                return;
             }
+
+            let html = '';
+            matches.forEach(m => {
+                let statusColor = m.status === 'Visa Granted' ? 'green' : 'red';
+                let typeObj = DB.visaTypes.find(t => t.name === m.visaTypeIssued) || { validity: "N/A", entries: "N/A", allowedDays: "N/A" };
+                
+                html += `
+                    <div class="xp-panel" style="border-left: 5px solid ${statusColor};">
+                        <strong>File Status: <span style="color:${statusColor}; text-transform:uppercase;">${m.status}</span></strong><br>
+                        <strong>Applicant:</strong> ${m.firstName} ${m.lastName}<br>
+                        <strong>Visa Profile:</strong> ${m.visaTypeIssued || m.visaTypeRequested}<br>
+                        <strong>Visa Validity Constraints:</strong> Total Validity: ${typeObj.validity} | ${typeObj.entries} | Max ${typeObj.allowedDays} Days Per Stay Entry<br>
+                        <strong>System Audit Logs & Notes:</strong>
+                        <div style="background:#eee; padding:5px; font-size:11px; margin-top:5px; max-height:80px; overflow-y:auto;">
+                            ${m.history.map(h => `<div>• ${h}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            out.innerHTML = html;
+        }
+
+        // --- PORTAL 5: ADMINISTRATIVE ARCHITECTURE ---
+        function switchAdminTab(tab) {
+            ['adm-tab-global', 'adm-tab-nat', 'adm-tab-ex', 'adm-tab-types', 'adm-tab-statuses'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            ['tab-adm-global-btn', 'tab-adm-nat-btn', 'tab-adm-ex-btn', 'tab-adm-types-btn', 'tab-adm-statuses-btn'].forEach(id => document.getElementById(id).classList.remove('active'));
+            
+            document.getElementById('adm-tab-' + tab).classList.remove('hidden');
+            document.getElementById('tab-adm-' + tab + '-btn').classList.add('active');
+        }
+
+        function refreshAdminInterface() {
+            document.getElementById('adm-fee-input').value = DB.visaFees;
+            document.getElementById('adm-extra-msg-text').value = DB.extraMessage;
+
+            // Load Status Words Variables Mapping
+            document.getElementById('sw-processing').value = DB.statusWords.processing;
+            document.getElementById('sw-granted').value = DB.statusWords.granted;
+            document.getElementById('sw-rejected').value = DB.statusWords.rejected;
+            document.getElementById('sw-interview').value = DB.statusWords.interview;
+
+            // Render Portals Credentials Grid with Editable & Deletable Row Commands
+            const credTbody = document.getElementById('admin-credentials-table');
+            credTbody.innerHTML = '';
+            Object.keys(DB.credentials).forEach(key => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${key.toUpperCase()}</b></td>
+                    <td><input type="text" class="xp-input" value="${DB.credentials[key].user}" id="cred-u-${key}"></td>
+                    <td><input type="text" class="xp-input" value="${DB.credentials[key].pass}" id="cred-p-${key}"></td>
+                    <td>
+                        <button class="xp-btn xp-btn-green" onclick="saveIndividualCredential('${key}')">Save</button>
+                        <button class="xp-btn xp-btn-red" onclick="deleteIndividualCredential('${key}')">Delete</button>
+                    </td>
+                `;
+                credTbody.appendChild(tr);
+            });
+
+            // Render Monitored Nationalities List
+            const natUl = document.getElementById('adm-extra-list');
+            natUl.innerHTML = '';
+            DB.extraApprovalCountries.forEach(c => {
+                let li = document.createElement('li');
+                li.innerHTML = `${c} <a href="#" style="color:red; font-size:11px; font-weight:bold;" onclick="removeExtraCountry('${c}')">[Remove]</a>`;
+                natUl.appendChild(li);
+            });
+
+            // Render Exempt Nationalities List
+            const exUl = document.getElementById('adm-exempt-list');
+            exUl.innerHTML = '';
+            DB.exemptCountries.forEach(c => {
+                let li = document.createElement('li');
+                li.innerHTML = `${c} <a href="#" style="color:red; font-size:11px; font-weight:bold;" onclick="removeExemptCountry('${c}')">[Remove]</a>`;
+                exUl.appendChild(li);
+            });
+
+            // Render Visa Type Schemes Table Model Matrix
+            const vtTbody = document.getElementById('admin-visatypes-table');
+            vtTbody.innerHTML = '';
+            DB.visaTypes.forEach((v, idx) => {
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><b>${v.name}</b></td>
+                    <td>${v.validity}</td>
+                    <td>${v.entries}</td>
+                    <td>${v.allowedDays} Days</td>
+                    <td>
+                        <button class="xp-btn" onclick="editVisaTypeField(${idx})">Edit</button>
+                        <button class="xp-btn xp-btn-red" onclick="deleteVisaTypeField(${idx})">Delete</button>
+                    </td>
+                `;
+                vtTbody.appendChild(tr);
+            });
+            renderCustomerVisaTypesMenu();
+        }
+
+        function saveVisaFee() {
+            DB.visaFees = parseInt(document.getElementById('adm-fee-input').value) || 0;
+            commitMemory();
+            triggerAlertModal("Update complete", "Standard financial ledger fee configurations updated.");
+        }
+
+        function saveStatusWords() {
+            DB.statusWords.processing = document.getElementById('sw-processing').value.trim();
+            DB.statusWords.granted = document.getElementById('sw-granted').value.trim();
+            DB.statusWords.rejected = document.getElementById('sw-rejected').value.trim();
+            DB.statusWords.interview = document.getElementById('sw-interview').value.trim();
+            commitMemory();
+            triggerAlertModal("Update complete", "Public user dashboard tracking phrasing variables synchronized successfully.");
+        }
+
+        function saveIndividualCredential(key) {
+            DB.credentials[key].user = document.getElementById(`cred-u-${key}`).value;
+            DB.credentials[key].pass = document.getElementById(`cred-p-${key}`).value;
+            commitMemory();
+            triggerAlertModal("Update complete", `Security parameters modified for [${key.toUpperCase()}] target map.`);
+        }
+
+        function deleteIndividualCredential(key) {
+            triggerConfirmModal("Remove Credential Target Row", `Are you sure you want to completely erase the credentials for portal profile "${key}"?`, () => {
+                delete DB.credentials[key];
+                commitMemory();
+                refreshAdminInterface();
+            });
+        }
+
+        function addNewCredential() {
+            const key = document.getElementById('adm-new-cred-key').value.trim().toLowerCase();
+            const u = document.getElementById('adm-new-cred-u').value.trim();
+            const p = document.getElementById('adm-new-cred-p').value.trim();
+            if(!key || !u || !p) {
+                triggerAlertModal("Error", "All input cells must contain data.");
+                return;
+            }
+            DB.credentials[key] = { user: u, pass: p };
+            commitMemory();
+            refreshAdminInterface();
+            document.getElementById('adm-new-cred-key').value = '';
+            document.getElementById('adm-new-cred-u').value = '';
+            document.getElementById('adm-new-cred-p').value = '';
+        }
+
+        function saveExtraMsg() {
+            DB.extraMessage = document.getElementById('adm-extra-msg-text').value;
+            commitMemory();
+            triggerAlertModal("Update complete", "Surveillance alert banner text parameters synchronized.");
+        }
+
+        function addExtraApprovalCountry() {
+            const c = document.getElementById('adm-add-extra-sel').value;
+            if(c && !DB.extraApprovalCountries.includes(c)) {
+                DB.extraApprovalCountries.push(c);
+                commitMemory();
+                refreshAdminInterface();
+            }
+        }
+
+        function removeExtraCountry(c) {
+            DB.extraApprovalCountries = DB.extraApprovalCountries.filter(x => x !== c);
+            commitMemory();
+            refreshAdminInterface();
+        }
+
+        function addExemptCountry() {
+            const c = document.getElementById('adm-add-exempt-sel').value;
+            if(c && !DB.exemptCountries.includes(c)) {
+                DB.exemptCountries.push(c);
+                commitMemory();
+                refreshAdminInterface();
+            }
+        }
+
+        function removeExemptCountry(c) {
+            DB.exemptCountries = DB.exemptCountries.filter(x => x !== c);
+            commitMemory();
+            refreshAdminInterface();
+        }
+
+        // VISA TYPES MATRIX MANAGEMENT METHODS
+        let selectedVisaTypeEditIndex = null;
+        function saveVisaType() {
+            const name = document.getElementById('vt-name').value.trim();
+            const val = document.getElementById('vt-val').value.trim();
+            const ent = document.getElementById('vt-entries').value;
+            const days = document.getElementById('vt-days').value.trim();
+
+            if(!name || !val || !days) {
+                triggerAlertModal("Error", "Please input parameters across all fields.");
+                return;
+            }
+
+            const payload = { name: name, validity: val, entries: ent, allowedDays: days };
+
+            if(selectedVisaTypeEditIndex !== null) {
+                DB.visaTypes[selectedVisaTypeEditIndex] = payload;
+                selectedVisaTypeEditIndex = null;
+            } else {
+                DB.visaTypes.push(payload);
+            }
+
+            commitMemory();
+            refreshAdminInterface();
+            
+            document.getElementById('vt-name').value = '';
+            document.getElementById('vt-val').value = '';
+            document.getElementById('vt-days').value = '';
+        }
+
+        function editVisaTypeField(idx) {
+            const target = DB.visaTypes[idx];
+            document.getElementById('vt-name').value = target.name;
+            document.getElementById('vt-val').value = target.validity;
+            document.getElementById('vt-entries').value = target.entries;
+            document.getElementById('vt-days').value = target.allowedDays;
+            selectedVisaTypeEditIndex = idx;
+        }
+
+        function deleteVisaTypeField(idx) {
+            triggerConfirmModal("Delete Confirmation", "Erase this Visa type formulation configuration?", () => {
+                DB.visaTypes.splice(idx, 1);
+                commitMemory();
+                refreshAdminInterface();
+            });
+        }
+
+        // SYSTEM PURGE ARCHITECTURE COMMAND IMPLEMENTATIONS
+        function triggerApplicantsReset() {
+            triggerConfirmModal("⚠️ APPLICANTS DATA PURGE", "Are you sure you want to completely drop all visa applicant rows? This cannot be undone.", () => {
+                DB.applications = [];
+                commitMemory();
+                renderEmployeeTable();
+                renderInterviewerTable();
+                refreshAdminInterface();
+                document.getElementById('emp-details-pane').innerHTML = `<p style="color:orange;">Applicant records purged successfully.</p>`;
+                triggerAlertModal("Action Executed", "Applicant processing tracking structures cleared from memory.");
+            });
+        }
+
+        function triggerMasterReset() {
+            triggerConfirmModal("🔥 CRITICAL DESTRUCTIVE PURGE: MASTER SYSTEM RESET", "This will instantly delete ALL data from Local Storage, including all custom configurations, credentials, visa types, and applicant tracking files.", () => {
+                localStorage.removeItem('GLOBAL_VISA_SYSTEM_STORAGE');
+                initializePersistentMemory();
+                populateCountryDropdowns();
+                renderCustomerVisaTypesMenu();
+                refreshAdminInterface();
+                renderEmployeeTable();
+                renderInterviewerTable();
+                switchPortal('customer');
+                triggerAlertModal("Master Reset Done", "System variable structural memory initialized back to production defaults.");
+            });
+        }
+
+        // --- PORTAL 6: PASSPORT CERTIFICATE SLIP SLATE OUTPUT GENERATOR ---
+        function generateVisaPrintout(id) {
+            const app = DB.applications.find(a => a.id === id);
+            if(!app) return;
+
+            let isSuspended = app.status === "Visa Suspended";
+            const currentIssuedTypeObj = DB.visaTypes.find(t => t.name === app.visaTypeIssued) || { validity: "N/A", entries: "N/A", allowedDays: "N/A" };
+
+            const out = document.getElementById('printable-certificate');
+            out.innerHTML = `
+                <div class="cert-stamp ${isSuspended ? 'suspended' : ''}">${isSuspended ? 'REVOKED / SUSPENDED' : 'VISA GRANTED'}</div>
+                <div class="cert-header">
+                    <h1 style="margin:0; color:#2c3e50;">GLOBAL VISA ISSUANCE SYSTEM</h1>
+                    <p style="margin:5px 0 0 0; font-style:italic;">Official Consular Authorization Document</p>
+                </div>
+                <div class="cert-body">
+                    <div class="cert-row"><div class="cert-label">Visa File Reference ID</div><div class="cert-value" style="font-weight:bold; color:#0054E3;">#${app.id}</div></div>
+                    <div class="cert-row"><div class="cert-label">First Name</div><div class="cert-value">${app.firstName}</div></div>
+                    <div class="cert-row"><div class="cert-label">Last Name</div><div class="cert-value">${app.lastName}</div></div>
+                    <div class="cert-row"><div class="cert-label">Date of Birth</div><div class="cert-value">${app.dob}</div></div>
+                    <div class="cert-row"><div class="cert-label">Nationality Origin</div><div class="cert-value">${app.nationality}</div></div>
+                    <div class="cert-row"><div class="cert-label">Passport Number</div><div class="cert-value" style="font-family:monospace; font-weight:bold;">${app.passport}</div></div>
+                    
+                    <div style="margin:20px 0; padding:15px; background:#f9f9f9; border:1px solid #ddd;">
+                        <div class="cert-row" style="border:none;"><div class="cert-label">Granted Visa Scheme:</div><div class="cert-value" style="font-weight:bold;">${app.visaTypeIssued}</div></div>
+                        <div class="cert-row" style="border:none;"><div class="cert-label">Visa Document Validity:</div><div class="cert-value">${currentIssuedTypeObj.validity}</div></div>
+                        <div class="cert-row" style="border:none;"><div class="cert-label">Entry Parameter Rule:</div><div class="cert-value">${currentIssuedTypeObj.entries}</div></div>
+                        <div class="cert-row" style="border:none;"><div class="cert-label">Allowed Stay Length:</div><div class="cert-value">${currentIssuedTypeObj.allowedDays} Days max per entry</div></div>
+                    </div>
+
+                    <div class="cert-row"><div class="cert-label">Planned Arrival Date</div><div class="cert-value">${app.plannedArrival}</div></div>
+                    <div class="cert-row"><div class="cert-label">Planned Departure Date</div><div class="cert-value">${app.plannedDeparture}</div></div>
+                    <div class="cert-row"><div class="cert-label">Consular Fee Tariff</div><div class="cert-value">$${DB.visaFees} USD (PAID & CONFIRMED)</div></div>
+                </div>
+                <p style="margin-top:40px; font-size:11px; color:#999; text-align:center;">This clearance document remains the property of the host government and can be suspended digitally at border stations anytime.</p>
+            `;
+
+            switchPortal('printout');
         }
     </script>
 </body>

@@ -661,11 +661,17 @@
 
         // --- ROUTING ENGINE VIA WINDOW STATE DOM CONFIG ---
         function switchPortal(portalId) {
-            ['portal-customer', 'portal-staff-login-select', 'xp-login-dialog', 'portal-employee', 'portal-interviewer', 'portal-airport', 'portal-admin', 'portal-printout'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById('portal-' + portalId).classList.remove('hidden');
-        }
+    ['portal-customer', 'portal-staff-login-select', 'xp-login-dialog', 'portal-employee', 'portal-interviewer', 'portal-airport', 'portal-admin', 'portal-printout'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('hidden');
+    });
+    
+    // Check both with and without the 'portal-' prefix to prevent null crashes
+    let target = document.getElementById(portalId) || document.getElementById('portal-' + portalId);
+    if (target) {
+        target.classList.remove('hidden');
+    }
+}
 
         function showLoginModal(targetPortal) {
             DB.currentActivePortalLoginTarget = targetPortal;

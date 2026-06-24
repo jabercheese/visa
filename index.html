@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Visa Application & Management System</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Classic Windows XP Styles applied via class namespaces */
+        .xp-window {
+            background: #ece9d8;
+            border: 3px solid #0054e3;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            box-shadow: 4px 4px 10px rgba(0,0,0,0.3);
+        }
+        .xp-titlebar {
+            background: linear-gradient(to bottom, #0058e6 0%, #004cb3 8%, #0054e3 25%, #0062e6 70%, #004cb3 100%);
+            color: white;
+            font-family: "Tahoma", sans-serif;
+            text-shadow: 1px 1px #002266;
+        }
+        .xp-titlebar-btn {
+            background: linear-gradient(to bottom, #e66045 0%, #cc3d1f 100%);
+            border: 1px solid #7a1a05;
+            box-shadow: inset 1px 1px 1px rgba(255,255,255,0.4);
+        }
+        .xp-btn {
+            background: linear-gradient(to bottom, #ffffff 0%, #eaeaea 30%, #dcdcdc 70%, #c6c6c6 100%);
+            border: 1px solid #707070;
+            box-shadow: inset 1px 1px 0px #fff;
+            color: #000;
+            font-family: "Tahoma", sans-serif;
+        }
+        .xp-btn:active {
+            background: linear-gradient(to bottom, #c6c6c6 0%, #dcdcdc 30%, #eaeaea 70%, #ffffff 100%);
+        }
+        .xp-panel {
+            background-color: #fff;
+            border: 2px inset #fff;
+        }
+        .xp-tab {
+            background: #dcdcdc;
+            border: 1px solid #999;
+            border-bottom: none;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+        .xp-tab.active {
+            background: #ece9d8;
+            border-color: #0054e3;
+            font-weight: bold;
+            padding-bottom: 2px;
+            margin-bottom: -1px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- Primary Content Wrapper -->
+    <div class="w-full">
+        <!-- Top Navigation Bar (Stays standard for Customer Portal look) -->
+        <header id="standardHeader" class="bg-slate-900 text-white shadow-md px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wide flex items-center gap-2">
+                <span>🌐</span> Global Visa System
+            </h1>
+            <div class="flex items-center gap-4">
+                <span id="currentPortalLabel" class="bg-blue-600 text-xs px-3 py-1 rounded-full font-semibold uppercase">Customer Portal</span>
+                <button onclick="logout()" id="logoutBtn" class="hidden bg-red-600 hover:bg-red-700 text-white text-xs px-3 py-1 rounded transition">Logout / Exit XP</button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="max-w-7xl mx-auto p-4 md:p-6">
+
+            <!-- ========================================== -->
+            <!-- 1. CUSTOMER PORTAL (STANDARD WEB LOOK) -->
+            <!-- ========================================== -->
+            <section id="portal-customer" class="portal-view bg-white p-6 rounded-xl shadow-sm border border-slate-200 max-w-4xl mx-auto my-4">
+                <h2 class="text-xl font-bold mb-6 text-slate-800 border-b pb-3 flex justify-between items-center">
+                    <span>📄 Visa Application Submission Form</span>
+                    <span class="text-xs font-normal text-slate-500">Applicant Intake Terminal</span>
+                </h2>
+                
+                <form id="visaForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Nationality</label>
+                            <select id="appNationality" onchange="evaluateNationalityRule()" required class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-1 focus:ring-blue-500">
+                                <option value="">-- Select Country --</option>
+                                <!-- Populated by JavaScript -->
+                            </select>
+                            
+                            <!-- Dynamic Rules Notification Boxes -->
+                            <div id="extraApprovalNotice" class="hidden mt-2 p-3 bg-amber-50 border border-amber-300 text-amber-900 rounded text-sm font-medium">
+                                ⚠️ <span id="noticeTextPlaceholder">Visa processing time could take longer than usual for this nationality.</span>
+                            </div>
+                            <div id="exemptNotice" class="hidden mt-2 p-3 bg-emerald-50 border border-emerald-300 text-emerald-950 rounded text-sm font-bold">
+                                🎉 Good News: Citizens of this country are completely visa-exempt! No application is required to enter.
+                            </div>
+                        </div>
+
+                        <!-- Form inputs bundle grouped for easy blocking/blanking -->
+                        <div id="formFieldsBlock" class="grid grid-cols-1 md:grid-cols-2 gap-4 md:col-span-2">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+                                <input type="text" id="appFirstname" required class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+                                <input type="text" id="appLastname" required class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Passport Number (6 Characters)</label>
+                                <input type="text" id="appPassport" minlength="6" maxlength="6" placeholder="A12345" required class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-1 focus:ring-blue-500 uppercase">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Date of Birth</label>
+                                <input type="date" id="appDob" required class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-1 focus:ring-blue-500">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Applicant Notes / Purpose of Travel</label>
+                                <textarea id="appNotes" rows="3" placeholder="Provide extra background details or reasons for travel..." class="w-full px-3 py-2 border border-slate-300 rounded focus:ring-1 focus:ring-blue-500"></textarea>
+                            </div>
+                            <div class="md:col-span-2">
+                                <button type="submit" id="submitAppBtn" class="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition">
+                                    Submit Application
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- ========================================== -->
+            <!-- STAFF WORKSPACES (WINDOWS XP THEMED Windows) -->
+            <!-- ========================================== -->
+
+            <!-- LOGIN MODAL (XP Variant) -->
+            <div id="loginModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+                <div class="xp-window w-full max-w-md">
+                    <div class="xp-titlebar px-3 py-1 flex justify-between items-center text-sm font-bold">
+                        <span class="flex items-center gap-1">🔑 Log On to Windows</span>
+                        <button onclick="closeLoginModal()" class="xp-titlebar-btn text-white px-2 font-mono text-xs rounded shadow-xs">X</button>
+                    </div>
+                    <div class="p-4 space-y-4 text-xs font-mono">
+                        <p class="text-slate-700 font-bold">Please select your credentials to access portal parameters (<span id="loginTargetRole" class="text-blue-800"></span>):</p>
+                        <div class="space-y-2">
+                            <div>
+                                <label class="block font-bold mb-1">User name:</label>
+                                <input type="text" id="loginUser" class="w-full px-2 py-1 border border-slate-400 bg-white text-sm">
+                            </div>
+                            <div>
+                                <label class="block font-bold mb-1">Password:</label>
+                                <input type="password" id="loginPass" class="w-full px-2 py-1 border border-slate-400 bg-white text-sm">
+                            </div>
+                            <div id="loginError" class="text-red-700 font-bold hidden">❌ Authentication failed. Wrong credentials.</div>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button onclick="closeLoginModal()" class="xp-btn px-4 py-1 text-xs font-bold shadow-xs">Cancel</button>
+                            <button onclick="submitLogin()" class="xp-btn px-4 py-1 text-xs font-bold font-semibold shadow-xs">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. EMBASSY EMPLOYEE PORTAL (XP) -->
+            <section id="portal-employee" class="portal-view hidden xp-window max-w-6xl mx-auto my-4">
+                <div class="xp-titlebar px-3 py-1.5 flex justify-between items-center text-sm font-bold">
+                    <span>🏢 Embassy Management Console v5.1 (Active Session)</span>
+                    <button onclick="logout()" class="xp-titlebar-btn px-2 rounded">X</button>
+                </div>
+                <div class="p-4 bg-[#ece9d8] text-xs font-mono space-y-4">
+                    <!-- Tab System Controls -->
+                    <div class="flex gap-1 border-b border-slate-400 pl-2">
+                        <button onclick="switchEmployeeTab('directory')" id="tabBtn-directory" class="xp-tab active px-3 py-1.5">Applicant Directory Index</button>
+                        <button onclick="switchEmployeeTab('tracking')" id="tabBtn-tracking" class="xp-tab px-3 py-1.5">Advanced Parameter Tracking</button>
+                    </div>
+
+                    <!-- XP Tab 1: Directory -->
+                    <div id="empTab-directory" class="space-y-4">
+                        <div class="flex items-center gap-2 bg-[#f1efe2] p-2 border border-white">
+                            <span>🔍 Filter Database Records:</span>
+                            <input type="text" id="empSearch" oninput="renderEmployeeDirectory()" placeholder="Type Name or Passport Reference..." class="px-2 py-1 border bg-white w-64 text-xs">
+                        </div>
+                        <div class="xp-panel overflow-x-auto max-h-60">
+                            <table class="w-full text-left border-collapse bg-white">
+                                <thead>
+                                    <tr class="bg-slate-200 border-b border-slate-300 text-slate-700">
+                                        <th class="p-2 border-r">Applicant Profile Target</th>
+                                        <th class="p-2 border-r">Passport #</th>
+                                        <th class="p-2 border-r">Tracking Record ID</th>
+                                        <th class="p-2 border-r">Internal Workflow State</th>
+                                        <th class="p-2 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="directoryTableBody" class="divide-y divide-slate-100">
+                                    <!-- Populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- XP Tab 2: Advanced Tracker Component Matrix -->
+                    <div id="empTab-tracking" class="hidden space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div class="bg-[#f1efe2] p-3 border border-white rounded shadow-2xs">
+                                <span class="block font-bold text-blue-800 border-b pb-1 mb-2">Option 1: Tracking ID</span>
+                                <input type="text" id="trackOpt1" placeholder="e.g., 48291" class="w-full px-2 py-1 border bg-white text-xs mb-2">
+                                <button onclick="executeTrack(1)" class="xp-btn w-full py-1 text-xs">Query Database ID</button>
+                            </div>
+                            <div class="bg-[#f1efe2] p-3 border border-white rounded shadow-2xs">
+                                <span class="block font-bold text-blue-800 border-b pb-1 mb-2">Option 2: Name + DOB</span>
+                                <input type="text" id="trackOpt2First" placeholder="First Name" class="w-full px-2 py-1 border bg-white text-xs mb-1">
+                                <input type="text" id="trackOpt2Last" placeholder="Last Name" class="w-full px-2 py-1 border bg-white text-xs mb-1">
+                                <input type="date" id="trackOpt2Dob" class="w-full px-2 py-1 border bg-white text-xs mb-2">
+                                <button onclick="executeTrack(2)" class="xp-btn w-full py-1 text-xs">Match Records</button>
+                            </div>
+                            <div class="bg-[#f1efe2] p-3 border border-white rounded shadow-2xs">
+                                <span class="block font-bold text-blue-800 border-b pb-1 mb-2">Option 3: DOB + Passport</span>
+                                <input type="date" id="trackOpt3Dob" class="w-full px-2 py-1 border bg-white text-xs mb-1">
+                                <input type="text" id="trackOpt3Pass" placeholder="Passport No." class="w-full px-2 py-1 border bg-white text-xs mb-2 uppercase">
+                                <button onclick="executeTrack(3)" class="xp-btn w-full py-1 text-xs">Verify Credentials</button>
+                            </div>
+                        </div>
+                        <div id="trackingResultArea" class="hidden bg-white p-3 border inset-2"></div>
+                    </div>
+
+                    <!-- Profile Inspector Panel Workspace -->
+                    <div id="profileInspector" class="hidden bg-[#f1efe2] p-4 border border-white rounded">
+                        <div class="flex justify-between items-start border-b border-slate-300 pb-2 mb-3">
+                            <div>
+                                <h3 class="text-sm font-bold text-blue-900">👤 Target Registry Explorer: <span id="inspectName"></span></h3>
+                                <p class="text-[11px] text-slate-600">Passport: <span id="inspectPassport" class="font-bold"></span> | DOB: <span id="inspectDob"></span> | Nationality: <span id="inspectNationality"></span></p>
+                            </div>
+                            <button onclick="closeInspector()" class="xp-btn px-2 text-[10px]">✕ Clear Workspace</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div class="lg:col-span-2 bg-white p-3 border border-slate-300">
+                                <h4 class="font-bold text-slate-700 border-b pb-1 mb-2">Active Document Pipeline Lifecycle States</h4>
+                                <div class="text-[11px] space-y-1 mb-3 bg-slate-50 p-2 border">
+                                    <p><strong>Tracking Number Token:</strong> #<span id="inspectAppNum"></span></p>
+                                    <p><strong>System Stage State:</strong> <span id="inspectAppStatus" class="font-bold text-blue-700 uppercase"></span></p>
+                                    <p><strong>Applicant Raw Form Note Box:</strong> <span id="inspectUserNotes" class="italic text-slate-600"></span></p>
+                                </div>
+
+                                <!-- Actions Dispatcher Block -->
+                                <div id="layer1Actions" class="hidden bg-[#ece9d8] p-2 border border-slate-300">
+                                    <p class="font-bold text-slate-700 mb-2">Layer 1 Directives Checklist:</p>
+                                    <div class="flex gap-2">
+                                        <button onclick="processL1('reject')" class="xp-btn px-3 py-1 text-red-700 font-bold">Reject Application Instantly</button>
+                                        <button onclick="processL1('schedule')" class="xp-btn px-3 py-1 text-blue-800 font-bold">Authorize Embassy Interview Window</button>
+                                    </div>
+                                </div>
+
+                                <div id="layer2Actions" class="hidden p-3 bg-blue-50 text-blue-900 border text-[11px]">
+                                    ⏳ Processing State: Document routed to Layer 2 Interviewer Panel queue parameters.
+                                </div>
+
+                                <div id="layer3Actions" class="hidden space-y-2 bg-[#ece9d8] p-2 border border-slate-300">
+                                    <div class="p-2 bg-yellow-50 border text-slate-800 mb-2">
+                                        <strong>Interviewer Log Summary:</strong> <span id="inspectInterviewNotes" class="italic"></span>
+                                    </div>
+                                    <p class="font-bold text-slate-700 mb-1">Layer 3 Operational Resolution Checkpoint:</p>
+                                    <div class="flex gap-2">
+                                        <button onclick="processL3('reject')" class="xp-btn px-3 py-1 text-red-700 font-bold">Final Administrative Rejection</button>
+                                        <button onclick="processL3('accept')" class="xp-btn px-3 py-1 text-emerald-800 font-bold">Approve & Process Fee Collections</button>
+                                    </div>
+                                </div>
+
+                                <div id="grantedActions" class="hidden bg-emerald-50 p-2 border border-emerald-300">
+                                    <p class="text-emerald-800 font-bold text-center uppercase tracking-wide">✓ Visa Validation Issued</p>
+                                    <div class="flex justify-between items-center mt-2">
+                                        <button onclick="generateGrantedPage()" class="xp-btn px-3 py-1 font-bold">Print Secured Visa Certificate</button>
+                                        <button onclick="suspendVisa()" class="xp-btn px-3 py-1 text-orange-700 font-bold">Emergency Visa Suspension Override</button>
+                                    </div>
+                                </div>
+
+                                <div id="suspendedActions" class="hidden bg-red-100 p-2 border border-red-300">
+                                    <p class="text-red-700 font-bold text-center uppercase">⚠️ Visa Suspended / Blocked</p>
+                                    <button onclick="unsuspendVisa()" class="xp-btn w-full py-1 font-bold mt-2 text-slate-800">Lift Suspensions & Re-instate Status</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-white p-3 border border-slate-300">
+                                <h4 class="font-bold text-slate-500 border-b pb-1 mb-2">Account Registry Audit Streams</h4>
+                                <div id="inspectLogs" class="space-y-1 overflow-y-auto max-h-40 text-[10px]">
+                                    <!-- Log details injection element -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. INTERVIEWER PORTAL (XP) -->
+            <section id="portal-interviewer" class="portal-view hidden xp-window max-w-4xl mx-auto my-4">
+                <div class="xp-titlebar px-3 py-1 flex justify-between items-center text-sm font-bold">
+                    <span>👔 Interviewer Processing Module v1.0.4</span>
+                    <button onclick="logout()" class="xp-titlebar-btn px-2 rounded">X</button>
+                </div>
+                <div class="p-4 bg-[#ece9d8] text-xs font-mono space-y-4">
+                    <p class="text-slate-700 font-bold">Forwarded Applicant Rosters Pending Interview Evaluations:</p>
+                    <div class="xp-panel overflow-x-auto">
+                        <table class="w-full text-left bg-white border-collapse">
+                            <thead>
+                                <tr class="bg-slate-200 border-b">
+                                    <th class="p-2 border-r">App ID</th>
+                                    <th class="p-2 border-r">Full Applicant Name</th>
+                                    <th class="p-2 border-r">Declared Nationality</th>
+                                    <th class="p-2 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="interviewerTableBody" class="divide-y divide-slate-100">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Evaluation Sheet Modal Window component wrapper -->
+                    <div id="interviewWorksheet" class="hidden bg-white p-3 border border-slate-400 max-w-xl">
+                        <h4 class="font-bold text-blue-900 border-b pb-1 mb-2">Evaluate Application: #<span id="intWorksheetId"></span></h4>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block font-bold text-slate-700 mb-1">Evaluation Notes & Validation Logs:</label>
+                                <textarea id="intNotes" rows="3" class="w-full p-1 border bg-slate-50 text-xs focus:outline-none" placeholder="Provide background profile notes..."></textarea>
+                            </div>
+                            <div class="flex justify-end gap-2">
+                                <button onclick="submitInterviewResult('reject')" class="xp-btn px-3 py-1 text-red-700 font-bold">Reject Candidate</button>
+                                <button onclick="submitInterviewResult('accept')" class="xp-btn px-3 py-1 text-emerald-800 font-bold">Pass Candidate (Layer 3 Routing)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. AIRPORT BORDER CONTROL PORTAL (XP) -->
+            <section id="portal-airport" class="portal-view hidden xp-window max-w-3xl mx-auto my-4">
+                <div class="xp-titlebar px-3 py-1 flex justify-between items-center text-sm font-bold">
+                    <span>✈️ Terminal Customs Immigration Entry Subsystem</span>
+                    <button onclick="logout()" class="xp-titlebar-btn px-2 rounded">X</button>
+                </div>
+                <div class="p-4 bg-[#ece9d8] text-xs font-mono space-y-4">
+                    <div class="bg-white p-3 border border-slate-400 max-w-md">
+                        <label class="block font-bold mb-1 text-slate-700">Scan / Query Passport Code:</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="airportPassportInput" placeholder="6 chars" maxlength="6" class="px-2 py-1 border bg-slate-50 uppercase text-sm w-full font-mono tracking-wider">
+                            <button onclick="executeAirportLookup()" class="xp-btn px-4 font-bold whitespace-nowrap">Fetch Records</button>
+                        </div>
+                    </div>
+                    <div id="airportResult" class="hidden xp-panel p-3"></div>
+                </div>
+            </section>
+
+            <!-- 5. ADMIN CONTROL PANEL (XP WITH DUAL TAB LAYOUT) -->
+            <section id="portal-admin" class="portal-view hidden xp-window max-w-4xl mx-auto my-4">
+                <div class="xp-titlebar px-3 py-1 flex justify-between items-center text-sm font-bold">
+                    <span>⚙️ Administrative Master Control Registry Editor</span>
+                    <button onclick="logout()" class="xp-titlebar-btn px-2 rounded">X</button>
+                </div>
+                <div class="p-4 bg-[#ece9d8] text-xs font-mono space-y-4">
+                    
+                    <!-- Top Configuration Row -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#f1efe2] p-3 border border-white mb-2">
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Standard Visa Processing Fee (USD):</label>
+                            <div class="flex items-center">
+                                <span class="bg-slate-300 px-2 py-1 border border-r-0 border-slate-400 font-bold">$</span>
+                                <input type="number" id="adminFeeInput" class="px-2 py-1 border border-slate-400 bg-white text-xs w-24 font-bold">
+                                <button onclick="saveFeeConfig()" class="xp-btn px-3 py-1 text-[11px] ml-2 font-bold">Update Fee</button>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="block font-bold text-slate-700 mb-1">Portal Authentication Settings:</span>
+                            <div class="space-y-1 text-[11px]">
+                                <div class="grid grid-cols-3 gap-1 items-center">
+                                    <span>Employee:</span>
+                                    <input type="text" id="credEmpUser" class="p-0.5 border bg-white">
+                                    <input type="text" id="credEmpPass" class="p-0.5 border bg-white">
+                                </div>
+                                <div class="grid grid-cols-3 gap-1 items-center">
+                                    <span>Interviewer:</span>
+                                    <input type="text" id="credIntUser" class="p-0.5 border bg-white">
+                                    <input type="text" id="credIntPass" class="p-0.5 border bg-white">
+                                </div>
+                                <div class="grid grid-cols-3 gap-1 items-center">
+                                    <span>Airport:</span>
+                                    <input type="text" id="credAirUser" class="p-0.5 border bg-white">
+                                    <input type="text" id="credAirPass" class="p-0.5 border bg-white">
+                                </div>
+                            </div>
+                            <button onclick="saveCredentialsConfig()" class="xp-btn px-3 py-0.5 font-bold mt-2 text-[10px]">Commit Credentials</button>
+                        </div>
+                    </div>
+
+                    <!-- Admin Operational Tabs -->
+                    <div class="flex gap-1 border-b border-slate-400 pl-2">
+                        <button onclick="switchAdminTab('extraApproval')" id="adminTabBtn-extra" class="xp-tab active px-3 py-1.5">Tab 1: Extra Approval Screening Countries</button>
+                        <button onclick="switchAdminTab('exemptions')" id="adminTabBtn-exempt" class="xp-tab px-3 py-1.5">Tab 2: Visa Exemption Protocols</button>
+                    </div>
+
+                    <!-- Tab 1 Panel Workspace -->
+                    <div id="adminPanel-extraApproval" class="space-y-3 bg-white p-3 border border-t-0">
+                        <div class="bg-amber-50 p-2 border border-amber-300 text-amber-900 text-[11px]">
+                            <strong>Operational Function:</strong> Selected countries automatically fire a visual warning processing notice trace rule down onto the client user submission form intake pipeline viewport.
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Add Country Code Target to Watch List:</label>
+                            <div class="flex gap-2">
+                                <select id="adminExtraCountrySelect" class="p-1 border bg-slate-50 text-xs w-64"></select>
+                                <button onclick="addExtraApprovalCountry()" class="xp-btn px-4 py-1 font-bold text-xs">Flag Country</button>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Edit Pipeline Notification Warning Message Prompt:</label>
+                            <textarea id="adminExtraNoticeMessage" rows="2" class="w-full p-2 border bg-slate-50 text-xs focus:outline-none"></textarea>
+                            <button onclick="saveCustomNoticeMessage()" class="xp-btn px-4 py-1 text-xs font-bold mt-1">Save Customized Notice String</button>
+                        </div>
+                        <div>
+                            <span class="block font-bold text-slate-600 mb-1">Currently Tracked High Screening Nationalities:</span>
+                            <div id="extraApprovalListContainer" class="flex flex-wrap gap-2 pt-1">
+                                <!-- Dynamic country tags injection element -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2 Panel Workspace -->
+                    <div id="adminPanel-exemptions" class="hidden space-y-3 bg-white p-3 border border-t-0">
+                        <div class="bg-emerald-50 p-2 border border-emerald-300 text-emerald-950 text-[11px]">
+                            <strong>Operational Function:</strong> Configured countries listed here are immediately recognized as exempt. Selection blanks out and freezes input form processing down on the Customer Portal.
+                        </div>
+                        <div>
+                            <label class="block font-bold text-slate-700 mb-1">Grant Structural Visa Exemption Status:</label>
+                            <div class="flex gap-2">
+                                <select id="adminExemptCountrySelect" class="p-1 border bg-slate-50 text-xs w-64"></select>
+                                <button onclick="addExemptCountry()" class="xp-btn px-4 py-1 font-bold text-xs">Add Exemption Rule</button>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="block font-bold text-slate-600 mb-1">Exempted Country Registries:</span>
+                            <div id="exemptListContainer" class="flex flex-wrap gap-2 pt-1">
+                                <!-- Dynamic country tags injection element -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- PRINTED OFFICIAL GRANTED VISA PAGE TEMPLATE VIEW -->
+            <section id="portal-granted-view" class="portal-view hidden bg-white p-8 max-w-2xl mx-auto border-4 border-double border-slate-800 rounded shadow-md relative my-4">
+                <div class="absolute top-4 right-4 text-emerald-600 font-extrabold text-2xl border-4 border-emerald-600 p-2 transform rotate-12 select-none tracking-widest">
+                    VISA GRANTED
+                </div>
+                <div class="text-center border-b-2 border-slate-800 pb-4 mb-6">
+                    <h2 class="text-2xl font-black tracking-widest uppercase text-slate-950">Official Entry Clearance Visa</h2>
+                    <p class="text-xs font-mono mt-1 text-slate-500">Global Government Verification Certificate Document</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm font-mono text-slate-800">
+                    <div><span class="text-slate-400 block text-xs uppercase">Document Control Reference</span> <strong id="g_appNum" class="text-blue-700"></strong></div>
+                    <div><span class="text-slate-400 block text-xs uppercase">Passport Number</span> <strong id="g_passport"></strong></div>
+                    <div><span class="text-slate-400 block text-xs uppercase">Full Name of Bearer</span> <strong id="g_name"></strong></div>
+                    <div><span class="text-slate-400 block text-xs uppercase">Date of Birth</span> <strong id="g_dob"></strong></div>
+                    <div><span class="text-slate-400 block text-xs uppercase">Declared Nationality</span> <strong id="g_nationality"></strong></div>
+                    <div><span class="text-slate-400 block text-xs uppercase">Processing Receipt Fee</span> <strong id="g_fee"></strong></div>
+                </div>
+                <div class="mt-8 pt-4 border-t border-slate-200 text-[10px] font-mono text-slate-400 text-center">
+                    This document acts as an explicit digital permit indicator. Final entry is at the complete discretion of security officials at point of clearance.
+                    <button onclick="switchPortal('employee')" class="block mt-6 mx-auto bg-slate-900 text-white text-xs px-4 py-1.5 rounded-sm font-sans tracking-normal">Return to Workspace</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FOOTER: STAYS DOWN, OFFERS STAFF CONSOLE OVERLAYS -->
+    <!-- ========================================== -->
+    <footer class="w-full text-center py-4 bg-slate-800 border-t border-slate-700 text-slate-400 text-xs mt-12">
+        <p>© Global Visa Systems Core Architecture Int. Engine.</p>
+        <div class="mt-2">
+            <button onclick="toggleStaffMenu()" id="staffTogglerLink" class="text-blue-400 hover:text-blue-300 font-semibold underline cursor-pointer">
+                🔧 Staff Access Portal Gateway Login Log On
+            </button>
+        </div>
+        
+        <!-- Toggle Hidden Submenu Grid -->
+        <div id="staffMenuGrid" class="hidden max-w-3xl mx-auto mt-4 p-3 bg-slate-900 border border-slate-700 rounded-lg grid grid-cols-2 md:grid-cols-4 gap-2 text-center animate-fade-in">
+            <button onclick="showLoginModal('employee')" class="p-2 bg-slate-800 hover:bg-slate-700 rounded text-[11px] text-white font-mono">🏢 Embassy Desk</button>
+            <button onclick="showLoginModal('interviewer')" class="p-2 bg-slate-800 hover:bg-slate-700 rounded text-[11px] text-white font-mono">👔 Interview Room</button>
+            <button onclick="showLoginModal('airport')" class="p-2 bg-slate-800 hover:bg-slate-700 rounded text-[11px] text-white font-mono">✈️ Airport Control</button>
+            <button onclick="showLoginModal('admin')" class="p-2 bg-blue-900 hover:bg-blue-800 rounded text-[11px] text-white font-mono font-bold">⚙️ Admin Registry</button>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- CORE DATA ENGINE & WORKFLOW STATE MACHINE  -->
+    <!-- ========================================== -->
+    <script>
+        // Reactive In-Memory Database Architecture
+        let accounts = {};     // Map by Passport: { passport, firstName, lastName, dob, nationality, applications: [], logs: [] }
+        let applications = {}; // Map by App Number: { appNum, passport, status, interviewNotes, userNotes }
+
+        // System Control Rules Registries
+        let config = {
+            visaFee: 300,
+            extraApprovalNoticeMsg: "Visa processing time could take longer than usual for this nationality.",
+            extraApprovalCountries: ["Afghanistan", "Korea North", "Iran", "Iraq", "Syria"],
+            exemptCountries: ["Canada", "United Kingdom", "United States", "Germany"],
+            credentials: {
+                admin: { user: 'admin', pass: 'admin' },
+                employee: { user: 'emp', pass: 'emp' },
+                interviewer: { user: 'int', pass: 'int' },
+                airport: { user: 'air', pass: 'air' }
+            }
+        };
+
+        // App States Indicators
+        let currentRole = 'customer';
+        let activeInspectorPassport = null;
+        let pendingLoginRole = null;
+
+        const countriesList = [
+            "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua & Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan",
+            "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi",
+            "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Rep", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic",
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia",
+            "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana",
+            "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Ivory Coast", "Jamaica", "Japan", "Jordan",
+            "Kazakhstan", "Kenya", "Kiribati", "Korea North", "Korea South", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg",
+            "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar",
+            "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Macedonia", "Norway", "Oman",
+            "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda",
+            "St Kitts & Nevis", "St Lucia", "Saint Vincent", "Samoa", "San Marino", "Sao Tome & Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria",
+            "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan",
+            "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+        ];
+
+        window.onload = function() {
+            populateCountrySelectors();
+            initMockData();
+            syncAdminPanelInputs();
+            switchPortal('customer');
+        };
+
+        function populateCountrySelectors() {
+            const clientSelect = document.getElementById('appNationality');
+            const adminExtraSelect = document.getElementById('adminExtraCountrySelect');
+            const adminExemptSelect = document.getElementById('adminExemptCountrySelect');
+
+            countriesList.forEach(c => {
+                let opt = document.createElement('option'); opt.value = c; opt.textContent = c;
+                clientSelect.appendChild(opt);
+
+                let opt1 = document.createElement('option'); opt1.value = c; opt1.textContent = c;
+                adminExtraSelect.appendChild(opt1);
+
+                let opt2 = document.createElement('option'); opt2.value = c; opt2.textContent = c;
+                adminExemptSelect.appendChild(opt2);
+            });
+        }
+
+        function initMockData() {
+            let mockPass = "X88990";
+            accounts[mockPass] = {
+                passport: mockPass, firstName: "Jane", lastName: "Doe", dob: "1994-08-12", nationality: "Afghanistan",
+                applications: ["10023"], logs: ["Account generated inside local server tracking ledger records."]
+            };
+            applications["10023"] = {
+                appNum: "10023", passport: mockPass, status: "Layer 1: Pending Review", interviewNotes: "", userNotes: "Traveling to attend global conference panels."
+            };
+        }
+
+        // Toggle Staff Layout Block Helper
+        function toggleStaffMenu() {
+            let m = document.getElementById('staffMenuGrid');
+            m.classList.toggle('hidden');
+        }
+
+        // Form Interactive Restrictions Mapping Checkpoint Rules
+        function evaluateNationalityRule() {
+            let selectedCountry = document.getElementById('appNationality').value;
+            let extraNotice = document.getElementById('extraApprovalNotice');
+            let exemptNotice = document.getElementById('exemptNotice');
+            let formBlock = document.getElementById('formFieldsBlock');
+
+            extraNotice.classList.add('hidden');
+            exemptNotice.classList.add('hidden');
+            
+            // Re-enable form fields initially
+            enableFormInputs(true);
+
+            if(!selectedCountry) return;
+
+            // Rule 1: Exemption Blocks
+            if(config.exemptCountries.includes(selectedCountry)) {
+                exemptNotice.classList.remove('hidden');
+                enableFormInputs(false); // Blank out & Freeze parameter values
+                blankFormInputs();
+                return;
+            }
+
+            // Rule 2: Extra Approval Warning Alerts
+            if(config.extraApprovalCountries.includes(selectedCountry)) {
+                document.getElementById('noticeTextPlaceholder').textContent = config.extraApprovalNoticeMsg;
+                extraNotice.classList.remove('hidden');
+            }
+        }
+
+        function enableFormInputs(status) {
+            let elements = ["appFirstname", "appLastname", "appPassport", "appDob", "appNotes", "submitAppBtn"];
+            elements.forEach(id => {
+                let el = document.getElementById(id);
+                if(el) el.disabled = !status;
+            });
+            // Update UI look of block depending on freeze status state
+            let container = document.getElementById('formFieldsBlock');
+            if(!status) container.classList.add('opacity-40');
+            else container.classList.remove('opacity-40');
+        }
+
+        function blankFormInputs() {
+            document.getElementById('appFirstname').value = '';
+            document.getElementById('appLastname').value = '';
+            document.getElementById('appPassport').value = '';
+            document.getElementById('appDob').value = '';
+            document.getElementById('appNotes').value = '';
+        }
+
+        // Portal Views Swappers & Authentication Hooks
+        function switchPortal(role) {
+            currentRole = role;
+            
+            // Adjust visual headers depending on environment modes
+            let header = document.getElementById('standardHeader');
+            if(role === 'customer') {
+                document.getElementById('currentPortalLabel').textContent = "Customer Portal";
+                document.getElementById('logoutBtn').classList.add('hidden');
+                header.className = "bg-slate-900 text-white shadow-md px-6 py-4 flex justify-between items-center";
+            } else {
+                document.getElementById('currentPortalLabel').textContent = "Windows XP Staff Mode (" + role.toUpperCase() + ")";
+                document.getElementById('logoutBtn').classList.remove('hidden');
+                header.className = "bg-blue-800 text-white shadow-md px-6 py-2 flex justify-between items-center font-mono text-xs";
+            }
+
+            document.querySelectorAll('.portal-view').forEach(view => view.classList.add('hidden'));
+            document.getElementById(`portal-${role}`).classList.remove('hidden');
+
+            if(role === 'employee') { renderEmployeeDirectory(); }
+            if(role === 'interviewer') { renderInterviewerList(); }
+        }
+
+        function showLoginModal(role) {
+            pendingLoginRole = role;
+            document.getElementById('loginTargetRole').textContent = role.toUpperCase();
+            document.getElementById('loginUser').value = '';
+            document.getElementById('loginPass').value = '';
+            document.getElementById('loginError').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.add('hidden');
+            pendingLoginRole = null;
+        }
+
+        function submitLogin() {
+            let u = document.getElementById('loginUser').value;
+            let p = document.getElementById('loginPass').value;
+            let creds = (pendingLoginRole === 'admin') ? config.credentials.admin : config.credentials[pendingLoginRole];
+
+            if(u === creds.user && p === creds.pass) {
+                let target = pendingLoginRole;
+                closeLoginModal();
+                switchPortal(target);
+            } else {
+                document.getElementById('loginError').classList.remove('hidden');
+            }
+        }
+
+        function logout() {
+            switchPortal('customer');
+        }
+
+        // Application Submission Core
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            let pass = document.getElementById('appPassport').value.trim().toUpperCase();
+            if(pass.length !== 6) {
+                alert("Passport Field must contain exactly 6 alphanumeric characters.");
+                return;
+            }
+
+            let fn = document.getElementById('appFirstname').value.trim();
+            let ln = document.getElementById('appLastname').value.trim();
+            let dob = document.getElementById('appDob').value;
+            let nat = document.getElementById('appNationality').value;
+            let notes = document.getElementById('appNotes').value.trim();
+
+            let appNum;
+            do {
+                appNum = Math.floor(10000 + Math.random() * 90000).toString();
+            } while (applications[appNum]);
+
+            if (!accounts[pass]) {
+                accounts[pass] = { passport: pass, firstName: fn, lastName: ln, dob: dob, nationality: nat, applications: [], logs: [] };
+            }
+
+            accounts[pass].applications.push(appNum);
+            accounts[pass].logs.push(`Application #${appNum} filled. Note included: "${notes || 'None'}"`);
+
+            applications[appNum] = {
+                appNum: appNum, passport: pass, status: "Layer 1: Pending Review", interviewNotes: "", userNotes: notes
+            };
+
+            alert(`Application Saved!\nYour tracking assignment number token token is: ${appNum}`);
+            document.getElementById('visaForm').reset();
+            evaluateNationalityRule();
+        }
+
+        // Employee Workflow Computations
+        function renderEmployeeDirectory() {
+            let filter = document.getElementById('empSearch').value.toLowerCase();
+            let tbody = document.getElementById('directoryTableBody');
+            tbody.innerHTML = '';
+
+            Object.values(accounts).forEach(acc => {
+                let fullName = `${acc.firstName} ${acc.lastName}`.toLowerCase();
+                if(fullName.includes(filter) || acc.passport.toLowerCase().includes(filter)) {
+                    let lastAppId = acc.applications[acc.applications.length - 1] || "N/A";
+                    let status = lastAppId !== "N/A" ? applications[lastAppId].status : "No Active App";
+
+                    let row = document.createElement('tr');
+                    row.className = "hover:bg-slate-100 cursor-pointer text-slate-900";
+                    row.onclick = () => inspectProfile(acc.passport);
+                    row.innerHTML = `
+                        <td class="p-2 border-r font-bold">${acc.firstName} ${acc.lastName}</td>
+                        <td class="p-2 border-r">${acc.passport}</td>
+                        <td class="p-2 border-r">#${lastAppId}</td>
+                        <td class="p-2 border-r font-bold text-blue-800">${status}</td>
+                        <td class="p-2 text-right text-blue-600 underline text-[11px]">Explore Workspace</td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+        }
+
+        function inspectProfile(passport) {
+            activeInspectorPassport = passport;
+            let acc = accounts[passport];
+            let lastAppId = acc.applications[acc.applications.length - 1];
+            let app = applications[lastAppId];
+
+            document.getElementById('inspectName').textContent = `${acc.firstName} ${acc.lastName}`;
+            document.getElementById('inspectPassport').textContent = acc.passport;
+            document.getElementById('inspectDob').textContent = acc.dob;
+            document.getElementById('inspectNationality').textContent = acc.nationality;
+
+            let logArea = document.getElementById('inspectLogs');
+            logArea.innerHTML = '';
+            acc.logs.forEach(l => {
+                let el = document.createElement('div');
+                el.className = "p-1 bg-slate-50 border-b";
+                el.textContent = "• " + l;
+                logArea.appendChild(el);
+            });
+
+            document.getElementById('inspectAppNum').textContent = app ? app.appNum : 'None';
+            document.getElementById('inspectAppStatus').textContent = app ? app.status : 'None';
+            document.getElementById('inspectUserNotes').textContent = (app && app.userNotes) ? app.userNotes : 'No statement noted.';
+
+            document.getElementById('layer1Actions').classList.add('hidden');
+            document.getElementById('layer2Actions').classList.add('hidden');
+            document.getElementById('layer3Actions').classList.add('hidden');
+            document.getElementById('grantedActions').classList.add('hidden');
+            document.getElementById('suspendedActions').classList.add('hidden');
+
+            if(app) {
+                if(app.status === "Layer 1: Pending Review") {
+                    document.getElementById('layer1Actions').classList.remove('hidden');
+                } else if(app.status === "Layer 2: Interview Scheduled") {
+                    document.getElementById('layer2Actions').classList.remove('hidden');
+                } else if(app.status === "Layer 3: Decision Pending") {
+                    document.getElementById('inspectInterviewNotes').textContent = app.interviewNotes;
+                    document.getElementById('layer3Actions').classList.remove('hidden');
+                } else if(app.status === "Visa Granted") {
+                    document.getElementById('grantedActions').classList.remove('hidden');
+                } else if(app.status === "Visa Suspended") {
+                    document.getElementById('suspendedActions').classList.remove('hidden');
+                }
+            }
+            document.getElementById('profileInspector').classList.remove('hidden');
+        }
+
+        function closeInspector() {
+            document.getElementById('profileInspector').classList.add('hidden');
+            activeInspectorPassport = null;
+        }
+
+        function processL1(action) {
+            let acc = accounts[activeInspectorPassport];
+            let appId = acc.applications[acc.applications.length - 1];
+            if(action === 'reject') {
+                applications[appId].status = "Rejected (Layer 1)";
+                acc.logs.push(`Application #${appId} rejected in processing stage 1.`);
+            } else {
+                applications[appId].status = "Layer 2: Interview Scheduled";
+                acc.logs.push(`Application #${appId} scheduled for Interview room.`);
+            }
+            inspectProfile(activeInspectorPassport);
+            renderEmployeeDirectory();
+        }
+
+        function processL3(action) {
+            let acc = accounts[activeInspectorPassport];
+            let appId = acc.applications[acc.applications.length - 1];
+            if(action === 'reject') {
+                applications[appId].status = "Rejected (Layer 3 Final Check)";
+                acc.logs.push(`Application #${appId} denied in stage 3 supervisor review context.`);
+                inspectProfile(activeInspectorPassport);
+                renderEmployeeDirectory();
+            } else {
+                let conf = confirm(`System payment collection verification needed: $${config.visaFee} USD.\nHas the applicant finalized payment entry?`);
+                if(conf) {
+                    applications[appId].status = "Visa Granted";
+                    acc.logs.push(`Collected $${config.visaFee} USD. Application verified: VISA GRANTED.`);
+                    inspectProfile(activeInspectorPassport);
+                    renderEmployeeDirectory();
+                    generateGrantedPage();
+                }
+            }
+        }
+
+        function suspendVisa() {
+            let acc = accounts[activeInspectorPassport];
+            let appId = acc.applications[acc.applications.length - 1];
+            applications[appId].status = "Visa Suspended";
+            acc.logs.push(`Admin Override: Visa permissions suspended manually.`);
+            inspectProfile(activeInspectorPassport);
+            renderEmployeeDirectory();
+        }
+
+        function  unsuspendVisa() {
+            let acc = accounts[activeInspectorPassport];
+            let appId = acc.applications[acc.applications.length - 1];
+            applications[appId].status = "Visa Granted";
+            acc.logs.push(`Admin Override: Re-instated visa parameters from suspension.`);
+            inspectProfile(activeInspectorPassport);
+            renderEmployeeDirectory();
+        }
+
+        function switchEmployeeTab(tab) {
+            document.getElementById('tabBtn-directory').className = tab === 'directory' ? "xp-tab active px-3 py-1.5" : "xp-tab px-3 py-1.5";
+            document.getElementById('tabBtn-tracking').className = tab === 'tracking' ? "xp-tab active px-3 py-1.5" : "xp-tab px-3 py-1.5";
+            document.getElementById('empTab-directory').style.display = tab === 'directory' ? 'block' : 'none';
+            document.getElementById('empTab-tracking').style.display = tab === 'tracking' ? 'block' : 'none';
+        }
+
+        function executeTrack(option) {
+            let matchApp = null;
+            if(option === 1) {
+                let id = document.getElementById('trackOpt1').value.trim();
+                if(applications[id]) matchApp = applications[id];
+            } else if(option === 2) {
+                let fn = document.getElementById('trackOpt2First').value.trim().toLowerCase();
+                let ln = document.getElementById('trackOpt2Last').value.trim().toLowerCase();
+                let dob = document.getElementById('trackOpt2Dob').value;
+                let foundAcc = Object.values(accounts).find(a => a.firstName.toLowerCase() === fn && a.lastName.toLowerCase() === ln && a.dob === dob);
+                if(foundAcc && foundAcc.applications.length > 0) matchApp = applications[foundAcc.applications[foundAcc.applications.length - 1]];
+            } else if(option === 3) {
+                let dob = document.getElementById('trackOpt3Dob').value;
+                let pass = document.getElementById('trackOpt3Pass').value.trim().toUpperCase();
+                let foundAcc = Object.values(accounts).find(a => a.passport === pass && a.dob === dob);
+                if(foundAcc && foundAcc.applications.length > 0) matchApp = applications[foundAcc.applications[foundAcc.applications.length - 1]];
+            }
+
+            let area = document.getElementById('trackingResultArea');
+            area.classList.remove('hidden');
+            if(matchApp) {
+                let acc = accounts[matchApp.passport];
+                area.innerHTML = `
+                    <div class="flex justify-between items-center bg-[#f1efe2] p-2 border">
+                        <span>🎯 <strong>Located App:</strong> #${matchApp.appNum} (${acc.firstName} ${acc.lastName}) - Status: <strong>${matchApp.status}</strong></span>
+                        <button onclick="inspectProfile('${acc.passport}')" class="xp-btn px-2 text-[11px]">Open File</button>
+                    </div>
+                `;
+            } else {
+                area.innerHTML = `<span class="text-red-700 font-bold">❌ Tracking Lookup: Criteria criteria matched no records.</span>`;
+            }
+        }
+
+        // Layer 2 Interview Controls
+        function renderInterviewerList() {
+            let tbody = document.getElementById('interviewerTableBody');
+            tbody.innerHTML = '';
+            Object.values(applications).forEach(app => {
+                if(app.status === "Layer 2: Interview Scheduled") {
+                    let acc = accounts[app.passport];
+                    let row = document.createElement('tr');
+                    row.className = "bg-white text-slate-900 text-xs";
+                    row.innerHTML = `
+                        <td class="p-2 border-r font-bold">#${app.appNum}</td>
+                        <td class="p-2 border-r font-bold">${acc.firstName} ${acc.lastName}</td>
+                        <td class="p-2 border-r">${acc.nationality}</td>
+                        <td class="p-2 text-right"><button onclick="openInterviewWorksheet('${app.appNum}')" class="xp-btn px-2 text-[11px]">Evaluate Target</button></td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            });
+        }
+
+        let activeInterviewAppId = null;
+        function openInterviewWorksheet(appId) {
+            activeInterviewAppId = appId;
+            document.getElementById('intWorksheetId').textContent = appId;
+            document.getElementById('intNotes').value = '';
+            document.getElementById('interviewWorksheet').classList.remove('hidden');
+        }
+
+        function submitInterviewResult(decision) {
+            if(!activeInterviewAppId) return;
+            let app = applications[activeInterviewAppId];
+            let acc = accounts[app.passport];
+            let notes = document.getElementById('intNotes').value.trim() || "No statement left by evaluation agent.";
+
+            app.interviewNotes = notes;
+            if(decision === 'reject') {
+                app.status = "Rejected (Layer 2 Interview)";
+                acc.logs.push(`Interviewer assessment failed. Notes: "${notes}"`);
+            } else {
+                app.status = "Layer 3: Decision Pending";
+                acc.logs.push(`Interviewer evaluation passed. Forwarded to Stage 3. Notes: "${notes}"`);
+            }
+
+            document.getElementById('interviewWorksheet').classList.add('hidden');
+            activeInterviewAppId = null;
+            renderInterviewerList();
+        }
+
+        // Airport Checkpoint Lookup Execution Terminal
+        function executeAirportLookup() {
+            let inputPass = document.getElementById('airportPassportInput').value.trim().toUpperCase();
+            let div = document.getElementById('airportResult');
+            div.classList.remove('hidden');
+
+            let acc = accounts[inputPass];
+            if(!acc || acc.applications.length === 0) {
+                div.className = "bg-red-100 p-3 border border-red-400 text-red-800 font-bold text-center";
+                div.innerHTML = "🚫 Border Alert Notice: No clearance profiles matched this passport lookup entry.";
+                return;
+            }
+
+            let lastAppId = acc.applications[acc.applications.length - 1];
+            let app = applications[lastAppId];
+
+            if(app.status === "Visa Granted") {
+                div.className = "bg-emerald-50 border border-emerald-400 p-3 text-slate-800 space-y-1";
+                div.innerHTML = `
+                    <div class="text-emerald-800 font-bold text-sm">✅ ENTRY ACCORDED / GRANTED</div>
+                    <p><strong>Passenger Name:</strong> ${acc.firstName} ${acc.lastName}</p>
+                    <p><strong>DOB:</strong> ${acc.dob} | <strong>Nationality:</strong> ${acc.nationality}</p>
+                    <p><strong>System Track ID:</strong> #${app.appNum}</p>
+                    <div class="mt-2 border-t pt-1 text-slate-500 italic"><strong>Internal Security Assessment Logs:</strong> ${app.interviewNotes || 'None'}</div>
+                `;
+            } else {
+                div.className = "bg-amber-100 border border-amber-400 p-3 text-slate-800 space-y-1";
+                div.innerHTML = `
+                    <div class="text-red-700 font-bold text-sm">🛑 BOARDING DISALLOWED</div>
+                    <p><strong>Application Pipeline Status:</strong> <span class="text-red-700 font-bold underline uppercase">${app.status}</span></p>
+                    <p><strong>Passenger Name:</strong> ${acc.firstName} ${acc.lastName}</p>
+                    <div class="mt-2 border-t pt-1 text-slate-500 italic"><strong>Security Background Trails:</strong> ${app.interviewNotes || 'None'}</div>
+                `;
+            }
+        }
+
+        // Printing Visa Certificate Logic
+        function generateGrantedPage() {
+            let acc = accounts[activeInspectorPassport];
+            let lastAppId = acc.applications[acc.applications.length - 1];
+            
+            document.getElementById('g_appNum').textContent = lastAppId;
+            document.getElementById('g_passport').textContent = acc.passport;
+            document.getElementById('g_name').textContent = `${acc.firstName} ${acc.lastName}`;
+            document.getElementById('g_dob').textContent = acc.dob;
+            document.getElementById('g_nationality').textContent = acc.nationality;
+            document.getElementById('g_fee').textContent = `$${config.visaFee} USD (PAID)`;
+
+            document.querySelectorAll('.portal-view').forEach(view => view.classList.add('hidden'));
+            document.getElementById('portal-granted-view').classList.remove('hidden');
+        }
+
+        // Admin Operational Parameters & Sync Functions
+        function syncAdminPanelInputs() {
+            document.getElementById('adminFeeInput').value = config.visaFee;
+            document.getElementById('adminExtraNoticeMessage').value = config.extraApprovalNoticeMsg;
+            
+            document.getElementById('credEmpUser').value = config.credentials.employee.user;
+            document.getElementById('credEmpPass').value = config.credentials.employee.pass;
+            document.getElementById('credIntUser').value = config.credentials.interviewer.user;
+            document.getElementById('credIntPass').value = config.credentials.interviewer.pass;
+            document.getElementById('credAirUser').value = config.credentials.airport.user;
+            document.getElementById('credAirPass').value = config.credentials.airport.pass;
+
+            renderAdminCountryTags();
+        }
+
+        function switchAdminTab(tab) {
+            document.getElementById('adminTabBtn-extra').className = tab === 'extraApproval' ? "xp-tab active px-3 py-1.5" : "xp-tab px-3 py-1.5";
+            document.getElementById('adminTabBtn-exempt').className = tab === 'exemptions' ? "xp-tab active px-3 py-1.5" : "xp-tab px-3 py-1.5";
+            
+            document.getElementById('adminPanel-extraApproval').style.display = tab === 'extraApproval' ? 'block' : 'none';
+            document.getElementById('adminPanel-exemptions').style.display = tab === 'exemptions' ? 'block' : 'none';
+        }
+
+        function renderAdminCountryTags() {
+            // Render Tab 1 Tags (Extra Approvals)
+            let extraContainer = document.getElementById('extraApprovalListContainer');
+            extraContainer.innerHTML = '';
+            config.extraApprovalCountries.forEach(c => {
+                let d = document.createElement('span');
+                d.className = "inline-flex items-center gap-1 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded font-bold text-amber-900 text-[11px]";
+                d.innerHTML = `${c} <button onclick="removeExtraCountry('${c}')" class="text-red-700 font-mono hover:text-red-900 ml-1">×</button>`;
+                extraContainer.appendChild(d);
+            });
+
+            // Render Tab 2 Tags (Exemptions)
+            let exemptContainer = document.getElementById('exemptListContainer');
+            exemptContainer.innerHTML = '';
+            config.exemptCountries.forEach(c => {
+                let d = document.createElement('span');
+                d.className = "inline-flex items-center gap-1 bg-emerald-100 border border-emerald-300 px-2 py-0.5 rounded font-bold text-emerald-950 text-[11px]";
+                d.innerHTML = `${c} <button onclick="removeExemptCountry('${c}')" class="text-red-700 font-mono hover:text-red-900 ml-1">×</button>`;
+                exemptContainer.appendChild(d);
+            });
+        }
+
+        function addExtraApprovalCountry() {
+            let c = document.getElementById('adminExtraCountrySelect').value;
+            if(c && !config.extraApprovalCountries.includes(c)) {
+                // Ensure a country isn't concurrently listed on both rule tracks
+                if(config.exemptCountries.includes(c)) { alert("Conflict: Country is already declared as Exempt!"); return; }
+                config.extraApprovalCountries.push(c);
+                renderAdminCountryTags();
+                evaluateNationalityRule();
+            }
+        }
+
+        function removeExtraCountry(c) {
+            config.extraApprovalCountries = config.extraApprovalCountries.filter(item => item !== c);
+            renderAdminCountryTags();
+            evaluateNationalityRule();
+        }
+
+        function saveCustomNoticeMessage() {
+            let msg = document.getElementById('adminExtraNoticeMessage').value.trim();
+            if(msg) {
+                config.extraApprovalNoticeMsg = msg;
+                alert("Custom warning string applied successfully to intake pipeline.");
+                evaluateNationalityRule();
+            }
+        }
+
+        function addExemptCountry() {
+            let c = document.getElementById('adminExemptCountrySelect').value;
+            if(c && !config.exemptCountries.includes(c)) {
+                if(config.extraApprovalCountries.includes(c)) { config.extraApprovalCountries = config.extraApprovalCountries.filter(i=>i!==c); }
+                config.exemptCountries.push(c);
+                renderAdminCountryTags();
+                evaluateNationalityRule();
+            }
+        }
+
+        function removeExemptCountry(c) {
+            config.exemptCountries = config.exemptCountries.filter(item => item !== c);
+            renderAdminCountryTags();
+            evaluateNationalityRule();
+        }
+
+        function saveFeeConfig() {
+            let f = parseInt(document.getElementById('adminFeeInput').value);
+            if(!isNaN(f) && f >= 0) { config.visaFee = f; alert(`Baseline configuration updated to: $${f} USD.`); }
+        }
+
+        function saveCredentialsConfig() {
+            config.credentials.employee.user = document.getElementById('credEmpUser').value;
+            config.credentials.employee.pass = document.getElementById('credEmpPass').value;
+            config.credentials.interviewer.user = document.getElementById('credIntUser').value;
+            config.credentials.interviewer.pass = document.getElementById('credIntPass').value;
+            config.credentials.airport.user = document.getElementById('credAirUser').value;
+            config.credentials.airport.pass = document.getElementById('credAirPass').value;
+            alert("Credentials logs successfully modified.");
+        }
+    </script>
+</body>
+</html>

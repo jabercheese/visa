@@ -76,9 +76,6 @@
 </head>
 <body>
 
-    <!-- ========================================== -->
-    <!-- CUSTOM CUSTOM HTML POPUP MODALS           -->
-    <!-- ========================================== -->
     <div id="custom-alert-modal" class="modal-overlay hidden">
         <div class="popup-box">
             <h3 id="alert-title">Notification</h3>
@@ -101,13 +98,9 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PORTAL 1: CUSTOMER PORTAL                 -->
-    <!-- ========================================== -->
     <div id="portal-customer" class="customer-container">
         <h2>Global Online Visa Application</h2>
         
-        <!-- Live Tracking Tool Component -->
         <div class="xp-panel" style="background: #f8f9fa; border: 1px solid #ced4da;">
             <div class="xp-panel-title" style="color:#2c3e50;">Track Your Existing Visa Status</div>
             <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end;">
@@ -158,8 +151,7 @@
                 <div class="form-group">
                     <label>Requested Visa Type:</label>
                     <select id="cust-visatype" required>
-                        <!-- Injected via DB Dynamic Array -->
-                    </select>
+                        </select>
                 </div>
             </div>
 
@@ -187,9 +179,6 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- STAFF PORTAL GATEWAY SELECTION            -->
-    <!-- ========================================== -->
     <div id="portal-staff-login-select" class="xp-body hidden">
         <div class="xp-window" style="max-width: 450px;">
             <div class="xp-titlebar">
@@ -211,7 +200,6 @@
         </div>
     </div>
 
-    <!-- STAFF LOGIN CHALLENGE DIALOG -->
     <div id="xp-login-dialog" class="xp-body hidden">
         <div class="xp-window" style="max-width: 350px;">
             <div class="xp-titlebar"><span id="login-title">Log On to Windows</span></div>
@@ -233,9 +221,6 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PORTAL 2: EMBASSY EMPLOYEE PORTAL         -->
-    <!-- ========================================== -->
     <div id="portal-employee" class="xp-body hidden">
         <div class="xp-window">
             <div class="xp-titlebar">
@@ -252,10 +237,8 @@
             </ul>
 
             <div class="xp-content">
-                <!-- Sub Tab 1: Applicants List -->
                 <div id="emp-tab-list">
                     <div style="display: flex; gap: 20px;">
-                        <!-- Master List -->
                         <div style="flex: 1; border-right: 1px solid #ccc; padding-right: 15px;">
                             <div class="xp-panel-title">Active Database Search</div>
                             <input type="text" id="emp-search" class="xp-input" placeholder="Search by name, passport, ID..." onkeyup="renderEmployeeTable()" style="width:100%; margin-bottom: 10px;">
@@ -272,7 +255,6 @@
                             </table>
                         </div>
                         
-                        <!-- Details Panel & Log -->
                         <div style="flex: 1.3;" id="emp-details-pane">
                             <div class="xp-panel-title">Applicant Processing File</div>
                             <p style="color:#666;">Select an applicant from the database file to load active logs, full history, and execute workflow updates.</p>
@@ -280,7 +262,6 @@
                     </div>
                 </div>
 
-                <!-- Sub Tab 2: Tracking System -->
                 <div id="emp-tab-track" class="hidden">
                     <div class="xp-panel-title">Multi-Parametric Tracking Engine</div>
                     <div style="background:#eee; padding:10px; margin-bottom:15px; border-radius:3px; display:flex; flex-direction:column; gap:10px;">
@@ -310,9 +291,6 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PORTAL 3: INTERVIEWER PORTAL              -->
-    <!-- ========================================== -->
     <div id="portal-interviewer" class="xp-body hidden">
         <div class="xp-window">
             <div class="xp-titlebar">
@@ -345,32 +323,46 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PORTAL 4: AIRPORT / BORDER CONTROL         -->
-    <!-- ========================================== -->
     <div id="portal-airport" class="xp-body hidden">
-        <div class="xp-window" style="max-width: 600px;">
+        <div class="xp-window" style="max-width: 850px;">
             <div class="xp-titlebar">
-                <span>Border Control Entry Terminal v3.11</span>
+                <span>Border Control Entry & Exit Terminal v4.0</span>
                 <div class="xp-title-buttons"><button class="xp-btn-close" onclick="logOut()">X</button></div>
             </div>
-            <div class="xp-nav-bar"><span style="font-weight: bold; color: #0054E3;">Airport Terminal</span> | <a href="#" onclick="logOut()">Log Off</a></div>
+            <div class="xp-nav-bar">
+                <span style="font-weight: bold; color: #0054E3;">Airport Terminal</span> | <a href="#" onclick="logOut()">Log Off</a>
+            </div>
+            
+            <ul class="xp-tabs">
+                <li class="xp-tab active" id="tab-air-entry-btn" onclick="switchAirportTab('entry')">Arrivals / Entry Processing</li>
+                <li class="xp-tab" id="tab-air-exit-btn" onclick="switchAirportTab('exit')">Departures / Exit Tracking</li>
+            </ul>
+
             <div class="xp-content">
-                <div class="xp-panel-title">Passport Scanner Integration Interface</div>
-                <div style="margin-bottom:15px;">
-                    <label style="font-weight:bold;">Enter Passport Number:</label>
-                    <input type="text" id="airport-search-passport" class="xp-input" style="width:150px; text-transform: uppercase;" maxlength="6">
-                    <button class="xp-btn xp-btn-green" onclick="airportLookup()">Scan & Verify Passport</button>
+                <div id="air-tab-entry">
+                    <div class="xp-panel-title">Passport Scanner Integration Interface (Arrivals)</div>
+                    <div style="margin-bottom:15px;">
+                        <label style="font-weight:bold;">Scan Passport Number:</label>
+                        <input type="text" id="airport-search-passport" class="xp-input" style="width:150px; text-transform: uppercase;" maxlength="6">
+                        <button class="xp-btn xp-btn-green" onclick="airportLookup()">Scan & Verify Passport</button>
+                    </div>
+                    <div id="airport-results" style="border-top:1px dashed #ccc; padding-top:15px; margin-top:15px;"></div>
                 </div>
-                <div id="airport-results" style="border-top:1px dashed #ccc; padding-top:15px; margin-top:15px;"></div>
+
+                <div id="air-tab-exit" class="hidden">
+                    <div class="xp-panel-title">Passport Exit Control & Overstay Analyzer</div>
+                    <div style="margin-bottom:15px;">
+                        <label style="font-weight:bold;">Scan Passport for Departure:</label>
+                        <input type="text" id="airport-exit-passport" class="xp-input" style="width:150px; text-transform: uppercase;" maxlength="6">
+                        <button class="xp-btn xp-btn-green" onclick="airportExitLookup()">Verify Stay Profile</button>
+                    </div>
+                    <div id="airport-exit-results" style="border-top:1px dashed #ccc; padding-top:15px; margin-top:15px;"></div>
+                </div>
             </div>
         </div>
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PORTAL 5: ADMINISTRATIVE CONTROLS        -->
-    <!-- ========================================== -->
     <div id="portal-admin" class="xp-body hidden">
         <div class="xp-window">
             <div class="xp-titlebar">
@@ -388,7 +380,6 @@
             </ul>
 
             <div class="xp-content">
-                <!-- Main Tab: Basic controls & Resets -->
                 <div id="adm-tab-global">
                     <div style="display:flex; gap:20px;">
                         <div class="xp-panel" style="flex:1;">
@@ -425,7 +416,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 1: Extra Approval -->
                 <div id="adm-tab-nat" class="hidden">
                     <div class="xp-panel-title">Enhanced Surveillance Definitions</div>
                     <div class="xp-panel">
@@ -446,7 +436,6 @@
                     </div>
                 </div>
 
-                <!-- Tab 2: Exemptions -->
                 <div id="adm-tab-ex" class="hidden">
                     <div class="xp-panel-title">Visa Waiver / Exemption Rule Declarations</div>
                     <div style="display:flex; gap:20px;">
@@ -462,14 +451,13 @@
                     </div>
                 </div>
 
-                <!-- Tab 3: Visa Types Configuration Engine -->
                 <div id="adm-tab-types" class="hidden">
                     <div class="xp-panel-title">Visa Scheme Classification Properties Matrix</div>
                     <div class="xp-panel" style="background:#eee;">
                         <strong>Create/Edit Visa Type Parameter Mapping:</strong><br>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:5px;">
                             <div>Name: <input type="text" id="vt-name" class="xp-input" style="width:100%;" placeholder="Tourist (T1)"></div>
-                            <div>Validity Period: <input type="text" id="vt-val" class="xp-input" style="width:100%;" placeholder="90 Days / 1 Year"></div>
+                            <div>Validity Period (Days): <input type="number" id="vt-val" class="xp-input" style="width:100%;" placeholder="90"></div>
                             <div>Entries Profile: 
                                 <select id="vt-entries" class="xp-select" style="width:100%;">
                                     <option value="Single Entry">Single Entry</option>
@@ -488,7 +476,6 @@
                     </table>
                 </div>
 
-                <!-- Tab 4: Customer Status Tracking Custom Wording Matrix -->
                 <div id="adm-tab-statuses" class="hidden">
                     <div class="xp-panel-title">Editable Status Translation Matrix for Customers</div>
                     <p style="margin-top:0;">Map the internal core technical flags directly to simplified structural display text for public user views:</p>
@@ -518,20 +505,13 @@
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- PORTAL 6: PASSPORT / VISA PRINT OUT VIEW   -->
-    <!-- ========================================== -->
     <div id="portal-printout" class="hidden" style="background:#fff; min-height:100vh; padding:20px;">
         <button class="xp-btn" onclick="switchPortal('employee')" style="margin-bottom:20px;">← Return to Staff Control</button>
         <div class="certificate-container" id="printable-certificate">
-            <!-- Dynamic Content Injected Here -->
-        </div>
+            </div>
     </div>
 
 
-    <!-- ========================================== -->
-    <!-- JAVASCRIPT SYSTEM ENGINE LOGIC            -->
-    <!-- ========================================== -->
     <script>
         // --- COLD RECOVERY ENGINE SEED CONSTANTS ---
         const ALL_COUNTRIES = ["Afghanistan","Albania","Algeria","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burundi","Cabo Verde","Cambodia","Cameroon","Canada","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czechia","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kiribati","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar","Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","North Korea","North Macedonia","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saint Kitts and Nevis","Saint Lucia","Saint Vincent","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
@@ -548,8 +528,8 @@
                 airport: { user: "air", pass: "air" }
             },
             visaTypes: [
-                { name: "Tourist Class T-1", validity: "90 Days from Entry", entries: "Single Entry", allowedDays: "30" },
-                { name: "Business Multi-Entry B-2", validity: "1 Year", entries: "Multiple Entries", allowedDays: "90" }
+                { name: "Tourist Class T-1", validity: "90", entries: "Single Entry", allowedDays: "30" },
+                { name: "Business Multi-Entry B-2", validity: "365", entries: "Multiple Entries", allowedDays: "90" }
             ],
             statusWords: {
                 processing: "Proccessing",
@@ -570,18 +550,19 @@
                     plannedArrival: "2026-07-01",
                     plannedDeparture: "2026-07-25",
                     notes: "Attending technical convention",
-                    status: "Pending Interview",
-                    history: ["Applied via online portal system.", "Forwarded by Employee to schedule Interview."],
-                    feesPaid: false,
-                    isSuspended: false
+                    status: "Visa Granted",
+                    history: ["Applied via online portal system.", "Forwarded by Employee.", "Visa Grant sequence approved."],
+                    feesPaid: true,
+                    isSuspended: false,
+                    grantedDate: "2026-06-01",
+                    borderLog: { insideCountry: false, entryDate: null, history: [] }
                 }
             ]
         };
 
-        // GLOBAL CONFIG REFERENCE HOOK
         let DB = {};
 
-        // --- CORE IN-WINDOW HTML POPUP INTERFACE FUNCTIONS ---
+        // --- POPUP INTERFACE HOOKS ---
         function triggerAlertModal(title, message) {
             document.getElementById('alert-title').innerText = title;
             document.getElementById('alert-msg').innerText = message;
@@ -594,23 +575,19 @@
         function triggerConfirmModal(title, message, onConfirmCallback) {
             document.getElementById('confirm-title').innerText = title;
             document.getElementById('confirm-msg').innerText = message;
-            
             const cancelBtn = document.getElementById('confirm-cancel-btn');
             const okBtn = document.getElementById('confirm-ok-btn');
-            
             const cleanup = () => {
                 document.getElementById('custom-confirm-modal').classList.add('hidden');
-                // clear listeners
                 let nb = okBtn.cloneNode(true); okBtn.parentNode.replaceChild(nb, okBtn);
                 let cb = cancelBtn.cloneNode(true); cancelBtn.parentNode.replaceChild(cb, cancelBtn);
             };
-            
-            document.getElementById('confirm-cancel-btn').addEventListener('click', () => { cleanup(); });
-            document.getElementById('confirm-ok-btn').addEventListener('click', () => { onConfirmCallback(); cleanup(); });
+            cancelBtn.addEventListener('click', () => { cleanup(); });
+            okBtn.addEventListener('click', () => { onConfirmCallback(); cleanup(); });
             document.getElementById('custom-confirm-modal').classList.remove('hidden');
         }
 
-        // LOCAL STORAGE LIFECYCLE MANAGEMENT ENGINE
+        // STORAGE LIFECYCLE MANAGEMENT
         function initializePersistentMemory() {
             let memoryRaw = localStorage.getItem('GLOBAL_VISA_SYSTEM_STORAGE');
             if (!memoryRaw) {
@@ -625,7 +602,7 @@
             localStorage.setItem('GLOBAL_VISA_SYSTEM_STORAGE', JSON.stringify(DB));
         }
 
-        // --- SYSTEM ENGINE INITIALIZATION BOOTSTRAP ---
+        // INITIALIZATION
         window.onload = function() {
             initializePersistentMemory();
             populateCountryDropdowns();
@@ -650,28 +627,24 @@
 
         function renderCustomerVisaTypesMenu() {
             const menu = document.getElementById('cust-visatype');
+            if(!menu) return;
             menu.innerHTML = '';
             DB.visaTypes.forEach(v => {
                 let opt = document.createElement('option');
-                opt.value = v.name;
-                opt.innerText = v.name;
+                opt.value = v.name; opt.innerText = v.name;
                 menu.appendChild(opt);
             });
         }
 
-        // --- ROUTING ENGINE VIA WINDOW STATE DOM CONFIG ---
+        // --- CRASH PROOFING ROUTER ENGINE ---
         function switchPortal(portalId) {
-    ['portal-customer', 'portal-staff-login-select', 'xp-login-dialog', 'portal-employee', 'portal-interviewer', 'portal-airport', 'portal-admin', 'portal-printout'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
-    });
-    
-    // Check both with and without the 'portal-' prefix to prevent null crashes
-    let target = document.getElementById(portalId) || document.getElementById('portal-' + portalId);
-    if (target) {
-        target.classList.remove('hidden');
-    }
-}
+            ['portal-customer', 'portal-staff-login-select', 'xp-login-dialog', 'portal-employee', 'portal-interviewer', 'portal-airport', 'portal-admin', 'portal-printout'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            let target = document.getElementById(portalId) || document.getElementById('portal-' + portalId);
+            if (target) target.classList.remove('hidden');
+        }
 
         function showLoginModal(targetPortal) {
             DB.currentActivePortalLoginTarget = targetPortal;
@@ -697,7 +670,7 @@
             switchPortal('staff-login-select');
         }
 
-        // --- CUSTOMER TRACKING UTILITY ---
+        // CUSTOMER TRACKING UTILITY
         function customerTrackStatus() {
             const trackId = document.getElementById('cust-track-id').value.trim();
             const out = document.getElementById('cust-track-output');
@@ -705,27 +678,18 @@
 
             const app = DB.applications.find(a => a.id === trackId);
             if(!app) {
-                out.style.color = "red";
-                out.innerText = "No application located with this ID number.";
+                out.style.color = "red"; out.innerText = "No application located with this ID number.";
                 return;
             }
 
             out.style.color = "#0054E3";
-            // Map core processing states dynamically into customer custom-managed wording variables
-            if (app.status === 'Pending Review') {
-                out.innerText = `Status: ${DB.statusWords.processing}`;
-            } else if (app.status === 'Pending Interview') {
-                out.innerText = `Status: ${DB.statusWords.interview}`;
-            } else if (app.status === 'Interview Accepted' || app.status === 'Visa Granted') {
-                out.innerText = `Status: ${DB.statusWords.granted}`;
-            } else if (app.status === 'Rejected' || app.status === 'Visa Suspended') {
-                out.innerText = `Status: ${DB.statusWords.rejected}`;
-            } else {
-                out.innerText = `Status: ${app.status}`;
-            }
+            if (app.status === 'Pending Review') out.innerText = `Status: ${DB.statusWords.processing}`;
+            else if (app.status === 'Pending Interview') out.innerText = `Status: ${DB.statusWords.interview}`;
+            else if (app.status === 'Interview Accepted' || app.status === 'Visa Granted') out.innerText = `Status: ${DB.statusWords.granted}`;
+            else if (app.status === 'Rejected' || app.status === 'Visa Suspended' || app.status === 'USED') out.innerText = `Status: ${DB.statusWords.rejected} (${app.status})`;
+            else out.innerText = `Status: ${app.status}`;
         }
 
-        // --- PORTAL 1: CUSTOMER FORM LOGIC MAPPINGS ---
         function checkCountryRules(country) {
             const extraMsgBox = document.getElementById('cust-extra-msg');
             const exemptMsgBox = document.getElementById('cust-exempt-msg');
@@ -778,19 +742,21 @@
                 status: "Pending Review",
                 history: ["Application submitted successfully by applicant."],
                 feesPaid: false,
-                isSuspended: false
+                isSuspended: false,
+                grantedDate: null,
+                borderLog: { insideCountry: false, entryDate: null, history: [] }
             };
 
             DB.applications.push(newApp);
             commitMemory();
             
-            triggerAlertModal("Submission Success", `Application processing complete.\n\nYour Unique Tracking ID is: ${newId}`);
+            triggerAlertModal("Submission Success", `Application processing complete.\n\nYour Tracking ID is: ${newId}`);
             document.getElementById('visaForm').reset();
             checkCountryRules('');
             renderEmployeeTable();
         }
 
-        // --- PORTAL 2: EMBASSY EMPLOYEE LOGIC ENGINE ---
+        // --- PORTAL 2: EMBASSY EMPLOYEE ---
         function switchEmpTab(tab) {
             document.getElementById('emp-tab-list').classList.toggle('hidden', tab !== 'list');
             document.getElementById('emp-tab-track').classList.toggle('hidden', tab !== 'track');
@@ -801,18 +767,14 @@
         function renderEmployeeTable() {
             const query = document.getElementById('emp-search').value.toLowerCase();
             const tbody = document.getElementById('employee-table-body');
+            if(!tbody) return;
             tbody.innerHTML = '';
 
             DB.applications.forEach(a => {
                 const matchString = `${a.id} ${a.firstName} ${a.lastName} ${a.passport} ${a.status}`.toLowerCase();
                 if(matchString.includes(query)) {
                     let tr = document.createElement('tr');
-                    tr.id = `emp-row-${a.id}`;
-                    tr.onclick = () => {
-                        document.querySelectorAll('#employee-table-body tr').forEach(r => r.classList.remove('selected'));
-                        tr.classList.add('selected');
-                        selectEmployeeApplicant(a.id);
-                    };
+                    tr.onclick = () => selectEmployeeApplicant(a.id);
                     tr.innerHTML = `<td><b>${a.id}</b></td><td>${a.firstName} ${a.lastName}</td><td>${a.passport}</td><td><i>${a.status}</i></td>`;
                     tbody.appendChild(tr);
                 }
@@ -822,16 +784,15 @@
         function selectEmployeeApplicant(id) {
             const app = DB.applications.find(a => a.id === id);
             const pane = document.getElementById('emp-details-pane');
-            if(!app) return;
+            if(!app || !pane) return;
 
             let logHtml = app.history.map(h => `<li>• ${h}</li>`).join('');
-            
-            let visaSelectionDropdownHtml = `<select id="emp-change-visatype" class="xp-select">`;
+            let visaDropdown = `<select id="emp-change-visatype" class="xp-select">`;
             DB.visaTypes.forEach(vt => {
                 let selectedAttr = (vt.name === app.visaTypeIssued) ? 'selected' : '';
-                visaSelectionDropdownHtml += `<option value="${vt.name}" ${selectedAttr}>${vt.name}</option>`;
+                visaDropdown += `<option value="${vt.name}" ${selectedAttr}>${vt.name}</option>`;
             });
-            visaSelectionDropdownHtml += `</select>`;
+            visaDropdown += `</select>`;
 
             let actionsHtml = '';
             if(app.status === 'Pending Review') {
@@ -842,10 +803,9 @@
             } else if(app.status === 'Interview Accepted') {
                 actionsHtml = `
                     <div style="background:#e4e2d5; padding:8px; border:1px solid #999; margin-bottom:10px; width:100%;">
-                        <label><b>Review/Modify Issuance Class Mapping:</b></label><br>
-                        ${visaSelectionDropdownHtml}
+                        <label><b>Review/Modify Issuance Class Mapping:</b></label><br>${visaDropdown}
                     </div>
-                    <button class="xp-btn xp-btn-red" onclick="updateAppStatus('${app.id}', 'Rejected', 'Final clearance rejected by senior staff post-interview.')">Final Reject</button>
+                    <button class="xp-btn xp-btn-red" onclick="updateAppStatus('${app.id}', 'Rejected', 'Final clearance rejected post-interview.')">Final Reject</button>
                     <button class="xp-btn xp-btn-green" onclick="executeEmployeeGrantSequence('${app.id}')">Confirm Visa Scheme Allocation & Grant</button>
                 `;
             } else if(app.status === 'Visa Granted') {
@@ -854,9 +814,7 @@
                     <button class="xp-btn xp-btn-red" onclick="toggleSuspension('${app.id}', true)">⚠️ Revoke/Suspend Visa</button>
                 `;
             } else if(app.status === 'Visa Suspended') {
-                actionsHtml = `
-                    <button class="xp-btn xp-btn-green" onclick="toggleSuspension('${app.id}', false)">Lift Visa Suspension</button>
-                `;
+                actionsHtml = `<button class="xp-btn xp-btn-green" onclick="toggleSuspension('${app.id}', false)">Lift Visa Suspension</button>`;
             } else {
                 actionsHtml = `<span style="color:#777; font-style:italic;">No contextual workflow actions remaining for this structural state.</span>`;
             }
@@ -866,25 +824,14 @@
                     <div class="xp-panel-title">Active File Data: #${app.id}</div>
                     <table style="width:100%; font-size:12px;" cellpadding="3">
                         <tr><td><b>Name:</b></td><td>${app.firstName} ${app.lastName}</td></tr>
-                        <tr><td><b>DOB:</b></td><td>${app.dob}</td></tr>
-                        <tr><td><b>Nationality:</b></td><td>${app.nationality}</td></tr>
                         <tr><td><b>Passport:</b></td><td>${app.passport}</td></tr>
-                        <tr><td><b>Requested Visa Type:</b></td><td>${app.visaTypeRequested}</td></tr>
-                        <tr><td><b>Allocated Visa Type:</b></td><td><mark><b>${app.visaTypeIssued || app.visaTypeRequested}</b></mark></td></tr>
-                        <tr><td><b>Planned Horizon:</b></td><td>Arrival: ${app.plannedArrival} | Departure: ${app.plannedDeparture}</td></tr>
-                        <tr><td><b>User Notes:</b></td><td>${app.notes || 'N/A'}</td></tr>
+                        <tr><td><b>Nationality:</b></td><td>${app.nationality}</td></tr>
+                        <tr><td><b>Visa Type Issued:</b></td><td><mark><b>${app.visaTypeIssued || app.visaTypeRequested}</b></mark></td></tr>
                         <tr><td><b>System Status:</b></td><td><b style="color:#0054E3;">${app.status}</b></td></tr>
-                        <tr><td><b>Financial Bal:</b></td><td>${app.feesPaid ? 'Paid ($' + DB.visaFees + ')' : 'Unpaid'}</td></tr>
                     </table>
                 </div>
-                <div class="xp-panel">
-                    <div class="xp-panel-title">Action Center</div>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">${actionsHtml}</div>
-                </div>
-                <div class="xp-panel">
-                    <div class="xp-panel-title">System Audit Log History</div>
-                    <ul style="padding-left:15px; margin:0; font-size:11px; max-height:100px; overflow-y:auto;">${logHtml}</ul>
-                </div>
+                <div class="xp-panel"><div class="xp-panel-title">Action Center</div><div style="display:flex; gap:10px; flex-wrap:wrap;">${actionsHtml}</div></div>
+                <div class="xp-panel"><div class="xp-panel-title">System Audit Log History</div><ul style="padding-left:15px; margin:0; font-size:11px; max-height:100px; overflow-y:auto;">${logHtml}</ul></div>
             `;
         }
 
@@ -902,14 +849,14 @@
         function executeEmployeeGrantSequence(id) {
             const app = DB.applications.find(a => a.id === id);
             if(!app) return;
-            
-            const selectedClass = document.getElementById('emp-change-visatype').value;
-            app.visaTypeIssued = selectedClass;
+            app.visaTypeIssued = document.getElementById('emp-change-visatype').value;
 
-            triggerConfirmModal("Collect Visa Issuance Fee", `Confirm receipt of standard cash/wire transaction handling fee of $${DB.visaFees} USD?`, () => {
+            triggerConfirmModal("Collect Visa Issuance Fee", `Confirm receipt of standard transaction fee of $${DB.visaFees} USD?`, () => {
                 app.feesPaid = true;
                 app.status = "Visa Granted";
-                app.history.push(`Visa type final choice matched to: ${selectedClass}. Fee parsing completed. State parameter set to GRANTED.`);
+                app.grantedDate = new Date().toISOString().split('T')[0];
+                app.borderLog = { insideCountry: false, entryDate: null, history: app.borderLog?.history || [] };
+                app.history.push(`Visa mapped to: ${app.visaTypeIssued}. Fee parsed. State set to GRANTED.`);
                 commitMemory();
                 renderEmployeeTable();
                 selectEmployeeApplicant(id);
@@ -930,45 +877,27 @@
         function trackVisa(strategy) {
             let res = null;
             if(strategy === 1) {
-                const id = document.getElementById('track-id').value.trim();
-                res = DB.applications.find(a => a.id === id);
+                res = DB.applications.find(a => a.id === document.getElementById('track-id').value.trim());
             } else if(strategy === 2) {
                 const fn = document.getElementById('track-fn').value.trim().toLowerCase();
                 const ln = document.getElementById('track-ln').value.trim().toLowerCase();
-                const dob = document.getElementById('track-dob').value;
-                res = DB.applications.find(a => a.firstName.toLowerCase() === fn && a.lastName.toLowerCase() === ln && a.dob === dob);
+                res = DB.applications.find(a => a.firstName.toLowerCase() === fn && a.lastName.toLowerCase() === ln && a.dob === document.getElementById('track-dob').value);
             } else if(strategy === 3) {
-                const dob = document.getElementById('track-dob2').value;
-                const pass = document.getElementById('track-pass').value.trim().toUpperCase();
-                res = DB.applications.find(a => a.dob === dob && a.passport === pass);
+                res = DB.applications.find(a => a.dob === document.getElementById('track-dob2').value && a.passport === document.getElementById('track-pass').value.trim().toUpperCase());
             }
-
             const out = document.getElementById('tracking-results-pane');
-            if(res) {
-                out.innerHTML = `
-                    <div class="xp-panel" style="background:#ffffe1; border-color:#e6db55;">
-                        <b>Tracking Target Located Successfully</b><br>
-                        File Reference ID: #${res.id}<br>
-                        Applicant Name: ${res.firstName} ${res.lastName}<br>
-                        Current Internal System State: <span style="color:blue; font-weight:bold;">${res.status}</span>
-                    </div>
-                `;
-            } else {
-                out.innerHTML = `<div class="xp-panel" style="color:red;">QUERY MISMATCH: No applicant matching standard parameters.</div>`;
-            }
+            out.innerHTML = res ? `<div class="xp-panel" style="background:#ffffe1;"><b>Target Located:</b> Reference ID: #${res.id}<br>Name: ${res.firstName} ${res.lastName}<br>Internal State: <b>${res.status}</b></div>` : `<div class="xp-panel" style="color:red;">QUERY MISMATCH: No matching records found.</div>`;
         }
 
-        // --- PORTAL 3: INTERVIEWER ENGINE ---
+        // --- PORTAL 3: INTERVIEWER ---
         function renderInterviewerTable() {
             const tbody = document.getElementById('interviewer-table-body');
-            tbody.innerHTML = '';
-            
+            if(!tbody) return; tbody.innerHTML = '';
             const pendingInt = DB.applications.filter(a => a.status === 'Pending Interview');
             if(pendingInt.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="4" style="color:#777; text-align:center;">No processing files queued in pipeline.</td></tr>`;
                 return;
             }
-
             pendingInt.forEach(a => {
                 let tr = document.createElement('tr');
                 tr.onclick = () => selectInterviewerApplicant(a.id);
@@ -980,16 +909,12 @@
         function selectInterviewerApplicant(id) {
             const app = DB.applications.find(a => a.id === id);
             const pane = document.getElementById('interviewer-action-pane');
-            if(!app) return;
-
+            if(!app || !pane) return;
             pane.innerHTML = `
                 <div class="xp-panel">
                     <div class="xp-panel-title">Assessment Dossier: ${app.firstName} ${app.lastName}</div>
-                    <p><b>Passport Reference:</b> ${app.passport} | <b>Nationality:</b> ${app.nationality}</p>
-                    <p><b>Requested Visa Classification Type:</b> ${app.visaTypeRequested}</p>
                     <label><b>Panel Decision Assessment Notes:</b></label><br>
-                    <textarea id="int-notes" class="xp-input" style="width:100%; margin-top:5px;" rows="3" placeholder="Input analytical metrics..."></textarea>
-                    
+                    <textarea id="int-notes" class="xp-input" style="width:100%; margin-top:5px;" rows="3"></textarea>
                     <div style="margin-top:15px; display:flex; gap:10px;">
                         <button class="xp-btn xp-btn-red" onclick="submitInterviewAssessment('${app.id}', false)">Deny Entry Clear (Reject)</button>
                         <button class="xp-btn xp-btn-green" onclick="submitInterviewAssessment('${app.id}', true)">Pass Assessment (Accept)</button>
@@ -1001,43 +926,67 @@
         function submitInterviewAssessment(id, passed) {
             const app = DB.applications.find(a => a.id === id);
             if(!app) return;
-            const notes = document.getElementById('int-notes').value;
-
             app.status = passed ? "Interview Accepted" : "Rejected";
-            app.history.push(`Interview concluded. Status outcome resolution: ${app.status}. Evaluation text: "${notes}"`);
+            app.history.push(`Interview concluded. Outcome: ${app.status}. Notes: "${document.getElementById('int-notes').value}"`);
             commitMemory();
-            
-            document.getElementById('interviewer-action-pane').innerHTML = `<p style="color:green; font-weight:bold;">Assessment logged successfully.</p>`;
-            renderInterviewerTable();
-            renderEmployeeTable();
+            document.getElementById('interviewer-action-pane').innerHTML = `<p style="color:green; font-weight:bold;">Assessment logged.</p>`;
+            renderInterviewerTable(); renderEmployeeTable();
         }
 
-        // --- PORTAL 4: AIRPORT SECURITY ENTRY ---
+        // ==========================================
+        // PORTAL 4: AIRPORT / BORDER CONTROL LOGIC 
+        // ==========================================
+        function switchAirportTab(tab) {
+            document.getElementById('air-tab-entry').classList.toggle('hidden', tab !== 'entry');
+            document.getElementById('air-tab-exit').classList.toggle('hidden', tab !== 'exit');
+            document.getElementById('tab-air-entry-btn').classList.toggle('active', tab === 'entry');
+            document.getElementById('tab-air-exit-btn').classList.toggle('active', tab === 'exit');
+        }
+
+        function checkVisaExpiration(app, typeObj) {
+            if (!app.grantedDate || !typeObj.validity) return "Unknown Issuance Parameter";
+            let grant = new Date(app.grantedDate);
+            let totalDaysAllowed = parseInt(typeObj.validity) || 0;
+            grant.setDate(grant.getDate() + totalDaysAllowed);
+            return grant.toISOString().split('T')[0];
+        }
+
         function airportLookup() {
             const pNo = document.getElementById('airport-search-passport').value.trim().toUpperCase();
             const out = document.getElementById('airport-results');
-            if(!pNo) return;
+            if(!pNo || !out) return;
 
             const matches = DB.applications.filter(a => a.passport === pNo);
             if(matches.length === 0) {
-                out.innerHTML = `<div style="background:#fce4d6; padding:10px; border:1px solid #c00; color:#c00; font-weight:bold;">🚨 BORDER SECURITY CRITICAL: Passport mismatch.</div>`;
+                out.innerHTML = `<div style="background:#fce4d6; padding:10px; border:1px solid #c00; color:#c00; font-weight:bold;">🚨 BORDER SECURITY CRITICAL: Passport mismatch. No application profile data located.</div>`;
                 return;
             }
 
             let html = '';
             matches.forEach(m => {
-                let statusColor = m.status === 'Visa Granted' ? 'green' : 'red';
-                let typeObj = DB.visaTypes.find(t => t.name === m.visaTypeIssued) || { validity: "N/A", entries: "N/A", allowedDays: "N/A" };
+                let typeObj = DB.visaTypes.find(t => t.name === m.visaTypeIssued) || { validity: "90", entries: "Single Entry", allowedDays: "30" };
+                let expirationDateStr = checkVisaExpiration(m, typeObj);
+                let isExpired = new Date(expirationDateStr) < new Date();
+                
+                let isEligible = m.status === 'Visa Granted' && !isExpired && (!m.borderLog || !m.borderLog.insideCountry);
+                let statusColor = isEligible ? 'green' : 'red';
                 
                 html += `
                     <div class="xp-panel" style="border-left: 5px solid ${statusColor};">
-                        <strong>File Status: <span style="color:${statusColor}; text-transform:uppercase;">${m.status}</span></strong><br>
-                        <strong>Applicant:</strong> ${m.firstName} ${m.lastName}<br>
-                        <strong>Visa Profile:</strong> ${m.visaTypeIssued || m.visaTypeRequested}<br>
-                        <strong>Visa Validity Constraints:</strong> Total Validity: ${typeObj.validity} | ${typeObj.entries} | Max ${typeObj.allowedDays} Days Per Stay Entry<br>
-                        <strong>System Audit Logs & Notes:</strong>
-                        <div style="background:#eee; padding:5px; font-size:11px; margin-top:5px; max-height:80px; overflow-y:auto;">
-                            ${m.history.map(h => `<div>• ${h}</div>`).join('')}
+                        <strong>File Reference: #${m.id} - Status: <mark style="text-transform:uppercase;">${m.status}</mark></strong><br>
+                        <strong>Applicant:</strong> ${m.firstName} ${m.lastName} | <strong>Nationality:</strong> ${m.nationality}<br>
+                        <strong>Visa Scheme Structure:</strong> ${m.visaTypeIssued} (${typeObj.entries})<br>
+                        <strong>Visa Expiration Threshold:</strong> <b style="color:${isExpired ? 'red' : 'black'};">${expirationDateStr} ${isExpired ? '[EXPIRED]' : '[VALID]'}</b><br>
+                        <strong>Current Location State:</strong> ${m.borderLog?.insideCountry ? 'Already Inside Country' : 'Outside Country Borders'}<br>
+                        
+                        <div style="margin-top:10px; background:#f5f5f5; padding:10px; border:1px solid #ccc;">
+                            <label style="font-weight:bold;">Select Simulation Border Control Arrival Processing Date:</label>
+                            <input type="date" id="border-entry-date-${m.id}" class="xp-input" value="${new Date().toISOString().split('T')[0]}">
+                        </div>
+
+                        <div style="margin-top:10px; display:flex; gap:10px;">
+                            <button class="xp-btn xp-btn-green" ${!isEligible ? 'disabled' : ''} onclick="executeBorderEntry('${m.id}', true)">Grant Border Entry</button>
+                            <button class="xp-btn xp-btn-red" ${m.status !== 'Visa Granted' ? 'disabled' : ''} onclick="executeBorderEntry('${m.id}', false)">Reject Border Entry</button>
                         </div>
                     </div>
                 `;
@@ -1045,11 +994,120 @@
             out.innerHTML = html;
         }
 
-        // --- PORTAL 5: ADMINISTRATIVE ARCHITECTURE ---
+        function executeBorderEntry(id, isGranted) {
+            const app = DB.applications.find(a => a.id === id);
+            if(!app) return;
+            const chosenDate = document.getElementById(`border-entry-date-${id}`).value;
+
+            if(!isGranted) {
+                app.status = "Rejected";
+                app.history.push(`Border control match REJECTED entry on execution horizon date ${chosenDate}.`);
+                if(!app.borderLog) app.borderLog = { insideCountry: false, entryDate: null, history: [] };
+                app.borderLog.history.push(`Entry rejected at checkpoint on ${chosenDate}.`);
+                commitMemory();
+                airportLookup();
+                return;
+            }
+
+            let typeObj = DB.visaTypes.find(t => t.name === app.visaTypeIssued) || { entries: "Single Entry" };
+            
+            if(!app.borderLog) app.borderLog = { insideCountry: false, entryDate: null, history: [] };
+            app.borderLog.insideCountry = true;
+            app.borderLog.entryDate = chosenDate;
+            app.borderLog.history.push(`Successful entry stamped at border control portal gate on date: ${chosenDate}.`);
+            app.history.push(`Granted access entry tracking parameter validated on ${chosenDate}.`);
+
+            if(typeObj.entries === "Single Entry") {
+                app.status = "USED";
+                app.history.push(`Single Entry classification schema detected. Visa has been permanently locked out to USED status.`);
+            }
+
+            commitMemory();
+            triggerAlertModal("Entry Authorized", `Passport successfully stamped. Location flag set to inside country borders.`);
+            airportLookup();
+        }
+
+        function airportExitLookup() {
+            const pNo = document.getElementById('airport-exit-passport').value.trim().toUpperCase();
+            const out = document.getElementById('airport-exit-results');
+            if(!pNo || !out) return;
+
+            const matches = DB.applications.filter(a => a.passport === pNo && a.borderLog && a.borderLog.insideCountry);
+            if(matches.length === 0) {
+                out.innerHTML = `<div style="background:#fff0f0; padding:10px; border:1px solid #c00; color:#c00;">No active passenger record found currently inside country constraints matching this passport number.</div>`;
+                return;
+            }
+
+            let html = '';
+            matches.forEach(m => {
+                let typeObj = DB.visaTypes.find(t => t.name === m.visaTypeIssued) || { allowedDays: "30" };
+                html += `
+                    <div class="xp-panel" style="border-left: 5px solid #0054E3;">
+                        <strong>Passenger Profile: ${m.firstName} ${m.lastName} (#${m.id})</strong><br>
+                        <strong>Logged Border Entry Date:</strong> ${m.borderLog.entryDate}<br>
+                        <strong>Days Max Allowed Per Entry Profile:</strong> ${typeObj.allowedDays} Days maximum<br>
+                        
+                        <div style="margin-top:10px; background:#f9f9f9; padding:8px; border:1px solid #bbb;">
+                            <label style="font-weight:bold;">Select Simulation Departure Processing Date:</label>
+                            <input type="date" id="border-exit-date-${m.id}" class="xp-input" value="${new Date().toISOString().split('T')[0]}" onchange="calculateStayMetrics('${m.id}', '${m.borderLog.entryDate}', ${typeObj.allowedDays})">
+                        </div>
+                        <div id="exit-calculation-metrics-${m.id}" style="margin-top:10px; font-weight:bold;"></div>
+                        <button class="xp-btn xp-btn-green" style="margin-top:10px;" onclick="executeBorderExit('${m.id}', ${typeObj.allowedDays})">Process Passport Exit Stamp</button>
+                    </div>
+                `;
+                setTimeout(() => calculateStayMetrics(m.id, m.borderLog.entryDate, typeObj.allowedDays), 50);
+            });
+            out.innerHTML = html;
+        }
+
+        function calculateStayMetrics(id, entryDateStr, allowedDays) {
+            const exitDateStr = document.getElementById(`border-exit-date-${id}`).value;
+            const metricBox = document.getElementById(`exit-calculation-metrics-${id}`);
+            if(!exitDateStr || !metricBox) return;
+
+            let entry = new Date(entryDateStr);
+            let exit = new Date(exitDateStr);
+            let diffTime = Math.abs(exit - entry);
+            let totalDaysStayed = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if(exit < entry) totalDaysStayed = 0;
+
+            let overstay = totalDaysStayed - allowedDays;
+            if (overstay > 0) {
+                metricBox.style.color = "red";
+                metricBox.innerHTML = `⚠️ OVERSTAY VIOLATION DETECTED! Total days stayed: ${totalDaysStayed} days (Allowed threshold limit: ${allowedDays} days). Overstay duration count: ${overstay} days!`;
+            } else {
+                metricBox.style.color = "green";
+                metricBox.innerHTML = `✅ Stay profile within normal limits. Total days spent: ${totalDaysStayed} days out of ${allowedDays} allowed days.`;
+            }
+        }
+
+        function executeBorderExit(id, allowedDays) {
+            const app = DB.applications.find(a => a.id === id);
+            if(!app) return;
+            const exitDateStr = document.getElementById(`border-exit-date-${id}`).value;
+
+            let entry = new Date(app.borderLog.entryDate);
+            let exit = new Date(exitDateStr);
+            let totalDaysStayed = Math.ceil(Math.abs(exit - entry) / (1000 * 60 * 60 * 24));
+            if(exit < entry) totalDaysStayed = 0;
+
+            let note = `Processed exit border stamp on date ${exitDateStr}. Stay duration count equaled ${totalDaysStayed} days against ${allowedDays} limit.`;
+            if(totalDaysStayed > allowedDays) note += ` [SYSTEM FLAG: SYSTEM ACCOUNT OVERSTAY VIOLATION OF ${totalDaysStayed - allowedDays} DAYS RECORDED].`;
+
+            app.borderLog.insideCountry = false;
+            app.borderLog.entryDate = null;
+            app.borderLog.history.push(note);
+            app.history.push(note);
+            commitMemory();
+
+            triggerAlertModal("Exit Processing Completed", `Passenger successfully logged as departed from host territory boundary zones.`);
+            airportExitLookup();
+        }
+
+        // --- PORTAL 5: ADMINISTRATIVE CONTROLS MANAGEMENT ---
         function switchAdminTab(tab) {
             ['adm-tab-global', 'adm-tab-nat', 'adm-tab-ex', 'adm-tab-types', 'adm-tab-statuses'].forEach(id => document.getElementById(id).classList.add('hidden'));
             ['tab-adm-global-btn', 'tab-adm-nat-btn', 'tab-adm-ex-btn', 'tab-adm-types-btn', 'tab-adm-statuses-btn'].forEach(id => document.getElementById(id).classList.remove('active'));
-            
             document.getElementById('adm-tab-' + tab).classList.remove('hidden');
             document.getElementById('tab-adm-' + tab + '-btn').classList.add('active');
         }
@@ -1058,13 +1116,11 @@
             document.getElementById('adm-fee-input').value = DB.visaFees;
             document.getElementById('adm-extra-msg-text').value = DB.extraMessage;
 
-            // Load Status Words Variables Mapping
             document.getElementById('sw-processing').value = DB.statusWords.processing;
             document.getElementById('sw-granted').value = DB.statusWords.granted;
             document.getElementById('sw-rejected').value = DB.statusWords.rejected;
             document.getElementById('sw-interview').value = DB.statusWords.interview;
 
-            // Render Portals Credentials Grid with Editable & Deletable Row Commands
             const credTbody = document.getElementById('admin-credentials-table');
             credTbody.innerHTML = '';
             Object.keys(DB.credentials).forEach(key => {
@@ -1081,154 +1137,53 @@
                 credTbody.appendChild(tr);
             });
 
-            // Render Monitored Nationalities List
-            const natUl = document.getElementById('adm-extra-list');
-            natUl.innerHTML = '';
+            const natUl = document.getElementById('adm-extra-list'); natUl.innerHTML = '';
             DB.extraApprovalCountries.forEach(c => {
                 let li = document.createElement('li');
                 li.innerHTML = `${c} <a href="#" style="color:red; font-size:11px; font-weight:bold;" onclick="removeExtraCountry('${c}')">[Remove]</a>`;
                 natUl.appendChild(li);
             });
 
-            // Render Exempt Nationalities List
-            const exUl = document.getElementById('adm-exempt-list');
-            exUl.innerHTML = '';
+            const exUl = document.getElementById('adm-exempt-list'); exUl.innerHTML = '';
             DB.exemptCountries.forEach(c => {
                 let li = document.createElement('li');
                 li.innerHTML = `${c} <a href="#" style="color:red; font-size:11px; font-weight:bold;" onclick="removeExemptCountry('${c}')">[Remove]</a>`;
                 exUl.appendChild(li);
             });
 
-            // Render Visa Type Schemes Table Model Matrix
-            const vtTbody = document.getElementById('admin-visatypes-table');
-            vtTbody.innerHTML = '';
+            const vtTbody = document.getElementById('admin-visatypes-table'); vtTbody.innerHTML = '';
             DB.visaTypes.forEach((v, idx) => {
                 let tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><b>${v.name}</b></td>
-                    <td>${v.validity}</td>
-                    <td>${v.entries}</td>
-                    <td>${v.allowedDays} Days</td>
-                    <td>
-                        <button class="xp-btn" onclick="editVisaTypeField(${idx})">Edit</button>
-                        <button class="xp-btn xp-btn-red" onclick="deleteVisaTypeField(${idx})">Delete</button>
-                    </td>
-                `;
+                tr.innerHTML = `<td><b>${v.name}</b></td><td>${v.validity} Days</td><td>${v.entries}</td><td>${v.allowedDays} Days</td><td><button class="xp-btn" onclick="editVisaTypeField(${idx})">Edit</button> <button class="xp-btn xp-btn-red" onclick="deleteVisaTypeField(${idx})">Delete</button></td>`;
                 vtTbody.appendChild(tr);
             });
             renderCustomerVisaTypesMenu();
         }
 
-        function saveVisaFee() {
-            DB.visaFees = parseInt(document.getElementById('adm-fee-input').value) || 0;
-            commitMemory();
-            triggerAlertModal("Update complete", "Standard financial ledger fee configurations updated.");
-        }
+        function saveVisaFee() { DB.visaFees = parseInt(document.getElementById('adm-fee-input').value) || 0; commitMemory(); triggerAlertModal("Update complete", "Standard fee parameters saved."); }
+        function saveStatusWords() { DB.statusWords.processing = document.getElementById('sw-processing').value.trim(); DB.statusWords.granted = document.getElementById('sw-granted').value.trim(); DB.statusWords.rejected = document.getElementById('sw-rejected').value.trim(); DB.statusWords.interview = document.getElementById('sw-interview').value.trim(); commitMemory(); triggerAlertModal("Update complete", "Display wording sync'd."); }
+        function saveIndividualCredential(key) { DB.credentials[key].user = document.getElementById(`cred-u-${key}`).value; DB.credentials[key].pass = document.getElementById(`cred-p-${key}`).value; commitMemory(); triggerAlertModal("Update complete", `Credentials synchronized.`); }
+        function deleteIndividualCredential(key) { triggerConfirmModal("Remove Credential Row", `Erase credential map for portal target: "${key}"?`, () => { delete DB.credentials[key]; commitMemory(); refreshAdminInterface(); }); }
+        function addNewCredential() { const key = document.getElementById('adm-new-cred-key').value.trim().toLowerCase(); const u = document.getElementById('adm-new-cred-u').value.trim(); const p = document.getElementById('adm-new-cred-p').value.trim(); if(!key || !u || !p) return; DB.credentials[key] = { user: u, pass: p }; commitMemory(); refreshAdminInterface(); document.getElementById('adm-new-cred-key').value = ''; document.getElementById('adm-new-cred-u').value = ''; document.getElementById('adm-new-cred-p').value = ''; }
+        function saveExtraMsg() { DB.extraMessage = document.getElementById('adm-extra-msg-text').value; commitMemory(); triggerAlertModal("Update complete", "Surveillance banner synchronized."); }
+        function addExtraApprovalCountry() { const c = document.getElementById('adm-add-extra-sel').value; if(c && !DB.extraApprovalCountries.includes(c)) { DB.extraApprovalCountries.push(c); commitMemory(); refreshAdminInterface(); } }
+        function removeExtraCountry(c) { DB.extraApprovalCountries = DB.extraApprovalCountries.filter(x => x !== c); commitMemory(); refreshAdminInterface(); }
+        function addExemptCountry() { const c = document.getElementById('adm-add-exempt-sel').value; if(c && !DB.exemptCountries.includes(c)) { DB.exemptCountries.push(c); commitMemory(); refreshAdminInterface(); } }
+        function removeExemptCountry(c) { DB.exemptCountries = DB.exemptCountries.filter(x => x !== c); commitMemory(); refreshAdminInterface(); }
 
-        function saveStatusWords() {
-            DB.statusWords.processing = document.getElementById('sw-processing').value.trim();
-            DB.statusWords.granted = document.getElementById('sw-granted').value.trim();
-            DB.statusWords.rejected = document.getElementById('sw-rejected').value.trim();
-            DB.statusWords.interview = document.getElementById('sw-interview').value.trim();
-            commitMemory();
-            triggerAlertModal("Update complete", "Public user dashboard tracking phrasing variables synchronized successfully.");
-        }
-
-        function saveIndividualCredential(key) {
-            DB.credentials[key].user = document.getElementById(`cred-u-${key}`).value;
-            DB.credentials[key].pass = document.getElementById(`cred-p-${key}`).value;
-            commitMemory();
-            triggerAlertModal("Update complete", `Security parameters modified for [${key.toUpperCase()}] target map.`);
-        }
-
-        function deleteIndividualCredential(key) {
-            triggerConfirmModal("Remove Credential Target Row", `Are you sure you want to completely erase the credentials for portal profile "${key}"?`, () => {
-                delete DB.credentials[key];
-                commitMemory();
-                refreshAdminInterface();
-            });
-        }
-
-        function addNewCredential() {
-            const key = document.getElementById('adm-new-cred-key').value.trim().toLowerCase();
-            const u = document.getElementById('adm-new-cred-u').value.trim();
-            const p = document.getElementById('adm-new-cred-p').value.trim();
-            if(!key || !u || !p) {
-                triggerAlertModal("Error", "All input cells must contain data.");
-                return;
-            }
-            DB.credentials[key] = { user: u, pass: p };
-            commitMemory();
-            refreshAdminInterface();
-            document.getElementById('adm-new-cred-key').value = '';
-            document.getElementById('adm-new-cred-u').value = '';
-            document.getElementById('adm-new-cred-p').value = '';
-        }
-
-        function saveExtraMsg() {
-            DB.extraMessage = document.getElementById('adm-extra-msg-text').value;
-            commitMemory();
-            triggerAlertModal("Update complete", "Surveillance alert banner text parameters synchronized.");
-        }
-
-        function addExtraApprovalCountry() {
-            const c = document.getElementById('adm-add-extra-sel').value;
-            if(c && !DB.extraApprovalCountries.includes(c)) {
-                DB.extraApprovalCountries.push(c);
-                commitMemory();
-                refreshAdminInterface();
-            }
-        }
-
-        function removeExtraCountry(c) {
-            DB.extraApprovalCountries = DB.extraApprovalCountries.filter(x => x !== c);
-            commitMemory();
-            refreshAdminInterface();
-        }
-
-        function addExemptCountry() {
-            const c = document.getElementById('adm-add-exempt-sel').value;
-            if(c && !DB.exemptCountries.includes(c)) {
-                DB.exemptCountries.push(c);
-                commitMemory();
-                refreshAdminInterface();
-            }
-        }
-
-        function removeExemptCountry(c) {
-            DB.exemptCountries = DB.exemptCountries.filter(x => x !== c);
-            commitMemory();
-            refreshAdminInterface();
-        }
-
-        // VISA TYPES MATRIX MANAGEMENT METHODS
         let selectedVisaTypeEditIndex = null;
         function saveVisaType() {
             const name = document.getElementById('vt-name').value.trim();
             const val = document.getElementById('vt-val').value.trim();
             const ent = document.getElementById('vt-entries').value;
             const days = document.getElementById('vt-days').value.trim();
-
-            if(!name || !val || !days) {
-                triggerAlertModal("Error", "Please input parameters across all fields.");
-                return;
-            }
+            if(!name || !val || !days) return;
 
             const payload = { name: name, validity: val, entries: ent, allowedDays: days };
-
-            if(selectedVisaTypeEditIndex !== null) {
-                DB.visaTypes[selectedVisaTypeEditIndex] = payload;
-                selectedVisaTypeEditIndex = null;
-            } else {
-                DB.visaTypes.push(payload);
-            }
-
-            commitMemory();
-            refreshAdminInterface();
-            
-            document.getElementById('vt-name').value = '';
-            document.getElementById('vt-val').value = '';
-            document.getElementById('vt-days').value = '';
+            if(selectedVisaTypeEditIndex !== null) { DB.visaTypes[selectedVisaTypeEditIndex] = payload; selectedVisaTypeEditIndex = null; }
+            else { DB.visaTypes.push(payload); }
+            commitMemory(); refreshAdminInterface();
+            document.getElementById('vt-name').value = ''; document.getElementById('vt-val').value = ''; document.getElementById('vt-days').value = '';
         }
 
         function editVisaTypeField(idx) {
@@ -1239,79 +1194,43 @@
             document.getElementById('vt-days').value = target.allowedDays;
             selectedVisaTypeEditIndex = idx;
         }
+        function deleteVisaTypeField(idx) { triggerConfirmModal("Delete Confirmation", "Erase this formulation configuration?", () => { DB.visaTypes.splice(idx, 1); commitMemory(); refreshAdminInterface(); }); }
 
-        function deleteVisaTypeField(idx) {
-            triggerConfirmModal("Delete Confirmation", "Erase this Visa type formulation configuration?", () => {
-                DB.visaTypes.splice(idx, 1);
-                commitMemory();
-                refreshAdminInterface();
-            });
-        }
-
-        // SYSTEM PURGE ARCHITECTURE COMMAND IMPLEMENTATIONS
         function triggerApplicantsReset() {
-            triggerConfirmModal("⚠️ APPLICANTS DATA PURGE", "Are you sure you want to completely drop all visa applicant rows? This cannot be undone.", () => {
-                DB.applications = [];
-                commitMemory();
-                renderEmployeeTable();
-                renderInterviewerTable();
-                refreshAdminInterface();
-                document.getElementById('emp-details-pane').innerHTML = `<p style="color:orange;">Applicant records purged successfully.</p>`;
-                triggerAlertModal("Action Executed", "Applicant processing tracking structures cleared from memory.");
+            triggerConfirmModal("⚠️ APPLICANTS DATA PURGE", "Completely drop all applicant rows?", () => {
+                DB.applications = []; commitMemory(); renderEmployeeTable(); renderInterviewerTable(); refreshAdminInterface();
+                document.getElementById('emp-details-pane').innerHTML = `<p style="color:orange;">Applicant records purged.</p>`;
             });
         }
-
         function triggerMasterReset() {
-            triggerConfirmModal("🔥 CRITICAL DESTRUCTIVE PURGE: MASTER SYSTEM RESET", "This will instantly delete ALL data from Local Storage, including all custom configurations, credentials, visa types, and applicant tracking files.", () => {
-                localStorage.removeItem('GLOBAL_VISA_SYSTEM_STORAGE');
-                initializePersistentMemory();
-                populateCountryDropdowns();
-                renderCustomerVisaTypesMenu();
-                refreshAdminInterface();
-                renderEmployeeTable();
-                renderInterviewerTable();
-                switchPortal('customer');
-                triggerAlertModal("Master Reset Done", "System variable structural memory initialized back to production defaults.");
+            triggerConfirmModal("🔥 CRITICAL MASTER RESET", "Wipe all Local Storage parameters out completely?", () => {
+                localStorage.removeItem('GLOBAL_VISA_SYSTEM_STORAGE'); initializePersistentMemory(); populateCountryDropdowns();
+                renderCustomerVisaTypesMenu(); refreshAdminInterface(); renderEmployeeTable(); renderInterviewerTable(); switchPortal('customer');
             });
         }
 
-        // --- PORTAL 6: PASSPORT CERTIFICATE SLIP SLATE OUTPUT GENERATOR ---
+        // --- PORTAL 6: PASSPORT CERTIFICATE PRINT CODES ---
         function generateVisaPrintout(id) {
             const app = DB.applications.find(a => a.id === id);
             if(!app) return;
-
-            let isSuspended = app.status === "Visa Suspended";
-            const currentIssuedTypeObj = DB.visaTypes.find(t => t.name === app.visaTypeIssued) || { validity: "N/A", entries: "N/A", allowedDays: "N/A" };
-
+            let isSuspended = app.status === "Visa Suspended" || app.status === "USED";
+            const currentIssuedTypeObj = DB.visaTypes.find(t => t.name === app.visaTypeIssued) || { validity: "90", entries: "Single Entry", allowedDays: "30" };
             const out = document.getElementById('printable-certificate');
             out.innerHTML = `
-                <div class="cert-stamp ${isSuspended ? 'suspended' : ''}">${isSuspended ? 'REVOKED / SUSPENDED' : 'VISA GRANTED'}</div>
-                <div class="cert-header">
-                    <h1 style="margin:0; color:#2c3e50;">GLOBAL VISA ISSUANCE SYSTEM</h1>
-                    <p style="margin:5px 0 0 0; font-style:italic;">Official Consular Authorization Document</p>
-                </div>
+                <div class="cert-stamp ${isSuspended ? 'suspended' : ''}">${app.status}</div>
+                <div class="cert-header"><h1 style="margin:0;">GLOBAL VISA ISSUANCE SYSTEM</h1></div>
                 <div class="cert-body">
-                    <div class="cert-row"><div class="cert-label">Visa File Reference ID</div><div class="cert-value" style="font-weight:bold; color:#0054E3;">#${app.id}</div></div>
-                    <div class="cert-row"><div class="cert-label">First Name</div><div class="cert-value">${app.firstName}</div></div>
-                    <div class="cert-row"><div class="cert-label">Last Name</div><div class="cert-value">${app.lastName}</div></div>
-                    <div class="cert-row"><div class="cert-label">Date of Birth</div><div class="cert-value">${app.dob}</div></div>
-                    <div class="cert-row"><div class="cert-label">Nationality Origin</div><div class="cert-value">${app.nationality}</div></div>
-                    <div class="cert-row"><div class="cert-label">Passport Number</div><div class="cert-value" style="font-family:monospace; font-weight:bold;">${app.passport}</div></div>
-                    
+                    <div class="cert-row"><div class="cert-label">Visa Reference ID</div><div class="cert-value">#${app.id}</div></div>
+                    <div class="cert-row"><div class="cert-label">Full Name</div><div class="cert-value">${app.firstName} ${app.lastName}</div></div>
+                    <div class="cert-row"><div class="cert-label">Passport Number</div><div class="cert-value">${app.passport}</div></div>
                     <div style="margin:20px 0; padding:15px; background:#f9f9f9; border:1px solid #ddd;">
-                        <div class="cert-row" style="border:none;"><div class="cert-label">Granted Visa Scheme:</div><div class="cert-value" style="font-weight:bold;">${app.visaTypeIssued}</div></div>
-                        <div class="cert-row" style="border:none;"><div class="cert-label">Visa Document Validity:</div><div class="cert-value">${currentIssuedTypeObj.validity}</div></div>
-                        <div class="cert-row" style="border:none;"><div class="cert-label">Entry Parameter Rule:</div><div class="cert-value">${currentIssuedTypeObj.entries}</div></div>
-                        <div class="cert-row" style="border:none;"><div class="cert-label">Allowed Stay Length:</div><div class="cert-value">${currentIssuedTypeObj.allowedDays} Days max per entry</div></div>
+                        <div><b>Scheme:</b> ${app.visaTypeIssued}</div>
+                        <div><b>Total Validity Window:</b> ${currentIssuedTypeObj.validity} Days from Issuance</div>
+                        <div><b>Entries Allowance:</b> ${currentIssuedTypeObj.entries}</div>
+                        <div><b>Stay Allowed Length:</b> ${currentIssuedTypeObj.allowedDays} Days max per entry</div>
                     </div>
-
-                    <div class="cert-row"><div class="cert-label">Planned Arrival Date</div><div class="cert-value">${app.plannedArrival}</div></div>
-                    <div class="cert-row"><div class="cert-label">Planned Departure Date</div><div class="cert-value">${app.plannedDeparture}</div></div>
-                    <div class="cert-row"><div class="cert-label">Consular Fee Tariff</div><div class="cert-value">$${DB.visaFees} USD (PAID & CONFIRMED)</div></div>
                 </div>
-                <p style="margin-top:40px; font-size:11px; color:#999; text-align:center;">This clearance document remains the property of the host government and can be suspended digitally at border stations anytime.</p>
             `;
-
             switchPortal('printout');
         }
     </script>
